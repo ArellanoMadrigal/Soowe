@@ -1,0 +1,15 @@
+# Target labels
+ nuget-populate
+# Source files and their labels
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/nuget-populate
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/b173ab806ebbbeaf97ab1df4d076ff03/nuget-populate.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/2fb85c3ef9e4aed1721775140b8b4fdf/nuget-populate-complete.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-build.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-configure.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-copyfile.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-download.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-install.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-mkdir.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-patch.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-test.rule
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-update.rule

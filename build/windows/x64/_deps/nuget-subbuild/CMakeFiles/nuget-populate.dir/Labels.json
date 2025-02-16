@@ -1,0 +1,49 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/nuget-populate"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/b173ab806ebbbeaf97ab1df4d076ff03/nuget-populate.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/2fb85c3ef9e4aed1721775140b8b4fdf/nuget-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-copyfile.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/CMakeFiles/26eebff00a851271dc02664e84228855/nuget-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"nuget-populate"
+		],
+		"name" : "nuget-populate"
+	}
+}

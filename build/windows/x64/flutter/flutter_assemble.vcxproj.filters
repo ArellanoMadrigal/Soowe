@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\CMakeFiles\3a070c569986440fd963523851a3699c\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\CMakeFiles\701ea6ad298b90d1833a5e6dc9a05d90\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{32D74D3C-251C-3224-B94D-6E1B26B75223}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

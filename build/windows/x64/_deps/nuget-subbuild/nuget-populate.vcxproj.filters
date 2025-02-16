@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-copyfile.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\26eebff00a851271dc02664e84228855\nuget-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\2fb85c3ef9e4aed1721775140b8b4fdf\nuget-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\b173ab806ebbbeaf97ab1df4d076ff03\nuget-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\nuget-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DABA8BD7-5A1F-3FB1-9F16-D1B8ED40C731}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

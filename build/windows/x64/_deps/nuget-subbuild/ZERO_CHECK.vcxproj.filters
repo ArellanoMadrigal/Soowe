@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\b173ab806ebbbeaf97ab1df4d076ff03\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DABA8BD7-5A1F-3FB1-9F16-D1B8ED40C731}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
