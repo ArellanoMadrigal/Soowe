@@ -4,15 +4,34 @@ class EstadisticasEnfermero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Mis Estadísticas")),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.bar_chart, size: 80, color: Colors.blue.shade700),
-            SizedBox(height: 15),
-            Text("Total de Servicios: 12"),
-            Text("Calificación Promedio: 4.8 ⭐"),
+            Text("Estadísticas Generales", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.assignment_turned_in, color: Colors.blue),
+                title: Text("Citas completadas"),
+                trailing: Text("24"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.attach_money, color: Colors.green),
+                title: Text("Ganancias del mes"),
+                trailing: Text("\$12,500"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.star, color: Colors.orange),
+                title: Text("Calificación promedio"),
+                trailing: Text("4.8/5"),
+              ),
+            ),
           ],
         ),
       ),

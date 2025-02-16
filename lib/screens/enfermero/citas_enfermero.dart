@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
 class CitasEnfermero extends StatelessWidget {
-  final List<String> citas = ["Cita con Paciente A", "Cita con Paciente B"];
+  final List<Map<String, String>> citas = [
+    {"paciente": "Carlos Gómez", "fecha": "12 Sept 2024", "hora": "10:00 AM"},
+    {"paciente": "María Pérez", "fecha": "15 Sept 2024", "hora": "3:00 PM"},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Mis Citas")),
       body: ListView.builder(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(16.0),
         itemCount: citas.length,
         itemBuilder: (context, index) {
           return Card(
+            elevation: 2,
+            margin: EdgeInsets.symmetric(vertical: 8.0),
             child: ListTile(
-              title: Text(citas[index]),
-              subtitle: Text("Fecha: 20/02/2025"),
-              trailing: Icon(Icons.check_circle, color: Colors.green),
+              leading: Icon(Icons.calendar_today, color: Colors.blue),
+              title: Text(citas[index]["paciente"]!),
+              subtitle: Text("${citas[index]["fecha"]} - ${citas[index]["hora"]}"),
             ),
           );
         },

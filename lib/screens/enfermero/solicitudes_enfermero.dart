@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 
 class SolicitudesEnfermero extends StatelessWidget {
-  final List<String> solicitudes = ["Paciente 1", "Paciente 2", "Paciente 3"];
+  final List<Map<String, String>> solicitudes = [
+    {"cliente": "Carlos Gómez", "ubicacion": "CDMX", "detalle": "Cuidados postoperatorios"},
+    {"cliente": "María Pérez", "ubicacion": "Guadalajara", "detalle": "Cuidado de adulto mayor"},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Solicitudes de Trabajo")),
       body: ListView.builder(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(16.0),
         itemCount: solicitudes.length,
         itemBuilder: (context, index) {
           return Card(
+            elevation: 2,
+            margin: EdgeInsets.symmetric(vertical: 8.0),
             child: ListTile(
-              title: Text(solicitudes[index]),
-              subtitle: Text("Ubicación: Ciudad X"),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              leading: Icon(Icons.person, color: Colors.blue),
+              title: Text(solicitudes[index]["cliente"]!),
+              subtitle: Text("${solicitudes[index]["ubicacion"]} - ${solicitudes[index]["detalle"]}"),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(icon: Icon(Icons.check, color: Colors.green), onPressed: () {}),
+                  IconButton(icon: Icon(Icons.close, color: Colors.red), onPressed: () {}),
+                ],
+              ),
             ),
           );
         },

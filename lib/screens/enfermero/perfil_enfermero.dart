@@ -4,20 +4,29 @@ class PerfilEnfermero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Perfil del Enfermero")),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(radius: 50, backgroundColor: Colors.blue.shade700),
-            SizedBox(height: 15),
-            Text("Nombre del Enfermero", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 5),
-            Text("Especialidad: Enfermería General"),
-            SizedBox(height: 15),
+            CircleAvatar(radius: 50, backgroundColor: Colors.blue),
+            SizedBox(height: 10),
+            Text("Fernanda Arellano", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text("Enfermera de Urgencias", style: TextStyle(fontSize: 14, color: Colors.grey)),
+            SizedBox(height: 20),
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text("fernanda@email.com"),
+            ),
+            ListTile(
+              leading: Icon(Icons.phone),
+              title: Text("+52 999 123 4567"),
+            ),
+            Spacer(),
             ElevatedButton(
               onPressed: () {},
               child: Text("Editar Perfil"),
+              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
             ),
           ],
         ),
