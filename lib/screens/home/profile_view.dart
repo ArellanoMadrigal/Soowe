@@ -1,8 +1,8 @@
-// File: profile/profile_view.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_service.dart';
 
@@ -116,9 +116,70 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<void> _handleProfileImageUpload() async {
     try {
-      // 1. Seleccionar imagen
+      // 1. Verificar y solicitar permisos según la plataforma
+      PermissionStatus status;
+      if (Platform.isAndroid) {
+        // Para Android 13 y superior
+        if (await Permission.photos.request().isGranted) {
+          status = PermissionStatus.granted;
+        } else {
+          // Para versiones anteriores de Android
+          status = await Permission.storage.request();
+        }
+      } else {
+        // Para iOS
+        status = await Permission.photos.request();
+      }
+
+      if (!status.isGranted) {
+        if (!mounted) return;
+        _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
+        return;
+      }
+
+      // 2. Mostrar diálogo para elegir la fuente de la imagen
+      if (!mounted) return;
+      final ImageSource? source = await showDialog<ImageSource>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Seleccionar imagen'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Tomar foto'),
+                onTap: () async {
+                  // Solicitar permiso de cámara si se elige esta opción
+                  final cameraStatus = await Permission.camera.request();
+                  if (cameraStatus.isGranted) {
+                    if (!context.mounted) return;
+                    Navigator.pop(context, ImageSource.camera);
+                  } else {
+                    if (!context.mounted) return;
+                    Navigator.pop(context);
+                    _showErrorSnackBar('Se requiere permiso para usar la cámara');
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Seleccionar de galería'),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (source == null) return;
+
+      // 3. Seleccionar imagen
       final XFile? pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
+        source: source,
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 80,
@@ -126,7 +187,7 @@ class _ProfileViewState extends State<ProfileView> {
       
       if (pickedFile == null) return;
 
-      // 2. Convertir a File y verificar tamaño
+      // 4. Convertir a File y verificar tamaño
       final File imageFile = File(pickedFile.path);
       final fileSize = await imageFile.length();
       
@@ -138,7 +199,7 @@ class _ProfileViewState extends State<ProfileView> {
         return;
       }
 
-      // 3. Mostrar indicador de carga
+      // 5. Mostrar indicador de carga
       if (!mounted) return;
       showDialog(
         context: context,
@@ -151,7 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
 
-      // 4. Subir imagen
+      // 6. Subir imagen
       try {
         final userId = await _authService.getCurrentUserId();
         if (userId == null) {
@@ -166,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
         if (!mounted) return;
         Navigator.of(context).pop();
 
-        // 5. Actualizar UI con la nueva imagen
+        // 7. Actualizar UI con la nueva imagen
         if (uploadedImage['url'] != null) {
           setState(() {
             profileImageUrl = uploadedImage['url'];
@@ -206,6 +267,7 @@ class _ProfileViewState extends State<ProfileView> {
       ),
     );
   }
+
   Future<void> _handleEdit() async {
     final result = await Navigator.push(
       context,
@@ -239,8 +301,6 @@ class _ProfileViewState extends State<ProfileView> {
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -616,22 +676,25 @@ class _SectionGroup extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (title != null)
+        if (title != null) ...[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               title!,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: Colors.grey,
-                  ),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        Container(
+        ],
+        Card(
+          elevation: 0,
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade200),
+            side: BorderSide(color: Colors.grey.shade200),
           ),
           child: Column(
             children: children,
@@ -646,16 +709,16 @@ class _ProfileItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String? subtitle;
-  final bool showEdit;
   final bool showArrow;
+  final bool showEdit;
   final VoidCallback? onTap;
 
   const _ProfileItem({
     required this.icon,
     required this.title,
     this.subtitle,
-    this.showEdit = false,
     this.showArrow = false,
+    this.showEdit = false,
     this.onTap,
   });
 
@@ -663,19 +726,11 @@ class _ProfileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey.shade200,
-              width: 1,
-            ),
-          ),
-        ),
         child: Row(
           children: [
-            Icon(icon, color: Theme.of(context).colorScheme.primary),
+            Icon(icon, color: Colors.grey.shade600),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -688,7 +743,8 @@ class _ProfileItem extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (subtitle != null)
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4),
                     Text(
                       subtitle!,
                       style: TextStyle(
@@ -696,20 +752,20 @@ class _ProfileItem extends StatelessWidget {
                         color: Colors.grey.shade600,
                       ),
                     ),
+                  ],
                 ],
               ),
             ),
             if (showEdit)
               Icon(
                 Icons.edit_outlined,
-                color: Theme.of(context).colorScheme.primary,
                 size: 20,
+                color: Colors.grey.shade400,
               )
             else if (showArrow)
-              const Icon(
+              Icon(
                 Icons.chevron_right,
-                color: Colors.grey,
-                size: 24,
+                color: Colors.grey.shade400,
               ),
           ],
         ),
