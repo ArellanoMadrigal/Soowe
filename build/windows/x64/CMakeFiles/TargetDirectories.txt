@@ -14,3 +14,6 @@ C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/geolocator_windows/CMakeFiles/geolocator_windows_plugin.dir
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/geolocator_windows/CMakeFiles/INSTALL.dir
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/geolocator_windows/CMakeFiles/ALL_BUILD.dir
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/permission_handler_windows/CMakeFiles/permission_handler_windows_plugin.dir
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/permission_handler_windows/CMakeFiles/INSTALL.dir
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/permission_handler_windows/CMakeFiles/ALL_BUILD.dir

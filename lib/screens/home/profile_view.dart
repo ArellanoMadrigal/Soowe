@@ -114,30 +114,9 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  Future<void> _handleProfileImageUpload() async {
+Future<void> _handleProfileImageUpload() async {
     try {
-      // 1. Verificar y solicitar permisos según la plataforma
-      PermissionStatus status;
-      if (Platform.isAndroid) {
-        // Para Android 13 y superior
-        if (await Permission.photos.request().isGranted) {
-          status = PermissionStatus.granted;
-        } else {
-          // Para versiones anteriores de Android
-          status = await Permission.storage.request();
-        }
-      } else {
-        // Para iOS
-        status = await Permission.photos.request();
-      }
-
-      if (!status.isGranted) {
-        if (!mounted) return;
-        _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
-        return;
-      }
-
-      // 2. Mostrar diálogo para elegir la fuente de la imagen
+      // Mostrar diálogo para elegir la fuente de la imagen
       if (!mounted) return;
       final ImageSource? source = await showDialog<ImageSource>(
         context: context,
@@ -153,9 +132,8 @@ class _ProfileViewState extends State<ProfileView> {
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Tomar foto'),
                 onTap: () async {
-                  // Solicitar permiso de cámara si se elige esta opción
-                  final cameraStatus = await Permission.camera.request();
-                  if (cameraStatus.isGranted) {
+                  final status = await Permission.camera.request();
+                  if (status.isGranted) {
                     if (!context.mounted) return;
                     Navigator.pop(context, ImageSource.camera);
                   } else {
@@ -168,7 +146,29 @@ class _ProfileViewState extends State<ProfileView> {
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Seleccionar de galería'),
-                onTap: () => Navigator.pop(context, ImageSource.gallery),
+                onTap: () async {
+                  if (Platform.isAndroid) {
+                    final status = await Permission.storage.request();
+                    if (status.isGranted) {
+                      if (!context.mounted) return;
+                      Navigator.pop(context, ImageSource.gallery);
+                    } else {
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                      _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
+                    }
+                  } else {
+                    final status = await Permission.photos.request();
+                    if (status.isGranted) {
+                      if (!context.mounted) return;
+                      Navigator.pop(context, ImageSource.gallery);
+                    } else {
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                      _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
+                    }
+                  }
+                },
               ),
             ],
           ),
@@ -177,7 +177,7 @@ class _ProfileViewState extends State<ProfileView> {
 
       if (source == null) return;
 
-      // 3. Seleccionar imagen
+      // Seleccionar imagen
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
         maxWidth: 1024,
@@ -187,7 +187,7 @@ class _ProfileViewState extends State<ProfileView> {
       
       if (pickedFile == null) return;
 
-      // 4. Convertir a File y verificar tamaño
+      // Convertir a File y verificar tamaño
       final File imageFile = File(pickedFile.path);
       final fileSize = await imageFile.length();
       
@@ -199,7 +199,7 @@ class _ProfileViewState extends State<ProfileView> {
         return;
       }
 
-      // 5. Mostrar indicador de carga
+      // Mostrar indicador de carga
       if (!mounted) return;
       showDialog(
         context: context,
@@ -212,7 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
 
-      // 6. Subir imagen
+      // Subir imagen
       try {
         final userId = await _authService.getCurrentUserId();
         if (userId == null) {
@@ -227,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
         if (!mounted) return;
         Navigator.of(context).pop();
 
-        // 7. Actualizar UI con la nueva imagen
+        // Actualizar UI con la nueva imagen
         if (uploadedImage['url'] != null) {
           setState(() {
             profileImageUrl = uploadedImage['url'];
@@ -241,7 +241,6 @@ class _ProfileViewState extends State<ProfileView> {
             ),
           );
           
-          // Opcional: Recargar el perfil completo
           await _loadUserProfile();
         } else {
           _showErrorSnackBar('Error al procesar la imagen');

@@ -157,6 +157,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6F861B21-D315-3CF5-8ABF-4350076CB878}</Project>
       <Name>geolocator_windows_plugin</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\permission_handler_windows\permission_handler_windows_plugin.vcxproj">
+      <Project>{DBE1D78E-AD0B-3758-AD3C-6A812B4CF170}</Project>
+      <Name>permission_handler_windows_plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
