@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../home/home_screen.dart';
 
+// Clase para manejar todos los strings de la aplicación
 class _Strings {
   static const String title = 'SOOWE';
   static const String subtitle = 'Únete a la comunidad de profesionales';
   static const String appBarTitle = 'Registro';
-  static const String nameLabel = 'Nombre completo';
-  static const String lastNameLabel = 'Apellido';
+  static const String nameLabel = 'Nombre (s)';
+  static const String lastNameLabel = 'Apellido (s)';
   static const String emailLabel = 'Correo electrónico';
   static const String passwordLabel = 'Contraseña';
   static const String confirmPasswordLabel = 'Confirmar contraseña';
   static const String termsPrefix = 'Acepto los ';
   static const String termsText = 'términos y condiciones';
   static const String createAccountButton = 'Crear cuenta';
-  static const String successMessage = 'Registro exitoso';
-  static const String errorRegister = 'Error al registrar usuario';
-  static const String errorEmptyFields = 'Por favor complete todos los campos';
-  static const String errorInvalidEmail = 'Por favor ingrese un email válido';
-  static const String errorInvalidName = 'El nombre debe tener al menos 3 caracteres';
-  static const String errorPasswordLength = 'La contraseña debe tener al menos 6 caracteres';
-  static const String errorPasswordMismatch = 'Las contraseñas no coinciden';
   static const String errorAcceptTerms = 'Debe aceptar los términos y condiciones';
 
   // Constantes para la pantalla de bienvenida
@@ -36,6 +30,141 @@ class _Strings {
   static const String startButton = '¡Vamos!';
 }
 
+// Después de la clase _Strings (aproximadamente línea 22)
+class ValidationRequirement {
+  final String requirement;
+  final bool isValid;
+
+  ValidationRequirement({
+    required this.requirement,
+    required this.isValid,
+  });
+}
+
+class ValidationRequirementsList extends StatelessWidget {
+  final List<ValidationRequirement> requirements;
+
+  const ValidationRequirementsList({
+    super.key,
+    required this.requirements,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: requirements.map((req) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Row(
+              children: [
+                Icon(
+                  req.isValid ? Icons.check_circle : Icons.cancel,
+                  color: req.isValid ? Colors.green : Colors.grey,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    req.requirement,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: req.isValid ? Colors.green : Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+// Clase para manejar todas las validaciones
+class Validators {
+  static final RegExp _emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+  
+  static final RegExp _nameRegex = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$');
+  
+  static final RegExp _hasUpperCase = RegExp(r'[A-Z]');
+  static final RegExp _hasLowerCase = RegExp(r'[a-z]');
+  static final RegExp _hasNumber = RegExp(r'[0-9]');
+  static final RegExp _hasSpecialChar = RegExp(r'[!@#\$&*~]');
+
+  static String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es requerido';
+    }
+    if (value.length < 3) {
+      return 'Debe tener al menos 3 caracteres';
+    }
+    if (value.length > 50) {
+      return 'No debe exceder 50 caracteres';
+    }
+    if (!_nameRegex.hasMatch(value)) {
+      return 'Solo debe contener letras y espacios';
+    }
+    return null;
+  }
+
+  static String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'El email es requerido';
+    }
+    if (value.length > 254) {
+      return 'El email es demasiado largo';
+    }
+    if (!_emailRegex.hasMatch(value)) {
+      return 'Por favor ingrese un email válido';
+    }
+    return null;
+  }
+
+  static String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'La contraseña es requerida';
+    }
+    if (value.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres';
+    }
+    if (value.length > 32) {
+      return 'La contraseña no debe exceder 32 caracteres';
+    }
+    if (!_hasUpperCase.hasMatch(value)) {
+      return 'Debe contener al menos una mayúscula';
+    }
+    if (!_hasLowerCase.hasMatch(value)) {
+      return 'Debe contener al menos una minúscula';
+    }
+    if (!_hasNumber.hasMatch(value)) {
+      return 'Debe contener al menos un número';
+    }
+    if (!_hasSpecialChar.hasMatch(value)) {
+      return 'Debe contener al menos un carácter especial (!@#\$&*~)';
+    }
+    if (value.contains(' ')) {
+      return 'No debe contener espacios en blanco';
+    }
+    return null;
+  }
+
+  static String? validateConfirmPassword(String? value, String password) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor confirme su contraseña';
+    }
+    if (value != password) {
+      return 'Las contraseñas no coinciden';
+    }
+    return null;
+  }
+}
+
 class FilledTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -49,6 +178,8 @@ class FilledTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
   final bool showValidationIcon;
+  final List<ValidationRequirement>? requirements;
+  final void Function(String)? onChanged;
 
   const FilledTextField({
     super.key,
@@ -64,6 +195,8 @@ class FilledTextField extends StatelessWidget {
     this.suffixIcon,
     this.focusNode,
     this.showValidationIcon = false,
+    this.requirements,
+    this.onChanged,
   });
 
   @override
@@ -79,6 +212,13 @@ class FilledTextField extends StatelessWidget {
           textInputAction: textInputAction,
           focusNode: focusNode,
           onFieldSubmitted: (_) => onSubmitted?.call(),
+          onChanged: (value) {
+            onChanged?.call(value);
+            if (requirements != null) {
+              // Forzar actualización cuando cambia el texto
+              (context as Element).markNeedsBuild();
+            }
+          },
           validator: validator,
           decoration: InputDecoration(
             labelText: label,
@@ -91,11 +231,11 @@ class FilledTextField extends StatelessWidget {
             errorMaxLines: 2,
           ),
         ),
+        if (requirements != null && requirements!.isNotEmpty && 
+            (focusNode?.hasFocus ?? false || controller.text.isNotEmpty))
+          ValidationRequirementsList(requirements: requirements!),
         if (validator != null && controller.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: _buildValidationMessage(),
-          ),
+          _buildValidationMessage(),
       ],
     );
   }
@@ -103,20 +243,28 @@ class FilledTextField extends StatelessWidget {
   Widget? _buildSuffixIcon() {
     if (!showValidationIcon || controller.text.isEmpty) return suffixIcon;
     return validator?.call(controller.text) == null
-        ? Icon(Icons.check_circle, color: Colors.green)
-        : Icon(Icons.error, color: Colors.red);
+        ? const Icon(Icons.check_circle, color: Colors.green)
+        : const Icon(Icons.error, color: Colors.red);
   }
 
-  Widget? _buildValidationMessage() {
+  Widget _buildValidationMessage() {
     final error = validator?.call(controller.text);
-    if (error == null) return null;
-    return Text(
-      error,
-      style: const TextStyle(color: Colors.red, fontSize: 12),
+    if (error == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0, left: 12.0),
+      child: Text(
+        error,
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 }
 
+// Pantalla principal de registro
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -143,33 +291,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  bool _isValidEmail(String email) => RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-
-  String? _validateName(String? value) {
-    if (value?.isEmpty ?? true) return _Strings.errorEmptyFields;
-    if (value!.length < 3) return _Strings.errorInvalidName;
-    return null;
+  List<ValidationRequirement> _getPasswordRequirements(String value) {
+    return [
+      ValidationRequirement(
+        requirement: 'Mínimo 8 caracteres',
+        isValid: value.length >= 8,
+      ),
+      ValidationRequirement(
+        requirement: 'Al menos una mayúscula',
+        isValid: Validators._hasUpperCase.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Al menos una minúscula',
+        isValid: Validators._hasLowerCase.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Al menos un número',
+        isValid: Validators._hasNumber.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Al menos un carácter especial (!@#\$&*~)',
+        isValid: Validators._hasSpecialChar.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Sin espacios en blanco',
+        isValid: !value.contains(' '),
+      ),
+    ];
   }
 
-  String? _validateLastName(String? value) => (value?.isEmpty ?? true) ? _Strings.errorEmptyFields : null;
-
-  String? _validateEmail(String? value) {
-    if (value?.isEmpty ?? true) return _Strings.errorEmptyFields;
-    if (!_isValidEmail(value!)) return _Strings.errorInvalidEmail;
-    return null;
+  List<ValidationRequirement> _getNameRequirements(String value) {
+    return [
+      ValidationRequirement(
+        requirement: 'Mínimo 3 caracteres',
+        isValid: value.length >= 3,
+      ),
+      ValidationRequirement(
+        requirement: 'Solo letras y espacios',
+        isValid: Validators._nameRegex.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Máximo 20 caracteres',
+        isValid: value.length <= 20,
+      ),
+    ];
   }
 
-  String? _validatePassword(String? value) {
-    if (value?.isEmpty ?? true) return _Strings.errorEmptyFields;
-    if (value!.length < 6) return _Strings.errorPasswordLength;
-    return null;
+  List<ValidationRequirement> _getEmailRequirements(String value) {
+    return [
+      ValidationRequirement(
+        requirement: 'Formato válido (ejemplo@dominio.com)',
+        isValid: Validators._emailRegex.hasMatch(value),
+      ),
+      ValidationRequirement(
+        requirement: 'Sin espacios',
+        isValid: !value.contains(' '),
+      ),
+      ValidationRequirement(
+        requirement: 'Máximo 254 caracteres',
+        isValid: value.length <= 254,
+      ),
+    ];
   }
 
-  String? _validateConfirmPassword(String? value) {
-    if (value?.isEmpty ?? true) return _Strings.errorEmptyFields;
-    if (value != _passwordController.text) return _Strings.errorPasswordMismatch;
-    return null;
-  }
+
+  String? _validateName(String? value) => Validators.validateName(value);
+  String? _validateLastName(String? value) => Validators.validateName(value);
+  String? _validateEmail(String? value) => Validators.validateEmail(value);
+  String? _validatePassword(String? value) => Validators.validatePassword(value);
+  String? _validateConfirmPassword(String? value) => 
+      Validators.validateConfirmPassword(value, _passwordController.text);
+
+      
 
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
@@ -192,14 +385,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (success && mounted) {
-        // Iniciar sesión automáticamente después del registro
         final loginSuccess = await AuthService().loginUser(
           correo: _emailController.text.trim(),
           contrasena: _passwordController.text,
         );
 
         if (loginSuccess && mounted) {
-          // Mostrar pantalla de bienvenida
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -281,71 +472,81 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  FilledTextField(
-                    controller: _nameController,
-                    label: _Strings.nameLabel,
-                    prefixIcon: Icons.person_outline,
-                    focusNode: _nameFocus,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: () => _lastNameFocus.requestFocus(),
-                    validator: _validateName,
-                    showValidationIcon: true,
-                  ),
-                  const SizedBox(height: 16),
-                  FilledTextField(
-                    controller: _lastNameController,
-                    label: _Strings.lastNameLabel,
-                    prefixIcon: Icons.person_outline,
-                    focusNode: _lastNameFocus,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: () => _emailFocus.requestFocus(),
-                    validator: _validateLastName,
-                    showValidationIcon: true,
-                  ),
-                  const SizedBox(height: 16),
-                  FilledTextField(
-                    controller: _emailController,
-                    label: _Strings.emailLabel,
-                    prefixIcon: Icons.email_outlined,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: _emailFocus,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: () => _passwordFocus.requestFocus(),
-                    validator: _validateEmail,
-                    showValidationIcon: true,
-                  ),
-                  const SizedBox(height: 16),
-                  FilledTextField(
-                    controller: _passwordController,
-                    label: _Strings.passwordLabel,
-                    prefixIcon: Icons.lock_outline,
-                    obscureText: _obscurePassword,
-                    focusNode: _passwordFocus,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: () => _confirmPasswordFocus.requestFocus(),
-                    validator: _validatePassword,
-                    showValidationIcon: true,
-                    suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
-                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledTextField(
-                    controller: _confirmPasswordController,
-                    label: _Strings.confirmPasswordLabel,
-                    prefixIcon: Icons.lock_outline,
-                    obscureText: _obscureConfirmPassword,
-                    focusNode: _confirmPasswordFocus,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: _handleRegister,
-                    validator: _validateConfirmPassword,
-                    showValidationIcon: true,
-                    suffixIcon: IconButton(
-                      icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                      onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
-                    ),
-                  ),
+                   FilledTextField(
+      controller: _nameController,
+      label: _Strings.nameLabel,
+      prefixIcon: Icons.person_outline,
+      focusNode: _nameFocus,
+      textInputAction: TextInputAction.next,
+      onSubmitted: () => _lastNameFocus.requestFocus(),
+      validator: _validateName,
+      showValidationIcon: true,
+      requirements: _getNameRequirements(_nameController.text),
+      onChanged: (value) => setState(() {}),
+    ),
+    const SizedBox(height: 16),
+    FilledTextField(
+      controller: _lastNameController,
+      label: _Strings.lastNameLabel,
+      prefixIcon: Icons.person_outline,
+      focusNode: _lastNameFocus,
+      textInputAction: TextInputAction.next,
+      onSubmitted: () => _emailFocus.requestFocus(),
+      validator: _validateLastName,
+      showValidationIcon: true,
+      requirements: _getNameRequirements(_lastNameController.text),
+      onChanged: (value) => setState(() {}),
+    ),
+    const SizedBox(height: 16),
+    FilledTextField(
+      controller: _emailController,
+      label: _Strings.emailLabel,
+      prefixIcon: Icons.email_outlined,
+      keyboardType: TextInputType.emailAddress,
+      focusNode: _emailFocus,
+      textInputAction: TextInputAction.next,
+      onSubmitted: () => _passwordFocus.requestFocus(),
+      validator: _validateEmail,
+      showValidationIcon: true,
+      requirements: _getEmailRequirements(_emailController.text),
+      onChanged: (value) => setState(() {}),
+    ),
+    const SizedBox(height: 16),
+    FilledTextField(
+      controller: _passwordController,
+      label: _Strings.passwordLabel,
+      prefixIcon: Icons.lock_outline,
+      obscureText: _obscurePassword,
+      focusNode: _passwordFocus,
+      textInputAction: TextInputAction.next,
+      onSubmitted: () => _confirmPasswordFocus.requestFocus(),
+      validator: _validatePassword,
+      showValidationIcon: true,
+      requirements: _getPasswordRequirements(_passwordController.text),
+      onChanged: (value) => setState(() {}),
+      suffixIcon: IconButton(
+        icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+      ),
+    ),
+    const SizedBox(height: 16),
+    FilledTextField(
+      controller: _confirmPasswordController,
+      label: _Strings.confirmPasswordLabel,
+      prefixIcon: Icons.lock_outline,
+      obscureText: _obscureConfirmPassword,
+      focusNode: _confirmPasswordFocus,
+      textInputAction: TextInputAction.done,
+      onSubmitted: _handleRegister,
+      validator: _validateConfirmPassword,
+      showValidationIcon: true,
+      requirements: _getPasswordRequirements(_confirmPasswordController.text),
+      onChanged: (value) => setState(() {}),
+      suffixIcon: IconButton(
+        icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
+        onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+      ),
+    ),
                   const SizedBox(height: 8),
                   CheckboxListTile(
                     value: _acceptTerms,

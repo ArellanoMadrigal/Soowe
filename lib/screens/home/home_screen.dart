@@ -9,7 +9,14 @@ import 'list_service.dart';
 import '../../services/request_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final int? initialIndex;
+  final Map<String, dynamic>? newRequest;
+
+  const HomeScreen({
+    super.key,
+    this.initialIndex,
+    this.newRequest,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,76 +33,91 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _profileImageUrl;
   bool _isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+@override
+void initState() {
+  super.initState();
+  _selectedIndex = widget.initialIndex ?? 0;
+  
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _loadData();
+    
+    // Si hay una nueva solicitud, actualizar los datos
+    if (widget.newRequest != null) {
+      // En lugar de crear un nuevo Request, simplemente recarga los datos
       _loadData();
-    });
-  }
+      
+      // Y asegúrate de estar en la pestaña correcta
+      setState(() {
+        _selectedIndex = 1; // Cambiar a la pestaña de solicitudes
+      });
+    }
+  });
+}
 
   Future<void> _loadData() async {
-    if (!mounted) return;
+  if (!mounted) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+  setState(() {
+    _isLoading = true;
+  });
+
+  try {
+    final authService = AuthService();
+    final userId = authService.getCurrentUserId();
+    
+    if (userId == null) {
+      await _handleLogout();
+      return;
+    }
 
     try {
-      final authService = AuthService();
-      final userId = authService.getCurrentUserId();
+      final userData = await authService.getUserProfile();
+      if (!mounted) return;
       
-      if (userId == null) {
-        await _handleLogout();
-        return;
-      }
-
-      try {
-        final userData = await authService.getUserProfile();
-        if (!mounted) return;
-        
-        setState(() {
-          _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
-          _profileImageUrl = userData['foto_perfil']?['url'];
-        });
-      } catch (e) {
-        debugPrint("Error obteniendo perfil: $e");
-      }
-
-      if (!mounted) return;
-
-      try {
-        final futures = await Future.wait([
-          RequestService().getAllRequests(
-            usuarioId: int.tryParse(userId) ?? 0,
-            organizacionId: 0,
-          ),
-          _apiService.fetchNotifications(),
-        ]);
-
-        if (!mounted) return;
-
-        setState(() {
-          _requests = (futures[0] as List<Request>).where((r) => r.estado == 'activo').toList();
-          _notifications = (futures[1] as List<Map<String, dynamic>>).where((n) => !n['read']).toList();
-        });
-      } catch (e) {
-        debugPrint("Error cargando datos adicionales: $e");
-      }
+      setState(() {
+        _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
+        _profileImageUrl = userData['foto_perfil']?['url'];
+      });
     } catch (e) {
-      debugPrint("Error general: $e");
+      debugPrint("Error obteniendo perfil: $e");
+    }
+
+    if (!mounted) return;
+
+    try {
+      final futures = await Future.wait([
+        RequestService().getAllRequests(
+          usuarioId: int.tryParse(userId) ?? 0,
+          organizacionId: 0,
+
+        ),
+        _apiService.fetchNotifications(),
+      ]);
+
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar datos: $e')),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+
+      setState(() {
+        _requests = (futures[0] as List<Request>).where((r) => r.estado == 'activo').toList();
+        _notifications = (futures[1] as List<Map<String, dynamic>>).where((n) => !n['read']).toList();
+      });
+    } catch (e) {
+      debugPrint("Error cargando datos adicionales: $e");
+    }
+  } catch (e) {
+    debugPrint("Error general: $e");
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al cargar datos: $e')),
+    );
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+}
+
 
   Future<void> _handleLogout() async {
     try {
@@ -139,18 +161,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _navigateToListService(ServiceModel service) async {
-    if (!mounted) return;
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ListServiceScreen(
-          categoryId: service.id,
-          categoryTitle: service.title,
-        ),
+void _navigateToListService(ServiceModel service) async {
+  if (!mounted) return;
+  final result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ListServiceScreen(
+        categoryId: service.id,
+        categoryTitle: service.title,
       ),
-    );
+    ),
+  );
+
+  // Manejar el resultado de la nueva solicitud
+  if (result != null && result is Map<String, dynamic>) {
+    if (result['action'] == 'new_request' && mounted) {
+      // Actualizar la lista de solicitudes
+      await _loadData();
+      
+      // Cambiar a la pestaña de solicitudes
+      setState(() {
+        _selectedIndex = 1; // Cambiar a la pestaña de solicitudes
+      });
+    }
   }
+}
 
   @override
   Widget build(BuildContext context) {

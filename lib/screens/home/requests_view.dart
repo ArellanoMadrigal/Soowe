@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show NumberFormat;
+
 
 class RequestsView extends StatelessWidget {
+  
+  
   final List<Map<String, dynamic>> requests;
 
   const RequestsView({
@@ -15,6 +18,7 @@ class RequestsView extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text(
             'Mis Solicitudes',
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -97,7 +101,6 @@ class _RequestList extends StatelessWidget {
         ),
       );
     }
-
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: requests.length,
@@ -210,90 +213,161 @@ class _RequestList extends StatelessWidget {
         expand: false,
         builder: (context, scrollController) => ListView(
           controller: scrollController,
+          padding: const EdgeInsets.all(16),
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Detalles de la Solicitud',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  // Estado de la Solicitud
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.pending_outlined,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Pendiente de Asignación de Enfermero',
-                          style: TextStyle(
-                            color: Colors.white,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Detalles de la Solicitud',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ],
                     ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(height: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(
+                            Icons.pending_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Pendiente de Asignación',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
 
-                  _buildDetailRow('Servicio', request['service']['title']),
-                  _buildDetailRow('Fecha', request['date']),
-                  _buildDetailRow('Hora', request['time']),
-                  const Divider(),
-                  
-                  Text(
-                    'Información del Paciente',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  _buildDetailRow('Nombre', request['patient']['name']),
-                  _buildDetailRow('Edad', request['patient']['age'].toString()),
-                  _buildDetailRow('Teléfono', request['patient']['phone']),
-                  _buildDetailRow('Condición', request['patient']['condition']),
-                  const Divider(),
-                  
-                  Text(
-                    'Ubicación',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  _buildDetailRow('Dirección', request['location']['address']),
-                  const Divider(),
-                  
-                  Text(
-                    'Pago',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  _buildDetailRow('Método', 
-                    request['payment']['method'] == 'card' 
-                      ? 'Tarjeta de Crédito/Débito' 
-                      : 'Efectivo'
-                  ),
-                  _buildDetailRow('Estado de Pago', 'Pago Procesado'),
-                  _buildDetailRow('Total', 
-                    NumberFormat.currency(
-                      symbol: '\$', 
-                      decimalDigits: 2
-                    ).format(request['service']['price'])
-                  ),
-                ],
-              ),
+                _buildSection(
+                  context,
+                  'Detalles del Servicio',
+                  Icons.medical_services_outlined,
+                  [
+                    _buildDetailRow('Servicio', request['service']['title']),
+                    _buildDetailRow('Fecha', request['date']),
+                    _buildDetailRow('Hora', request['time']),
+                    _buildDetailRow(
+                      'Precio', 
+                      NumberFormat.currency(
+                        symbol: '\$', 
+                        decimalDigits: 2
+                      ).format(request['service']['price'])
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+
+                _buildSection(
+                  context,
+                  'Información del Paciente',
+                  Icons.person_outline,
+                  [
+                    _buildDetailRow('Nombre', request['patient']['name']),
+                    _buildDetailRow('Edad', '${request['patient']['age']} años'),
+                    _buildDetailRow('Teléfono', request['patient']['phone']),
+                    _buildDetailRow('Condición', request['patient']['condition']),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                _buildSection(
+                  context,
+                  'Ubicación del Servicio',
+                  Icons.location_on_outlined,
+                  [
+                    _buildDetailRow('Dirección', request['location']['address']),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                _buildSection(
+                  context,
+                  'Información de Pago',
+                  Icons.payment_outlined,
+                  [
+                    _buildDetailRow(
+                      'Método', 
+                      request['payment']['method'] == 'card' 
+                        ? 'Tarjeta de Crédito/Débito' 
+                        : 'Efectivo'
+                    ),
+                    _buildDetailRow('Estado', 'Pago Procesado'),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSection(
+    BuildContext context,
+    String title,
+    IconData icon,
+    List<Widget> children,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: Theme.of(context).colorScheme.primary),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...children,
+        ],
       ),
     );
   }
