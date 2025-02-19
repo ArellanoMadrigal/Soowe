@@ -259,7 +259,7 @@ class PaymentStepState extends State<PaymentStep> {
       label: 'CVV',
       icon: Icons.lock_outline,
       keyboardType: TextInputType.number,
-      maxLength: 4,
+      maxLength: 3,
       obscureText: true,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
