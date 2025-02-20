@@ -25,99 +25,165 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ApiService _apiService = ApiService();
+  final RequestService _requestService = RequestService();
+  
   bool _showNotifications = false;
+  bool _isLoading = true;
+  
   List<Request> requests = [];
   List<Map<String, dynamic>> _notifications = [];
-  final ApiService _apiService = ApiService();
+  
   String _userName = '';
   String? _profileImageUrl;
-  bool _isLoading = true;
 
-@override
-void initState() {
-  super.initState();
-  _selectedIndex = widget.initialIndex ?? 0;
-  
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    _loadData();
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex ?? 0;
     
-    // Si hay una nueva solicitud, actualizar los datos
-    if (widget.newRequest != null) {
-      // En lugar de crear un nuevo Request, simplemente recarga los datos
-      _loadData();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadData();
       
-      // Y asegúrate de estar en la pestaña correcta
-      setState(() {
-        _selectedIndex = 1; // Cambiar a la pestaña de solicitudes
-      });
-    }
-  });
-}
-
-  Future<void> _loadData() async {
-  if (!mounted) return;
-
-  setState(() {
-    _isLoading = true;
-  });
-
-  try {
-    final authService = AuthService();
-    final userId = authService.getCurrentUserId();
-    
-    if (userId == null) {
-      await _handleLogout();
-      return;
-    }
-
-    try {
-      final userData = await authService.getUserProfile();
-      if (!mounted) return;
-      
-      setState(() {
-        _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
-        _profileImageUrl = userData['foto_perfil']?['url'];
-      });
-    } catch (e) {
-      debugPrint("Error obteniendo perfil: $e");
-    }
-
+      if (widget.newRequest != null) {
+        await _handleNewRequest(widget.newRequest!);
+      }
+    });
+  }
+    Future<void> _loadData() async {
     if (!mounted) return;
 
-    try {
-      final futures = await Future.wait([
-        RequestService().getAllRequests(
-          usuarioId: int.tryParse(userId) ?? 0,
-          organizacionId: 0,
+    setState(() {
+      _isLoading = true;
+    });
 
+    try {
+      final authService = AuthService();
+      final userId = authService.getCurrentUserId();
+      
+      if (userId == null) {
+        await _handleLogout();
+        return;
+      }
+
+      try {
+        // Cargar datos del usuario
+        final userData = await authService.getUserProfile();
+        if (!mounted) return;
+        
+        setState(() {
+          _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
+          _profileImageUrl = userData['foto_perfil']?['url'];
+        });
+
+        // Cargar solicitudes y notificaciones
+        final userIdInt = int.parse(userId);
+        final futures = await Future.wait([
+          _requestService.getAllRequests(
+            usuarioId: userIdInt,
+            organizacionId: 0,
+          ),
+          _apiService.fetchNotifications(),
+        ]);
+
+        if (!mounted) return;
+
+        setState(() {
+          requests = (futures[0] as List<Request>);
+          _notifications = (futures[1] as List<Map<String, dynamic>>)
+            .where((n) => !n['read']).toList();
+        });
+      } catch (e) {
+        debugPrint('Error cargando datos: $e');
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al cargar los datos: $e'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error crítico: $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error de autenticación. Por favor, inicie sesión nuevamente.'),
+          backgroundColor: Colors.red,
         ),
-        _apiService.fetchNotifications(),
-      ]);
-
-      if (!mounted) return;
-
-      setState(() {
-        requests = (futures[0] as List<Request>).where((r) => r.estado == 'activo').toList();
-        _notifications = (futures[1] as List<Map<String, dynamic>>).where((n) => !n['read']).toList();
-      });
-    } catch (e) {
-      debugPrint("Error cargando datos adicionales: $e");
-    }
-  } catch (e) {
-    debugPrint("Error general: $e");
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error al cargar datos: $e')),
-    );
-  } finally {
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
+      );
+      await _handleLogout();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
-}
 
+  Future<void> _handleNewRequest(Map<String, dynamic> newRequest) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      final authService = AuthService();
+      final userId = authService.getCurrentUserId();
+      
+      if (userId == null) {
+        throw Exception('Usuario no autenticado');
+      }
+
+      await _requestService.createRequest(
+        usuarioId: int.parse(userId),
+        pacienteId: int.parse(newRequest['paciente_id'].toString()),
+        metodoPago: newRequest['metodo_pago'] ?? 'efectivo',
+        organizacionId: newRequest['organizacion_id'] != null 
+            ? int.parse(newRequest['organizacion_id'].toString()) 
+            : null,
+        fechaServicio: DateTime.now().add(const Duration(hours: 1)),
+        comentarios: newRequest['comentarios'] ?? '',
+      );
+
+      await _loadData();
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Solicitud creada exitosamente'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      setState(() {
+        _selectedIndex = 1;
+      });
+    } catch (e) {
+      debugPrint('Error al crear la solicitud: $e');
+      if (!mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString().contains('Exception:') 
+                ? e.toString().split('Exception:')[1].trim()
+                : 'Error al crear la solicitud: $e'
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   Future<void> _handleLogout() async {
     try {
@@ -161,33 +227,25 @@ void initState() {
     );
   }
 
-void _navigateToListService(ServiceModel service) async {
-  if (!mounted) return;
-  final result = await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ListServiceScreen(
-        categoryId: service.id,
-        categoryTitle: service.title,
+  void _navigateToListService(ServiceModel service) async {
+    if (!mounted) return;
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListServiceScreen(
+          categoryId: service.id,
+          categoryTitle: service.title,
+        ),
       ),
-    ),
-  );
+    );
 
-  // Manejar el resultado de la nueva solicitud
-  if (result != null && result is Map<String, dynamic>) {
-    if (result['action'] == 'new_request' && mounted) {
-      // Actualizar la lista de solicitudes
-      await _loadData();
-      
-      // Cambiar a la pestaña de solicitudes
-      setState(() {
-        _selectedIndex = 1; // Cambiar a la pestaña de solicitudes
-      });
+    if (result != null && result is Map<String, dynamic>) {
+      if (result['action'] == 'new_request' && mounted) {
+        await _handleNewRequest(result['data'] ?? result);
+      }
     }
   }
-}
-
-  @override
+    @override
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
@@ -216,7 +274,8 @@ void _navigateToListService(ServiceModel service) async {
                   onRefresh: _loadData,
                 ),
                 RequestsView(
-                key: ValueKey(_selectedIndex), // Agregar key para forzar reconstrucción
+                  key: ValueKey(_selectedIndex),
+                  requests: requests, // Pasando las solicitudes
                 ),
                 ProfileView(
                   onLogout: _handleLogout,
@@ -263,6 +322,20 @@ void _navigateToListService(ServiceModel service) async {
   }
 }
 
+class ServiceModel {
+  final String id;
+  final String title;
+  final int nurses;
+  final IconData icon;
+
+  ServiceModel({
+    required this.id,
+    required this.title,
+    required this.nurses,
+    required this.icon,
+  });
+}
+
 class _ServicesView extends StatelessWidget {
   final String userName;
   final String? profileImageUrl;
@@ -281,8 +354,7 @@ class _ServicesView extends StatelessWidget {
     required this.onServiceTap,
     required this.onRefresh,
   });
-
-  @override
+    @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final services = [
@@ -430,20 +502,6 @@ class _ServicesView extends StatelessWidget {
       ),
     );
   }
-}
-
-class ServiceModel {
-  final String id;
-  final String title;
-  final int nurses;
-  final IconData icon;
-
-  ServiceModel({
-    required this.id,
-    required this.title,
-    required this.nurses,
-    required this.icon,
-  });
 }
 
 class _ServiceCard extends StatelessWidget {
