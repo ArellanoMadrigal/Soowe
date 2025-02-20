@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:appdesarrollo/services/auth_service.dart';
 import '../../services/api_service.dart';
 import '../../transitions/search_page_transition.dart';
+import 'models.dart';  // Añade esta importación
 import 'profile_view.dart';
 import 'requests_view.dart';
 import 'categories_screen.dart';
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showNotifications = false;
   bool _isLoading = true;
   
-  List<Request> requests = [];
+  List<MedicalRequest> requests = [];
   List<Map<String, dynamic>> _notifications = [];
   
   String _userName = '';
@@ -89,10 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!mounted) return;
 
         setState(() {
-          requests = (futures[0] as List<Request>);
-          _notifications = (futures[1] as List<Map<String, dynamic>>)
-            .where((n) => !n['read']).toList();
-        });
+  
+  
+  requests = (futures[0] as List<dynamic>)
+      .map((item) => MedicalRequest.fromJson(item as Map<String, dynamic>))
+      .toList();
+      
+  _notifications = (futures[1] as List<Map<String, dynamic>>)
+    .where((n) => !n['read']).toList();
+});
+
       } catch (e) {
         debugPrint('Error cargando datos: $e');
         if (!mounted) return;

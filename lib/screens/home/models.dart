@@ -193,3 +193,5 @@ class Constants {
     'Consulta general': 300.00,
   };
 }
+
+
