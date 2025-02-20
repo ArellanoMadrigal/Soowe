@@ -371,14 +371,21 @@ Future<Map<String, dynamic>> createMedicalRequest(Map<String, dynamic> requestDa
   }
 
   try {
+    // Asegurarse de que los campos requeridos estén en el formato correcto
+    final formattedData = {
+      ...requestData,
+      'usuario_id': int.parse(requestData['usuario_id'].toString()),
+      'paciente_id': int.parse(requestData['paciente_id'].toString()),
+      'estado': 'pending_assignment',  // Valor válido para el estado
+      'metodo_pago': requestData['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
+      'fecha_solicitud': DateTime.now().toIso8601String(),
+      'created_at': DateTime.now().toIso8601String(),
+      'created_by': 'ArellanoMadrigal'
+    };
+
     final response = await _dio.post(
-      "api/mobile/solicitudes", // Ruta corregida
-      data: {
-        ...requestData,
-        'created_at': '2025-02-20 02:29:24',
-        'created_by': 'ArellanoMadrigal',
-        'status': 'pending_assignment'
-      },
+      "api/mobile/solicitudes",
+      data: formattedData,
       options: Options(headers: {'Authorization': "Bearer $_authToken"}),
     );
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:appdesarrollo/services/auth_service.dart';
 import '../../services/api_service.dart';
 import '../../transitions/search_page_transition.dart';
-import 'models.dart';  // Añade esta importación
+import 'models.dart';
 import 'profile_view.dart';
 import 'requests_view.dart';
 import 'categories_screen.dart';
@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       try {
-        // Cargar datos del usuario
         final userData = await authService.getUserProfile();
         if (!mounted) return;
         
@@ -77,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
           _profileImageUrl = userData['foto_perfil']?['url'];
         });
 
-        // Cargar solicitudes y notificaciones
         final userIdInt = int.parse(userId);
         final futures = await Future.wait([
           _requestService.getAllRequests(
@@ -90,16 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!mounted) return;
 
         setState(() {
-  
-  
-  requests = (futures[0] as List<dynamic>)
-      .map((item) => MedicalRequest.fromJson(item as Map<String, dynamic>))
-      .toList();
-      
-  _notifications = (futures[1] as List<Map<String, dynamic>>)
-    .where((n) => !n['read']).toList();
-});
-
+          requests = (futures[0] as List<dynamic>)
+              .map((item) => MedicalRequest.fromJson(item as Map<String, dynamic>))
+              .toList();
+          _notifications = (futures[1] as List<Map<String, dynamic>>)
+              .where((n) => !n['read']).toList();
+        });
       } catch (e) {
         debugPrint('Error cargando datos: $e');
         if (!mounted) return;
@@ -142,14 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
         throw Exception('Usuario no autenticado');
       }
 
+      // Crear la solicitud con los datos formateados correctamente
       await _requestService.createRequest(
         usuarioId: int.parse(userId),
         pacienteId: int.parse(newRequest['paciente_id'].toString()),
-        metodoPago: newRequest['metodo_pago'] ?? 'efectivo',
+        metodoPago: newRequest['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
         organizacionId: newRequest['organizacion_id'] != null 
             ? int.parse(newRequest['organizacion_id'].toString()) 
             : null,
-        fechaServicio: DateTime.now().add(const Duration(hours: 1)),
+        fechaServicio: DateTime.parse('2025-02-20 04:34:51'),
         comentarios: newRequest['comentarios'] ?? '',
       );
 
@@ -282,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 RequestsView(
                   key: ValueKey(_selectedIndex),
-                  requests: requests, // Pasando las solicitudes
+                  requests: requests,
                 ),
                 ProfileView(
                   onLogout: _handleLogout,
@@ -361,7 +356,8 @@ class _ServicesView extends StatelessWidget {
     required this.onServiceTap,
     required this.onRefresh,
   });
-    @override
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final services = [
@@ -575,7 +571,6 @@ class _ServiceCard extends StatelessWidget {
     );
   }
 }
-
 class _NotificationsOverlay extends StatelessWidget {
   final List<Map<String, dynamic>> notifications;
   final VoidCallback onDismiss;
@@ -644,7 +639,10 @@ class _NotificationsOverlay extends StatelessWidget {
                               final notification = notifications[index];
                               return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.1),
                                   child: Icon(
                                     Icons.notifications_none,
                                     color: Theme.of(context).colorScheme.primary,
@@ -653,7 +651,7 @@ class _NotificationsOverlay extends StatelessWidget {
                                 title: Text(notification['title'] ?? ''),
                                 subtitle: Text(notification['message'] ?? ''),
                                 trailing: Text(
-                                  notification['time'] ?? '',
+                                  notification['time'] ?? DateTime.parse('2025-02-20 04:37:49').toString(),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               );

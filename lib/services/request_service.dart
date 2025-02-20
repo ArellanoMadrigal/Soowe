@@ -20,32 +20,33 @@ class RequestService {
   }
 
   Future<Request> createRequest({
-    required int usuarioId,
-    required int pacienteId,
-    required String metodoPago,
-    int? organizacionId,
-    int? enfermeroId,
-    DateTime? fechaServicio,
-    String? comentarios,
-  }) async {
-    try {
-      final requestData = await _apiService.createMedicalRequest({
-        'usuario_id': usuarioId,
-        'paciente_id': pacienteId,
-        'organizacion_id': organizacionId,
-        'enfermero_id': enfermeroId,
-        'metodo_pago': metodoPago,
-        'fecha_solicitud': DateTime.now().toIso8601String(),
-        'fecha_servicio': fechaServicio?.toIso8601String(),
-        'comentarios': comentarios ?? '',
-      });
-      
-      return Request.fromJson(requestData);
-    } catch (e) {
-      debugPrint('Error en createRequest: $e');
-      rethrow;
-    }
+  required int usuarioId,
+  required int pacienteId,
+  required String metodoPago,
+  int? organizacionId,
+  int? enfermeroId,
+  DateTime? fechaServicio,
+  String? comentarios,
+}) async {
+  try {
+    final requestData = await _apiService.createMedicalRequest({
+      'usuario_id': usuarioId,
+      'paciente_id': pacienteId,
+      'organizacion_id': organizacionId,
+      'enfermero_id': enfermeroId,
+      'metodo_pago': metodoPago.toLowerCase(), // Asegurar que esté en minúsculas
+      'fecha_solicitud': DateTime.now().toIso8601String(),
+      'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'comentarios': comentarios ?? '',
+      'estado': 'pending_assignment', // Asegurar que el estado inicial sea válido
+    });
+    
+    return Request.fromJson(requestData);
+  } catch (e) {
+    debugPrint('Error en createRequest: $e');
+    rethrow;
   }
+}
 
   Future<Request> updateRequest(int solicitudId, Map<String, dynamic> data) async {
     try {
