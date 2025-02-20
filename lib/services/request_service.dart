@@ -29,19 +29,22 @@ class RequestService {
   String? comentarios,
 }) async {
   try {
-    final requestData = await _apiService.createMedicalRequest({
+    final requestData = {
       'usuario_id': usuarioId,
       'paciente_id': pacienteId,
       'organizacion_id': organizacionId,
       'enfermero_id': enfermeroId,
-      'metodo_pago': metodoPago.toLowerCase(), // Asegurar que esté en minúsculas
+      'metodo_pago': metodoPago.toLowerCase(),
       'fecha_solicitud': DateTime.now().toIso8601String(),
       'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.now().toIso8601String(),
       'comentarios': comentarios ?? '',
-      'estado': 'pending_assignment', // Asegurar que el estado inicial sea válido
-    });
-    
-    return Request.fromJson(requestData);
+      'estado': 'pending_assignment',
+      'created_at': '2025-02-20 04:56:32',
+      'created_by': 'ArellanoMadrigal'
+    };
+
+    final response = await _apiService.createMedicalRequest(requestData);
+    return Request.fromJson(response);
   } catch (e) {
     debugPrint('Error en createRequest: $e');
     rethrow;
@@ -65,16 +68,16 @@ class RequestService {
 }
 
 class Request {
-  final int id;
-  final int usuarioId;
-  final int pacienteId;
-  final int? organizacionId;
-  final int? enfermeroId;
+  final String id; // Cambiado de int a String
+  final String usuarioId; // Cambiado de int a String
+  final String pacienteId; // Cambiado de int a String
+  final String? organizacionId; // Cambiado de int a String
+  final String? enfermeroId; // Cambiado de int a String
   final String estado;
   final String metodoPago;
   final DateTime fechaSolicitud;
   final DateTime? fechaServicio;
-  final int solicitudId;
+  final String solicitudId; // Cambiado de int a String
   final String comentarios;
 
   Request({
@@ -94,11 +97,11 @@ class Request {
   factory Request.fromJson(Map<String, dynamic> json) {
     try {
       return Request(
-        id: json['id'] ?? 0,
-        usuarioId: json['usuario_id'] ?? 0,
-        pacienteId: json['paciente_id'] ?? 0,
-        organizacionId: json['organizacion_id'],
-        enfermeroId: json['enfermero_id'],
+        id: json['id'].toString(),
+        usuarioId: json['usuario_id'].toString(),
+        pacienteId: json['paciente_id'].toString(),
+        organizacionId: json['organizacion_id']?.toString(),
+        enfermeroId: json['enfermero_id']?.toString(),
         estado: json['status'] ?? json['estado'] ?? 'pending_assignment',
         metodoPago: json['metodo_pago'] ?? '',
         fechaSolicitud: json['fecha_solicitud'] != null 
@@ -107,7 +110,7 @@ class Request {
         fechaServicio: json['fecha_servicio'] != null 
             ? DateTime.parse(json['fecha_servicio'])
             : null,
-        solicitudId: json['solicitud_id'] ?? json['id'] ?? 0,
+        solicitudId: json['solicitud_id']?.toString() ?? json['id'].toString(),
         comentarios: json['comentarios'] ?? '',
       );
     } catch (e) {

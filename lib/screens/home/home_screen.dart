@@ -123,69 +123,81 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _handleNewRequest(Map<String, dynamic> newRequest) async {
+    Future<void> _handleNewRequest(Map<String, dynamic> newRequest) async {
+  try {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final authService = AuthService();
+    final userId = authService.getCurrentUserId();
+    
+    if (userId == null) {
+      throw Exception('Usuario no autenticado');
+    }
+
+    // Convertir IDs a int de manera segura
+    int? userIdInt;
+    int? pacienteIdInt;
+    int? organizacionIdInt;
+
     try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      final authService = AuthService();
-      final userId = authService.getCurrentUserId();
-      
-      if (userId == null) {
-        throw Exception('Usuario no autenticado');
+      userIdInt = int.parse(userId);
+      pacienteIdInt = int.parse(newRequest['paciente_id'].toString());
+      if (newRequest['organizacion_id'] != null) {
+        organizacionIdInt = int.parse(newRequest['organizacion_id'].toString());
       }
-
-      // Crear la solicitud con los datos formateados correctamente
-      await _requestService.createRequest(
-        usuarioId: int.parse(userId),
-        pacienteId: int.parse(newRequest['paciente_id'].toString()),
-        metodoPago: newRequest['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
-        organizacionId: newRequest['organizacion_id'] != null 
-            ? int.parse(newRequest['organizacion_id'].toString()) 
-            : null,
-        fechaServicio: DateTime.parse('2025-02-20 04:34:51'),
-        comentarios: newRequest['comentarios'] ?? '',
-      );
-
-      await _loadData();
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Solicitud creada exitosamente'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-
-      setState(() {
-        _selectedIndex = 1;
-      });
     } catch (e) {
-      debugPrint('Error al crear la solicitud: $e');
-      if (!mounted) return;
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().contains('Exception:') 
-                ? e.toString().split('Exception:')[1].trim()
-                : 'Error al crear la solicitud: $e'
-          ),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 4),
+      throw Exception('Error al convertir IDs: Asegúrese de que los IDs sean números válidos');
+    }
+
+    await _requestService.createRequest(
+      usuarioId: userIdInt,
+      pacienteId: pacienteIdInt,
+      metodoPago: newRequest['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
+      organizacionId: organizacionIdInt,
+      fechaServicio: DateTime.parse('2025-02-20 04:56:32'),
+      comentarios: newRequest['comentarios'] ?? '',
+    );
+
+    await _loadData();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Solicitud creada exitosamente'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    setState(() {
+      _selectedIndex = 1;
+    });
+  } catch (e) {
+    debugPrint('Error al crear la solicitud: $e');
+    if (!mounted) return;
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          e.toString().contains('Exception:') 
+              ? e.toString().split('Exception:')[1].trim()
+              : 'Error al crear la solicitud: $e'
         ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+}
 
   Future<void> _handleLogout() async {
     try {
