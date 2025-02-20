@@ -132,7 +132,7 @@ void initState() {
       debugPrint("Error durante logout: $e");
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error al cerrar sesión')),
+        const SnackBar(content: Text('Error al cerrar sesión.')),
       );
     }
   }

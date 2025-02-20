@@ -9,6 +9,7 @@ C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/D
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/kernel_blob.bin
+C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/NativeAssetsManifest.json
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES.Z
 C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
