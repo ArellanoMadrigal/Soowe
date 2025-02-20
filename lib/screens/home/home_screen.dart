@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showNotifications = false;
-  List<Request> _requests = [];
+  List<Request> requests = [];
   List<Map<String, dynamic>> _notifications = [];
   final ApiService _apiService = ApiService();
   String _userName = '';
@@ -97,7 +97,7 @@ void initState() {
       if (!mounted) return;
 
       setState(() {
-        _requests = (futures[0] as List<Request>).where((r) => r.estado == 'activo').toList();
+        requests = (futures[0] as List<Request>).where((r) => r.estado == 'activo').toList();
         _notifications = (futures[1] as List<Map<String, dynamic>>).where((n) => !n['read']).toList();
       });
     } catch (e) {
@@ -216,7 +216,7 @@ void _navigateToListService(ServiceModel service) async {
                   onRefresh: _loadData,
                 ),
                 RequestsView(
-                  requests: _requests.map((request) => request.toMap()).toList(),
+                key: ValueKey(_selectedIndex), // Agregar key para forzar reconstrucción
                 ),
                 ProfileView(
                   onLogout: _handleLogout,
