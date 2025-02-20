@@ -72,6 +72,12 @@ class ApiService {
     _logger.i('Token de autenticación eliminado');
   }
 
+  void checkAuthToken() {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+  }
+
   Future<Map<String, dynamic>> getUserProfile(String? userId) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
@@ -150,7 +156,7 @@ class ApiService {
       // Obtener extensión y tipo MIME
       final extension = path.extension(imageFile.path).toLowerCase();
       String mimeType;
-      
+
       switch (extension) {
         case '.jpg':
         case '.jpeg':
@@ -188,7 +194,8 @@ class ApiService {
 
       _logger.d('Iniciando subida de imagen para usuario: $userId');
       _logger.d('Tipo MIME: image/$mimeType');
-      _logger.d('Tamaño del archivo: ${(fileSize / 1024 / 1024).toStringAsFixed(2)}MB');
+      _logger.d(
+          'Tamaño del archivo: ${(fileSize / 1024 / 1024).toStringAsFixed(2)}MB');
 
       final response = await _dio.put(
         "api/mobile/usuarios/$userId/profile/upload-picture",
@@ -221,11 +228,11 @@ class ApiService {
     } on DioException catch (e) {
       _logger.e('Error subiendo imagen de perfil', error: e);
       debugPrint('Error en uploadProfilePicture: ${e.response?.data}');
-      
+
       if (e.response?.data != null && e.response?.data['message'] != null) {
         throw Exception(e.response?.data['message']);
       }
-      
+
       throw Exception(handleError(e));
     } catch (e) {
       _logger.e('Error inesperado en uploadProfilePicture', error: e);
@@ -250,7 +257,8 @@ class ApiService {
 
       if (response.statusCode == 200 && response.data != null) {
         if (response.data['notifications'] != null) {
-          return List<Map<String, dynamic>>.from(response.data['notifications']);
+          return List<Map<String, dynamic>>.from(
+              response.data['notifications']);
         }
         return <Map<String, dynamic>>[];
       }
@@ -269,7 +277,8 @@ class ApiService {
     }
   }
 
-  Future<bool> updateUserProfile(String userId, Map<String, dynamic> data) async {
+  Future<bool> updateUserProfile(
+      String userId, Map<String, dynamic> data) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
     }
@@ -311,9 +320,9 @@ class ApiService {
       debugPrint('Respuesta getServices: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
-        return response.data is List 
-          ? List<Map<String, dynamic>>.from(response.data)
-          : <Map<String, dynamic>>[];
+        return response.data is List
+            ? List<Map<String, dynamic>>.from(response.data)
+            : <Map<String, dynamic>>[];
       }
       return <Map<String, dynamic>>[];
     } on DioException catch (e) {
@@ -342,9 +351,9 @@ class ApiService {
       debugPrint('Respuesta getServiceDetails: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
-        return response.data is Map 
-          ? Map<String, dynamic>.from(response.data)
-          : <String, dynamic>{};
+        return response.data is Map
+            ? Map<String, dynamic>.from(response.data)
+            : <String, dynamic>{};
       }
       return <String, dynamic>{};
     } on DioException catch (e) {
@@ -363,190 +372,215 @@ class ApiService {
     return authService.getCurrentUserId();
   }
 
-
   // Crear una nueva solicitud médica
-Future<Map<String, dynamic>> createMedicalRequest(Map<String, dynamic> requestData) async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
-  }
-
-  try {
-    // Asegurarse de que los campos requeridos estén en el formato correcto
-    final formattedData = {
-      ...requestData,
-      'usuario_id': int.parse(requestData['usuario_id'].toString()),
-      'paciente_id': int.parse(requestData['paciente_id'].toString()),
-      'estado': 'pending_assignment',  // Valor válido para el estado
-      'metodo_pago': requestData['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
-      'fecha_solicitud': DateTime.now().toIso8601String(),
-      'created_at': DateTime.now().toIso8601String(),
-      'created_by': 'ArellanoMadrigal'
-    };
-
-    final response = await _dio.post(
-      "api/mobile/solicitudes",
-      data: formattedData,
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Solicitud médica creada exitosamente');
-    debugPrint('Respuesta createMedicalRequest: ${response.data}');
-
-    if (response.statusCode == 201 && response.data != null) {
-      return response.data;
+  Future<Map<String, dynamic>> createMedicalRequest(
+      Map<String, dynamic> requestData) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
     }
-    throw Exception("Error al crear la solicitud médica");
-  } on DioException catch (e) {
-    _logger.e('Error creando solicitud médica', error: e);
-    debugPrint('Error en createMedicalRequest: ${e.response?.data}');
-    throw Exception(handleError(e));
+
+    try {
+      // Asegurarse de que los campos requeridos estén en el formato correcto
+      final formattedData = {
+        ...requestData,
+        'usuario_id': requestData['usuario_id'].toString(),
+        'paciente_id': requestData['paciente_id'].toString(),
+        'estado': 'pending_assignment', // Valor válido para el estado
+        'metodo_pago':
+            requestData['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
+        'fecha_solicitud': DateTime.now().toIso8601String(),
+      };
+
+      final response = await _dio.post(
+        "api/mobile/solicitudes",
+        data: formattedData,
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitud médica creada exitosamente');
+      debugPrint('Respuesta createMedicalRequest: ${response.data}');
+
+      if (response.statusCode == 201 && response.data != null) {
+        return response.data;
+      }
+      throw Exception("Error al crear la solicitud médica");
+    } on DioException catch (e) {
+      _logger.e('Error creando solicitud médica', error: e);
+      debugPrint('Error en createMedicalRequest: ${e.response?.data}');
+      throw Exception(handleError(e));
+    }
   }
-}
 
 // Obtener todas las solicitudes
-Future<List<Map<String, dynamic>>> getAllRequests() async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
-  }
-
-  try {
-    final response = await _dio.get(
-      "api/mobile/solicitudes", // Ruta corregida
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Solicitudes obtenidas exitosamente');
-    debugPrint('Respuesta getAllRequests: ${response.data}');
-
-    if (response.statusCode == 200 && response.data != null) {
-      return List<Map<String, dynamic>>.from(response.data);
+  Future<List<Map<String, dynamic>>> getAllRequests() async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
     }
-    return [];
-  } on DioException catch (e) {
-    _logger.e('Error obteniendo solicitudes', error: e);
-    debugPrint('Error en getAllRequests: ${e.response?.data}');
-    return [];
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/solicitudes", // Ruta corregida
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitudes obtenidas exitosamente');
+      debugPrint('Respuesta getAllRequests: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo solicitudes', error: e);
+      debugPrint('Error en getAllRequests: ${e.response?.data}');
+      return [];
+    }
   }
-}
 
 // Obtener detalles de una solicitud específica
-Future<Map<String, dynamic>> getRequestDetails(String requestId) async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
-  }
-
-  try {
-    final response = await _dio.get(
-      "api/mobile/solicitudes/$requestId", // Ruta corregida
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Detalles de solicitud obtenidos para ID: $requestId');
-    debugPrint('Respuesta getRequestDetails: ${response.data}');
-
-    if (response.statusCode == 200 && response.data != null) {
-      return response.data;
+  Future<Map<String, dynamic>> getRequestDetails(String requestId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
     }
-    throw Exception("Solicitud no encontrada");
-  } on DioException catch (e) {
-    _logger.e('Error obteniendo detalles de solicitud', error: e);
-    debugPrint('Error en getRequestDetails: ${e.response?.data}');
-    throw Exception(handleError(e));
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/solicitudes/$requestId", // Ruta corregida
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Detalles de solicitud obtenidos para ID: $requestId');
+      debugPrint('Respuesta getRequestDetails: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return response.data;
+      }
+      throw Exception("Solicitud no encontrada");
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo detalles de solicitud', error: e);
+      debugPrint('Error en getRequestDetails: ${e.response?.data}');
+      throw Exception(handleError(e));
+    }
   }
-}
 
 // Actualizar una solicitud
-Future<bool> updateRequest(String requestId, Map<String, dynamic> updateData) async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
+  Future<bool> updateRequest(
+      String requestId, Map<String, dynamic> updateData) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.put(
+        "api/mobile/solicitudes/$requestId", // Ruta corregida
+        data: updateData,
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitud actualizada para ID: $requestId');
+      debugPrint('Respuesta updateRequest: ${response.data}');
+
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      _logger.e('Error actualizando solicitud', error: e);
+      debugPrint('Error en updateRequest: ${e.response?.data}');
+      throw Exception(handleError(e));
+    }
   }
-
-  try {
-    final response = await _dio.put(
-      "api/mobile/solicitudes/$requestId", // Ruta corregida
-      data: updateData,
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Solicitud actualizada para ID: $requestId');
-    debugPrint('Respuesta updateRequest: ${response.data}');
-
-    return response.statusCode == 200;
-  } on DioException catch (e) {
-    _logger.e('Error actualizando solicitud', error: e);
-    debugPrint('Error en updateRequest: ${e.response?.data}');
-    throw Exception(handleError(e));
-  }
-}
 
 // Eliminar una solicitud
-Future<bool> deleteRequest(String requestId) async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
+  Future<bool> deleteRequest(String requestId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.delete(
+        "api/mobile/solicitudes/$requestId", // Ruta corregida
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitud eliminada para ID: $requestId');
+      debugPrint('Respuesta deleteRequest: ${response.data}');
+
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      _logger.e('Error eliminando solicitud', error: e);
+      debugPrint('Error en deleteRequest: ${e.response?.data}');
+      throw Exception(handleError(e));
+    }
   }
-
-  try {
-    final response = await _dio.delete(
-      "api/mobile/solicitudes/$requestId", // Ruta corregida
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Solicitud eliminada para ID: $requestId');
-    debugPrint('Respuesta deleteRequest: ${response.data}');
-
-    return response.statusCode == 200;
-  } on DioException catch (e) {
-    _logger.e('Error eliminando solicitud', error: e);
-    debugPrint('Error en deleteRequest: ${e.response?.data}');
-    throw Exception(handleError(e));
-  }
-}
 
 // Obtener pacientes
-Future<List<Map<String, dynamic>>> getPacientes() async {
-  if (_authToken == null) {
-    throw Exception("No has iniciado sesión");
-  }
-
-  try {
-    final response = await _dio.get(
-      "api/mobile/pacientes",
-      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-    );
-
-    _logger.i('Pacientes obtenidos exitosamente');
-    debugPrint('Respuesta getPacientes: ${response.data}');
-
-    if (response.statusCode == 200 && response.data != null) {
-      return List<Map<String, dynamic>>.from(response.data);
+  Future<List<Map<String, dynamic>>> getPacientes() async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
     }
-    return [];
-  } on DioException catch (e) {
-    _logger.e('Error obteniendo pacientes', error: e);
-    debugPrint('Error en getPacientes: ${e.response?.data}');
-    return [];
-  }
-}
 
+    try {
+      final response = await _dio.get(
+        "api/mobile/pacientes",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Pacientes obtenidos exitosamente');
+      debugPrint('Respuesta getPacientes: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo pacientes', error: e);
+      debugPrint('Error en getPacientes: ${e.response?.data}');
+      return [];
+    }
+  }
 
   String handleError(DioException e) {
     final message = switch (e.type) {
-      DioExceptionType.connectionTimeout => 
+      DioExceptionType.connectionTimeout =>
         "El servidor no responde. Intenta nuevamente más tarde",
-      DioExceptionType.receiveTimeout => 
+      DioExceptionType.receiveTimeout =>
         "La respuesta del servidor es muy lenta. Verifica tu conexión",
-      DioExceptionType.badResponse when e.response?.statusCode == 401 => 
+      DioExceptionType.badResponse when e.response?.statusCode == 401 =>
         "Sesión expirada - Vuelve a iniciar sesión",
-      DioExceptionType.badResponse when e.response?.statusCode == 404 => 
+      DioExceptionType.badResponse when e.response?.statusCode == 404 =>
         "Recurso no encontrado",
-      DioExceptionType.badResponse when e.response?.statusCode == 500 => 
+      DioExceptionType.badResponse when e.response?.statusCode == 500 =>
         "Error interno del servidor",
-      DioExceptionType.connectionError => 
+      DioExceptionType.connectionError =>
         "Error de conexión - Verifica tu internet",
       _ => "Error inesperado: ${e.message}"
     };
-    
+
     _logger.e('Error DioException: $message');
     return message;
+  }
+
+  // obtener categorias de la base de datos
+  Future<List<Map<String, dynamic>>> getAllCategories() async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/admin/categorias",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Categorías obtenidas exitosamente');
+      debugPrint('Respuesta getCategories: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo categorías', error: e);
+      debugPrint('Error en getCategories: ${e.response?.data}');
+      return [];
+    }
   }
 }

@@ -39,8 +39,6 @@ class RequestService {
       'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.parse('2025-02-20 05:00:47').toIso8601String(),
       'comentarios': comentarios ?? '',
       'estado': 'pending_assignment',
-      'created_at': '2025-02-20 05:00:47',
-      'created_by': 'ArellanoMadrigal'
     };
 
     final response = await _apiService.createMedicalRequest(requestData);
