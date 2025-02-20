@@ -363,6 +363,165 @@ class ApiService {
     return authService.getCurrentUserId();
   }
 
+
+  // Crear una nueva solicitud médica
+Future<Map<String, dynamic>> createMedicalRequest(Map<String, dynamic> requestData) async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.post(
+      "api/mobile/solicitudes", // Ruta corregida
+      data: {
+        ...requestData,
+        'created_at': '2025-02-20 02:29:24',
+        'created_by': 'ArellanoMadrigal',
+        'status': 'pending_assignment'
+      },
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Solicitud médica creada exitosamente');
+    debugPrint('Respuesta createMedicalRequest: ${response.data}');
+
+    if (response.statusCode == 201 && response.data != null) {
+      return response.data;
+    }
+    throw Exception("Error al crear la solicitud médica");
+  } on DioException catch (e) {
+    _logger.e('Error creando solicitud médica', error: e);
+    debugPrint('Error en createMedicalRequest: ${e.response?.data}');
+    throw Exception(handleError(e));
+  }
+}
+
+// Obtener todas las solicitudes
+Future<List<Map<String, dynamic>>> getAllRequests() async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.get(
+      "api/mobile/solicitudes", // Ruta corregida
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Solicitudes obtenidas exitosamente');
+    debugPrint('Respuesta getAllRequests: ${response.data}');
+
+    if (response.statusCode == 200 && response.data != null) {
+      return List<Map<String, dynamic>>.from(response.data);
+    }
+    return [];
+  } on DioException catch (e) {
+    _logger.e('Error obteniendo solicitudes', error: e);
+    debugPrint('Error en getAllRequests: ${e.response?.data}');
+    return [];
+  }
+}
+
+// Obtener detalles de una solicitud específica
+Future<Map<String, dynamic>> getRequestDetails(String requestId) async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.get(
+      "api/mobile/solicitudes/$requestId", // Ruta corregida
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Detalles de solicitud obtenidos para ID: $requestId');
+    debugPrint('Respuesta getRequestDetails: ${response.data}');
+
+    if (response.statusCode == 200 && response.data != null) {
+      return response.data;
+    }
+    throw Exception("Solicitud no encontrada");
+  } on DioException catch (e) {
+    _logger.e('Error obteniendo detalles de solicitud', error: e);
+    debugPrint('Error en getRequestDetails: ${e.response?.data}');
+    throw Exception(handleError(e));
+  }
+}
+
+// Actualizar una solicitud
+Future<bool> updateRequest(String requestId, Map<String, dynamic> updateData) async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.put(
+      "api/mobile/solicitudes/$requestId", // Ruta corregida
+      data: updateData,
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Solicitud actualizada para ID: $requestId');
+    debugPrint('Respuesta updateRequest: ${response.data}');
+
+    return response.statusCode == 200;
+  } on DioException catch (e) {
+    _logger.e('Error actualizando solicitud', error: e);
+    debugPrint('Error en updateRequest: ${e.response?.data}');
+    throw Exception(handleError(e));
+  }
+}
+
+// Eliminar una solicitud
+Future<bool> deleteRequest(String requestId) async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.delete(
+      "api/mobile/solicitudes/$requestId", // Ruta corregida
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Solicitud eliminada para ID: $requestId');
+    debugPrint('Respuesta deleteRequest: ${response.data}');
+
+    return response.statusCode == 200;
+  } on DioException catch (e) {
+    _logger.e('Error eliminando solicitud', error: e);
+    debugPrint('Error en deleteRequest: ${e.response?.data}');
+    throw Exception(handleError(e));
+  }
+}
+
+// Obtener pacientes
+Future<List<Map<String, dynamic>>> getPacientes() async {
+  if (_authToken == null) {
+    throw Exception("No has iniciado sesión");
+  }
+
+  try {
+    final response = await _dio.get(
+      "api/mobile/pacientes",
+      options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+    );
+
+    _logger.i('Pacientes obtenidos exitosamente');
+    debugPrint('Respuesta getPacientes: ${response.data}');
+
+    if (response.statusCode == 200 && response.data != null) {
+      return List<Map<String, dynamic>>.from(response.data);
+    }
+    return [];
+  } on DioException catch (e) {
+    _logger.e('Error obteniendo pacientes', error: e);
+    debugPrint('Error en getPacientes: ${e.response?.data}');
+    return [];
+  }
+}
+
+
   String handleError(DioException e) {
     final message = switch (e.type) {
       DioExceptionType.connectionTimeout => 

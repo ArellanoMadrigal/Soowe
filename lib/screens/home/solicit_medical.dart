@@ -7,6 +7,7 @@ import 'patient_step.dart';
 import 'location_step.dart';
 import 'payment_step.dart';
 import 'home_screen.dart';
+import '../../services/api_service.dart';
 
 class SolicitMedicalScreen extends StatefulWidget {
   const SolicitMedicalScreen({super.key});
@@ -63,51 +64,63 @@ class _SolicitMedicalScreenState extends State<SolicitMedicalScreen> {
     }
   }
 
-void _submitRequest() {
-    final paymentState = _paymentStepKey.currentState;
+void _submitRequest() async {
+  final paymentState = _paymentStepKey.currentState;
 
-    if (paymentState != null &&
-        paymentState.selectedPaymentMethod == PaymentMethod.card &&
-        !paymentState.formKey.currentState!.validate()) {
-      return;
-    }
+  if (paymentState != null &&
+      paymentState.selectedPaymentMethod == PaymentMethod.card &&
+      !paymentState.formKey.currentState!.validate()) {
+    return;
+  }
 
+  // Mostrar indicador de carga
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+
+  try {
     // Crear el objeto de solicitud
-    final request = {
-      'id': DateTime.now().millisecondsSinceEpoch.toString(),
-      'service': {
-        'id': '1',
-        'title': 'Sutura de heridas',
-        'price': 400.00,
+    final requestData = {
+      'service_id': '1', // ID del servicio seleccionado
+      'fecha': DateFormat('yyyy-MM-dd').format(selectedDate),
+      'hora': selectedTime.format(context),
+      'paciente': {
+        'nombre': _nameController.text,
+        'edad': int.parse(_ageController.text),
+        'telefono': _phoneController.text,
+        'condicion': _conditionController.text,
       },
-      'date': DateFormat('yyyy-MM-dd').format(selectedDate),
-      'time': selectedTime.format(context),
-      'patient': {
-        'name': _nameController.text,
-        'age': int.parse(_ageController.text),
-        'phone': _phoneController.text,
-        'condition': _conditionController.text,
+      'ubicacion': {
+        'direccion': _addressController.text,
       },
-      'location': {
-        'address': _addressController.text,
-      },
-      'payment': {
-        'method': paymentState?.selectedPaymentMethod.toString().split('.').last ?? 'cash',
-        'card_info': paymentState?.selectedPaymentMethod == PaymentMethod.card
+      'pago': {
+        'metodo': paymentState?.selectedPaymentMethod.toString().split('.').last ?? 'efectivo',
+        'tarjeta': paymentState?.selectedPaymentMethod == PaymentMethod.card
             ? {
-                'number': paymentState?.cardNumberController.text ?? '',
-                'holder': paymentState?.cardHolderController.text ?? '',
-                'expiry': paymentState?.expiryController.text ?? '',
+                'numero': paymentState?.cardNumberController.text ?? '',
+                'titular': paymentState?.cardHolderController.text ?? '',
+                'vencimiento': paymentState?.expiryController.text ?? '',
                 'cvv': paymentState?.cvvController.text ?? '',
               }
             : null,
       },
-      'status': 'active',
-      'created_at': '2025-02-19 05:11:02',
+      'created_at': '2025-02-20 02:31:47',
       'created_by': 'ArellanoMadrigal',
+      'status': 'pending_assignment'
     };
 
-    // Mostrar diálogo de confirmación
+    // Llamar al servicio API
+    final apiService = ApiService();
+    final response = await apiService.createMedicalRequest(requestData);
+
+    // Cerrar el indicador de carga
+    Navigator.pop(context);
+
+    // Mostrar diálogo de éxito
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -117,16 +130,15 @@ void _submitRequest() {
         actions: [
           TextButton(
             onPressed: () {
-              // Cerrar el diálogo
-              Navigator.pop(context);
+              Navigator.pop(context); // Cerrar el diálogo
               
-              // Volver a la pantalla principal
+              // Volver a la pantalla principal con la nueva solicitud
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => HomeScreen(
                     initialIndex: 1,
-                    newRequest: request,
+                    newRequest: response, // Usar la respuesta de la API
                   ),
                 ),
                 (route) => false,
@@ -137,6 +149,25 @@ void _submitRequest() {
         ],
       ),
     );
+  } catch (e) {
+    // Cerrar el indicador de carga
+    Navigator.pop(context);
+
+    // Mostrar error
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(e.toString()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Aceptar'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
   @override
