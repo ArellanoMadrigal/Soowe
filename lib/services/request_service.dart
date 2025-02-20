@@ -20,11 +20,11 @@ class RequestService {
   }
 
   Future<Request> createRequest({
-  required int usuarioId,
-  required int pacienteId,
+  required String usuarioId,  // Cambiado a String
+  required String pacienteId, // Cambiado a String
   required String metodoPago,
-  int? organizacionId,
-  int? enfermeroId,
+  String? organizacionId,     // Cambiado a String
+  String? enfermeroId,        // Cambiado a String
   DateTime? fechaServicio,
   String? comentarios,
 }) async {
@@ -36,10 +36,10 @@ class RequestService {
       'enfermero_id': enfermeroId,
       'metodo_pago': metodoPago.toLowerCase(),
       'fecha_solicitud': DateTime.now().toIso8601String(),
-      'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.parse('2025-02-20 05:00:47').toIso8601String(),
       'comentarios': comentarios ?? '',
       'estado': 'pending_assignment',
-      'created_at': '2025-02-20 04:56:32',
+      'created_at': '2025-02-20 05:00:47',
       'created_by': 'ArellanoMadrigal'
     };
 
@@ -68,16 +68,15 @@ class RequestService {
 }
 
 class Request {
-  final String id; // Cambiado de int a String
-  final String usuarioId; // Cambiado de int a String
-  final String pacienteId; // Cambiado de int a String
-  final String? organizacionId; // Cambiado de int a String
-  final String? enfermeroId; // Cambiado de int a String
+  final String id;  // Cambiado a String para manejar ObjectIds
+  final String usuarioId;
+  final String pacienteId;
+  final String? organizacionId;
+  final String? enfermeroId;
   final String estado;
   final String metodoPago;
   final DateTime fechaSolicitud;
   final DateTime? fechaServicio;
-  final String solicitudId; // Cambiado de int a String
   final String comentarios;
 
   Request({
@@ -90,33 +89,24 @@ class Request {
     required this.metodoPago,
     required this.fechaSolicitud,
     this.fechaServicio,
-    required this.solicitudId,
     this.comentarios = '',
   });
 
   factory Request.fromJson(Map<String, dynamic> json) {
-    try {
-      return Request(
-        id: json['id'].toString(),
-        usuarioId: json['usuario_id'].toString(),
-        pacienteId: json['paciente_id'].toString(),
-        organizacionId: json['organizacion_id']?.toString(),
-        enfermeroId: json['enfermero_id']?.toString(),
-        estado: json['status'] ?? json['estado'] ?? 'pending_assignment',
-        metodoPago: json['metodo_pago'] ?? '',
-        fechaSolicitud: json['fecha_solicitud'] != null 
-            ? DateTime.parse(json['fecha_solicitud']) 
-            : DateTime.now(),
-        fechaServicio: json['fecha_servicio'] != null 
-            ? DateTime.parse(json['fecha_servicio'])
-            : null,
-        solicitudId: json['solicitud_id']?.toString() ?? json['id'].toString(),
-        comentarios: json['comentarios'] ?? '',
-      );
-    } catch (e) {
-      debugPrint('Error parseando Request: $e');
-      rethrow;
-    }
+    return Request(
+      id: json['_id']?.toString() ?? json['id'].toString(),
+      usuarioId: json['usuario_id'].toString(),
+      pacienteId: json['paciente_id'].toString(),
+      organizacionId: json['organizacion_id']?.toString(),
+      enfermeroId: json['enfermero_id']?.toString(),
+      estado: json['status'] ?? json['estado'] ?? 'pending_assignment',
+      metodoPago: json['metodo_pago'] ?? 'efectivo',
+      fechaSolicitud: DateTime.parse(json['fecha_solicitud'] ?? '2025-02-20 05:00:47'),
+      fechaServicio: json['fecha_servicio'] != null 
+          ? DateTime.parse(json['fecha_servicio'])
+          : null,
+      comentarios: json['comentarios'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -129,7 +119,6 @@ class Request {
     'metodo_pago': metodoPago,
     'fecha_solicitud': fechaSolicitud.toIso8601String(),
     'fecha_servicio': fechaServicio?.toIso8601String(),
-    'solicitud_id': solicitudId,
     'comentarios': comentarios,
   };
 }

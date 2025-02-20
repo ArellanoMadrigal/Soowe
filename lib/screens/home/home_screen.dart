@@ -136,27 +136,12 @@ class _HomeScreenState extends State<HomeScreen> {
       throw Exception('Usuario no autenticado');
     }
 
-    // Convertir IDs a int de manera segura
-    int? userIdInt;
-    int? pacienteIdInt;
-    int? organizacionIdInt;
-
-    try {
-      userIdInt = int.parse(userId);
-      pacienteIdInt = int.parse(newRequest['paciente_id'].toString());
-      if (newRequest['organizacion_id'] != null) {
-        organizacionIdInt = int.parse(newRequest['organizacion_id'].toString());
-      }
-    } catch (e) {
-      throw Exception('Error al convertir IDs: Asegúrese de que los IDs sean números válidos');
-    }
-
     await _requestService.createRequest(
-      usuarioId: userIdInt,
-      pacienteId: pacienteIdInt,
+      usuarioId: userId,  // Ya no necesitamos convertir a int
+      pacienteId: newRequest['paciente_id'].toString(),
       metodoPago: newRequest['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
-      organizacionId: organizacionIdInt,
-      fechaServicio: DateTime.parse('2025-02-20 04:56:32'),
+      organizacionId: newRequest['organizacion_id']?.toString(),
+      fechaServicio: DateTime.parse('2025-02-20 05:00:47'),
       comentarios: newRequest['comentarios'] ?? '',
     );
 
