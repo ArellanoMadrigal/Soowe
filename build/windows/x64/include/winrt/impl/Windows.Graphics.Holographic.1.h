@@ -88,6 +88,13 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Holographic
         IHolographicCameraRenderingParameters3(std::nullptr_t = nullptr) noexcept {}
         IHolographicCameraRenderingParameters3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IHolographicCameraRenderingParameters4 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHolographicCameraRenderingParameters4>
+    {
+        IHolographicCameraRenderingParameters4(std::nullptr_t = nullptr) noexcept {}
+        IHolographicCameraRenderingParameters4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IHolographicCameraViewportParameters :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IHolographicCameraViewportParameters>
@@ -279,6 +286,13 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Holographic
     {
         IHolographicViewConfiguration(std::nullptr_t = nullptr) noexcept {}
         IHolographicViewConfiguration(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IHolographicViewConfiguration2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHolographicViewConfiguration2>
+    {
+        IHolographicViewConfiguration2(std::nullptr_t = nullptr) noexcept {}
+        IHolographicViewConfiguration2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
 }
 #endif

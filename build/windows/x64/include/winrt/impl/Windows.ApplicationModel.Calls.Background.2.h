@@ -21,6 +21,11 @@ WINRT_EXPORT namespace winrt::Windows::ApplicationModel::Calls::Background
         PhoneIncomingCallDismissedTriggerDetails(std::nullptr_t) noexcept {}
         PhoneIncomingCallDismissedTriggerDetails(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::Calls::Background::IPhoneIncomingCallDismissedTriggerDetails(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) PhoneIncomingCallNotificationTriggerDetails : winrt::Windows::ApplicationModel::Calls::Background::IPhoneIncomingCallNotificationTriggerDetails
+    {
+        PhoneIncomingCallNotificationTriggerDetails(std::nullptr_t) noexcept {}
+        PhoneIncomingCallNotificationTriggerDetails(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::Calls::Background::IPhoneIncomingCallNotificationTriggerDetails(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) PhoneLineChangedTriggerDetails : winrt::Windows::ApplicationModel::Calls::Background::IPhoneLineChangedTriggerDetails
     {
         PhoneLineChangedTriggerDetails(std::nullptr_t) noexcept {}

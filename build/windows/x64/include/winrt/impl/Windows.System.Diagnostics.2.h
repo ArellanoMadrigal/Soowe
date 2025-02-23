@@ -75,6 +75,8 @@ WINRT_EXPORT namespace winrt::Windows::System::Diagnostics
         SystemDiagnosticInfo(std::nullptr_t) noexcept {}
         SystemDiagnosticInfo(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::System::Diagnostics::ISystemDiagnosticInfo(ptr, take_ownership_from_abi) {}
         static auto GetForCurrentSystem();
+        static auto IsArchitectureSupported(winrt::Windows::System::ProcessorArchitecture const& type);
+        [[nodiscard]] static auto PreferredArchitecture();
     };
     struct __declspec(empty_bases) SystemMemoryUsage : winrt::Windows::System::Diagnostics::ISystemMemoryUsage
     {

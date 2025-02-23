@@ -256,6 +256,14 @@ WINRT_EXPORT namespace winrt::Windows::ApplicationModel::Activation
         ILockScreenActivatedEventArgs(std::nullptr_t = nullptr) noexcept {}
         ILockScreenActivatedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IPhoneCallActivatedEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IPhoneCallActivatedEventArgs>,
+        impl::require<winrt::Windows::ApplicationModel::Activation::IPhoneCallActivatedEventArgs, winrt::Windows::ApplicationModel::Activation::IActivatedEventArgs>
+    {
+        IPhoneCallActivatedEventArgs(std::nullptr_t = nullptr) noexcept {}
+        IPhoneCallActivatedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IPickerReturnedActivatedEventArgs :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IPickerReturnedActivatedEventArgs>,

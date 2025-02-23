@@ -258,6 +258,7 @@ WINRT_EXPORT namespace winrt::Windows::Media::Audio
         [[nodiscard]] static auto DolbyAtmosForSpeakers();
         [[nodiscard]] static auto DTSHeadphoneX();
         [[nodiscard]] static auto DTSXUltra();
+        [[nodiscard]] static auto DTSXForHomeTheater();
     };
 }
 #endif

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
@@ -18,9 +18,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D0659A69-CEE6-3AD2-BAD7-F362D3A024A0}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{0A1C9535-3404-37AF-95A6-3B673BD59B0A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
     <ProjectName>appdesarrollo</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
@@ -29,17 +29,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -50,19 +50,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">appdesarrollo.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">appdesarrollo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\Profile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\Profile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">appdesarrollo.dir\Profile\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">appdesarrollo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">appdesarrollo.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">appdesarrollo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
@@ -71,7 +71,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -86,15 +86,16 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_HAS_EXCEPTIONS=0;_DEBUG;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_HAS_EXCEPTIONS=0;_DEBUG;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -102,25 +103,25 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\flutter\Debug\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Debug\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Debug\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Debug\permission_handler_windows_plugin.lib;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\flutter\Debug\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Debug\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Debug\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Debug\permission_handler_windows_plugin.lib;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/appdesarrollo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Debug/appdesarrollo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Debug/appdesarrollo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Debug/appdesarrollo.pdb</ProgramDataBaseFile>
       <SubSystem>Windows</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Manifest>
-      <AdditionalManifestFiles>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
+      <AdditionalManifestFiles>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DisableSpecificWarnings>"4100"</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -133,17 +134,18 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Profile";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Profile"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Profile\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Profile\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -151,25 +153,25 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\flutter\Profile\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Profile\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Profile\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Profile\permission_handler_windows_plugin.lib;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\flutter\Profile\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Profile\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Profile\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Profile\permission_handler_windows_plugin.lib;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Profile/appdesarrollo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Profile/appdesarrollo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Profile/appdesarrollo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Profile/appdesarrollo.pdb</ProgramDataBaseFile>
       <SubSystem>Windows</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Manifest>
-      <AdditionalManifestFiles>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
+      <AdditionalManifestFiles>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DisableSpecificWarnings>"4100"</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -182,17 +184,18 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION="1.0.0+1";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;FLUTTER_VERSION=\"1.0.0+1\";FLUTTER_VERSION_MAJOR=1;FLUTTER_VERSION_MINOR=0;FLUTTER_VERSION_PATCH=0;FLUTTER_VERSION_BUILD=1;NOMINMAX;UNICODE;_UNICODE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\permission_handler_windows\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -200,28 +203,28 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\flutter\Release\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Release\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Release\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Release\permission_handler_windows_plugin.lib;C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\flutter\Release\flutter_wrapper_app.lib;dwmapi.lib;..\plugins\file_selector_windows\Release\file_selector_windows_plugin.lib;..\plugins\geolocator_windows\Release\geolocator_windows_plugin.lib;..\plugins\permission_handler_windows\Release\permission_handler_windows_plugin.lib;C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\flutter_windows.dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Release/appdesarrollo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/Release/appdesarrollo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Release/appdesarrollo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/Release/appdesarrollo.pdb</ProgramDataBaseFile>
       <SubSystem>Windows</SubSystem>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Manifest>
-      <AdditionalManifestFiles>C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
+      <AdditionalManifestFiles>C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\runner.exe.manifest;</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\CMakeLists.txt">
-      <StdOutEncoding>UTF-8</StdOutEncoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/runner/CMakeLists.txt</Message>
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/runner/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -230,11 +233,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/runner/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/runner/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -243,11 +246,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/runner/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/runner/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/runner/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/runner/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -256,45 +259,45 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\runner\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\flutter_window.cpp" />
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\main.cpp" />
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\utils.cpp" />
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\win32_window.cpp" />
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\generated_plugin_registrant.cc" />
-    <ResourceCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\runner\Runner.rc" />
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\flutter_window.cpp" />
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\main.cpp" />
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\utils.cpp" />
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\win32_window.cpp" />
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\generated_plugin_registrant.cc" />
+    <ResourceCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\runner\Runner.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\ZERO_CHECK.vcxproj">
-      <Project>{B9BCBCF5-61AD-3028-925B-55B86F21A7DB}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\ZERO_CHECK.vcxproj">
+      <Project>{15819DF6-174B-30B5-AFDF-C8CAA3E01FE6}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\file_selector_windows\file_selector_windows_plugin.vcxproj">
-      <Project>{8C2AEF9B-B7C7-3624-9B92-3640C0EA443F}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\file_selector_windows\file_selector_windows_plugin.vcxproj">
+      <Project>{8463D238-C1B9-3DF7-BE42-FEC2A94BE154}</Project>
       <Name>file_selector_windows_plugin</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\flutter\flutter_assemble.vcxproj">
-      <Project>{FD5DF5C1-7894-3E83-B808-1690A728777A}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\flutter\flutter_assemble.vcxproj">
+      <Project>{884C2A63-86EC-3748-8A59-8B67F420D164}</Project>
       <Name>flutter_assemble</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\flutter\flutter_wrapper_app.vcxproj">
-      <Project>{4CE1CF32-B6D8-3D38-B059-2FFDA1C0F31A}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\flutter\flutter_wrapper_app.vcxproj">
+      <Project>{FD65D9C5-731C-3533-B7D0-FD073054B4F9}</Project>
       <Name>flutter_wrapper_app</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\geolocator_windows\geolocator_windows_plugin.vcxproj">
-      <Project>{6F861B21-D315-3CF5-8ABF-4350076CB878}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\geolocator_windows\geolocator_windows_plugin.vcxproj">
+      <Project>{FC2E30F1-8EF1-3A59-A9CA-BCE2E2AF44DB}</Project>
       <Name>geolocator_windows_plugin</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\permission_handler_windows\permission_handler_windows_plugin.vcxproj">
-      <Project>{DBE1D78E-AD0B-3758-AD3C-6A812B4CF170}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\permission_handler_windows\permission_handler_windows_plugin.vcxproj">
+      <Project>{F01B8FFB-F63D-36C6-8863-90D551007778}</Project>
       <Name>permission_handler_windows_plugin</Name>
     </ProjectReference>
   </ItemGroup>

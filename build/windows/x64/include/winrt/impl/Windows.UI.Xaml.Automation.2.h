@@ -157,6 +157,9 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Automation
         [[nodiscard]] static auto IsDialogProperty();
         static auto GetIsDialog(winrt::Windows::UI::Xaml::DependencyObject const& element);
         static auto SetIsDialog(winrt::Windows::UI::Xaml::DependencyObject const& element, bool value);
+        [[nodiscard]] static auto AutomationControlTypeProperty();
+        static auto GetAutomationControlType(winrt::Windows::UI::Xaml::UIElement const& element);
+        static auto SetAutomationControlType(winrt::Windows::UI::Xaml::UIElement const& element, winrt::Windows::UI::Xaml::Automation::Peers::AutomationControlType const& value);
     };
     struct __declspec(empty_bases) AutomationProperty : winrt::Windows::UI::Xaml::Automation::IAutomationProperty
     {

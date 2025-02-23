@@ -145,6 +145,12 @@ WINRT_EXPORT namespace winrt::Windows::Media::Capture
         HdrWithWcgVideo = 7,
         HdrWithWcgPhoto = 8,
         VideoHdr8 = 9,
+        CompressedCamera = 10,
+    };
+    enum class MediaCaptureDeviceExclusiveControlReleaseMode : int32_t
+    {
+        OnDispose = 0,
+        OnAllStreamsStopped = 1,
     };
     enum class MediaCaptureDeviceExclusiveControlStatus : int32_t
     {
@@ -173,6 +179,9 @@ WINRT_EXPORT namespace winrt::Windows::Media::Capture
         Media = 2,
         GameChat = 3,
         Speech = 4,
+        FarFieldSpeech = 5,
+        UniformSpeech = 6,
+        VoiceTyping = 7,
     };
     enum class MediaStreamType : int32_t
     {
@@ -180,6 +189,7 @@ WINRT_EXPORT namespace winrt::Windows::Media::Capture
         VideoRecord = 1,
         Audio = 2,
         Photo = 3,
+        Metadata = 4,
     };
     enum class PhotoCaptureSource : int32_t
     {
@@ -387,6 +397,7 @@ namespace winrt::impl
     template <> struct category<winrt::Windows::Media::Capture::CameraCaptureUIPhotoFormat>{ using type = enum_category; };
     template <> struct category<winrt::Windows::Media::Capture::CameraCaptureUIVideoFormat>{ using type = enum_category; };
     template <> struct category<winrt::Windows::Media::Capture::KnownVideoProfile>{ using type = enum_category; };
+    template <> struct category<winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlReleaseMode>{ using type = enum_category; };
     template <> struct category<winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlStatus>{ using type = enum_category; };
     template <> struct category<winrt::Windows::Media::Capture::MediaCaptureMemoryPreference>{ using type = enum_category; };
     template <> struct category<winrt::Windows::Media::Capture::MediaCaptureSharingMode>{ using type = enum_category; };
@@ -434,6 +445,7 @@ namespace winrt::impl
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::CameraCaptureUIPhotoFormat> = L"Windows.Media.Capture.CameraCaptureUIPhotoFormat";
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::CameraCaptureUIVideoFormat> = L"Windows.Media.Capture.CameraCaptureUIVideoFormat";
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::KnownVideoProfile> = L"Windows.Media.Capture.KnownVideoProfile";
+    template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlReleaseMode> = L"Windows.Media.Capture.MediaCaptureDeviceExclusiveControlReleaseMode";
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlStatus> = L"Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatus";
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::MediaCaptureMemoryPreference> = L"Windows.Media.Capture.MediaCaptureMemoryPreference";
     template <> inline constexpr auto& name_v<winrt::Windows::Media::Capture::MediaCaptureSharingMode> = L"Windows.Media.Capture.MediaCaptureSharingMode";

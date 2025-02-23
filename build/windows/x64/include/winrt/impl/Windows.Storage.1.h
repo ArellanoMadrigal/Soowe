@@ -307,12 +307,47 @@ WINRT_EXPORT namespace winrt::Windows::Storage
         IStorageLibraryChangeReader(std::nullptr_t = nullptr) noexcept {}
         IStorageLibraryChangeReader(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IStorageLibraryChangeReader2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IStorageLibraryChangeReader2>
+    {
+        IStorageLibraryChangeReader2(std::nullptr_t = nullptr) noexcept {}
+        IStorageLibraryChangeReader2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IStorageLibraryChangeTracker :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IStorageLibraryChangeTracker>
     {
         IStorageLibraryChangeTracker(std::nullptr_t = nullptr) noexcept {}
         IStorageLibraryChangeTracker(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IStorageLibraryChangeTracker2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IStorageLibraryChangeTracker2>
+    {
+        IStorageLibraryChangeTracker2(std::nullptr_t = nullptr) noexcept {}
+        IStorageLibraryChangeTracker2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IStorageLibraryChangeTrackerOptions :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IStorageLibraryChangeTrackerOptions>
+    {
+        IStorageLibraryChangeTrackerOptions(std::nullptr_t = nullptr) noexcept {}
+        IStorageLibraryChangeTrackerOptions(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IStorageLibraryLastChangeId :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IStorageLibraryLastChangeId>
+    {
+        IStorageLibraryLastChangeId(std::nullptr_t = nullptr) noexcept {}
+        IStorageLibraryLastChangeId(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IStorageLibraryLastChangeIdStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IStorageLibraryLastChangeIdStatics>
+    {
+        IStorageLibraryLastChangeIdStatics(std::nullptr_t = nullptr) noexcept {}
+        IStorageLibraryLastChangeIdStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IStorageLibraryStatics :
         winrt::Windows::Foundation::IInspectable,

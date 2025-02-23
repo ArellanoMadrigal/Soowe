@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{32D74D3C-251C-3224-B94D-6E1B26B75223}</UniqueIdentifier>
+      <UniqueIdentifier>{C71EFBAF-36F7-3F13-AFAE-1A620A085D49}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{2237A602-7355-3697-9B14-50E158125656}</UniqueIdentifier>
+      <UniqueIdentifier>{5CE5D2A5-9A2C-31D2-8797-3F137889AF48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

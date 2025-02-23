@@ -67,7 +67,8 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Input
         PenButtonListener(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Devices::Input::IPenButtonListener(ptr, take_ownership_from_abi) {}
         static auto GetDefault();
     };
-    struct __declspec(empty_bases) PenDevice : winrt::Windows::Devices::Input::IPenDevice
+    struct __declspec(empty_bases) PenDevice : winrt::Windows::Devices::Input::IPenDevice,
+        impl::require<PenDevice, winrt::Windows::Devices::Input::IPenDevice2>
     {
         PenDevice(std::nullptr_t) noexcept {}
         PenDevice(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Devices::Input::IPenDevice(ptr, take_ownership_from_abi) {}

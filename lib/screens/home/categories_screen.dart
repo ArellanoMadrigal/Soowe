@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/category_service.dart';
 import '../../models/category.dart';
+import 'categoryServiceScreen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -30,7 +31,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data!.isEmpty) {
             return const Center(child: Text('No hay categorías disponibles.'));
           }
 

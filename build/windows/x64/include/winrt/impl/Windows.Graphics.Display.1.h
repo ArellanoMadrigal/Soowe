@@ -133,5 +133,19 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Display
         IDisplayPropertiesStatics(std::nullptr_t = nullptr) noexcept {}
         IDisplayPropertiesStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IDisplayServices :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IDisplayServices>
+    {
+        IDisplayServices(std::nullptr_t = nullptr) noexcept {}
+        IDisplayServices(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IDisplayServicesStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IDisplayServicesStatics>
+    {
+        IDisplayServicesStatics(std::nullptr_t = nullptr) noexcept {}
+        IDisplayServicesStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
 }
 #endif

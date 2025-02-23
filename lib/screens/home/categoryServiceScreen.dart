@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/category.dart';
-import '../../models/service_model.dart';
-import '../../services/service_service.dart';
+import '../../models/service.dart';
+import '../../services/services_service.dart';
 
 class CategoryServicesScreen extends StatefulWidget {
   final CategoryModel category;
@@ -9,17 +9,18 @@ class CategoryServicesScreen extends StatefulWidget {
   const CategoryServicesScreen({super.key, required this.category});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CategoryServicesScreenState createState() => _CategoryServicesScreenState();
 }
 
 class _CategoryServicesScreenState extends State<CategoryServicesScreen> {
-  final ServiceService _serviceService = ServiceService();
+  final ServicesService _serviceService = ServicesService();
   late Future<List<ServiceModel>> _servicesFuture;
 
   @override
   void initState() {
     super.initState();
-    _servicesFuture = _serviceService.getServicesByCategory(widget.category.id);
+    _servicesFuture = _serviceService.getServicesFromCategory(widget.category.id);
   }
 
   @override
@@ -32,7 +33,9 @@ class _CategoryServicesScreenState extends State<CategoryServicesScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data!.isEmpty) {
             return const Center(child: Text('No hay servicios disponibles.'));
           }
 
@@ -44,8 +47,9 @@ class _CategoryServicesScreenState extends State<CategoryServicesScreen> {
             itemBuilder: (context, index) {
               final service = services[index];
               return ListTile(
-                title: Text(service.title),
-                subtitle: Text('${service.nurses} enfermeros disponibles'),
+                title: Text(service.nombre),
+                subtitle: Text('${service.descripcion} enfermeros disponibles'),
+                // agregar precio estimado
                 leading: const Icon(Icons.medical_services_outlined),
                 onTap: () {
                   // Acción al seleccionar un servicio

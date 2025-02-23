@@ -64,6 +64,13 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Geolocation
         IGeocoordinateSatelliteData(std::nullptr_t = nullptr) noexcept {}
         IGeocoordinateSatelliteData(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IGeocoordinateSatelliteData2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IGeocoordinateSatelliteData2>
+    {
+        IGeocoordinateSatelliteData2(std::nullptr_t = nullptr) noexcept {}
+        IGeocoordinateSatelliteData2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IGeocoordinateWithPoint :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IGeocoordinateWithPoint>
@@ -85,6 +92,13 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Geolocation
     {
         IGeocoordinateWithPositionSourceTimestamp(std::nullptr_t = nullptr) noexcept {}
         IGeocoordinateWithPositionSourceTimestamp(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IGeocoordinateWithRemoteSource :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IGeocoordinateWithRemoteSource>
+    {
+        IGeocoordinateWithRemoteSource(std::nullptr_t = nullptr) noexcept {}
+        IGeocoordinateWithRemoteSource(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IGeolocator :
         winrt::Windows::Foundation::IInspectable,

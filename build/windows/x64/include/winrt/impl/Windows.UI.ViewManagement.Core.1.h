@@ -6,6 +6,34 @@
 #include "winrt/impl/Windows.UI.ViewManagement.Core.0.h"
 WINRT_EXPORT namespace winrt::Windows::UI::ViewManagement::Core
 {
+    struct __declspec(empty_bases) ICoreFrameworkInputView :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreFrameworkInputView>
+    {
+        ICoreFrameworkInputView(std::nullptr_t = nullptr) noexcept {}
+        ICoreFrameworkInputView(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreFrameworkInputViewAnimationStartingEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreFrameworkInputViewAnimationStartingEventArgs>
+    {
+        ICoreFrameworkInputViewAnimationStartingEventArgs(std::nullptr_t = nullptr) noexcept {}
+        ICoreFrameworkInputViewAnimationStartingEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreFrameworkInputViewOcclusionsChangedEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreFrameworkInputViewOcclusionsChangedEventArgs>
+    {
+        ICoreFrameworkInputViewOcclusionsChangedEventArgs(std::nullptr_t = nullptr) noexcept {}
+        ICoreFrameworkInputViewOcclusionsChangedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreFrameworkInputViewStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreFrameworkInputViewStatics>
+    {
+        ICoreFrameworkInputViewStatics(std::nullptr_t = nullptr) noexcept {}
+        ICoreFrameworkInputViewStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICoreInputView :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICoreInputView>
@@ -33,6 +61,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::ViewManagement::Core
     {
         ICoreInputView4(std::nullptr_t = nullptr) noexcept {}
         ICoreInputView4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreInputView5 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreInputView5>
+    {
+        ICoreInputView5(std::nullptr_t = nullptr) noexcept {}
+        ICoreInputView5(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreInputViewAnimationStartingEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreInputViewAnimationStartingEventArgs>
+    {
+        ICoreInputViewAnimationStartingEventArgs(std::nullptr_t = nullptr) noexcept {}
+        ICoreInputViewAnimationStartingEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ICoreInputViewHidingEventArgs :
         winrt::Windows::Foundation::IInspectable,

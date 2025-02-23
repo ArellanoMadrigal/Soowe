@@ -41,6 +41,12 @@ namespace winrt::impl
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor)->get_Height(&value));
         return value;
     }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::AI::MachineLearning::LearningModelPixelRange) consume_Windows_AI_MachineLearning_IImageFeatureDescriptor2<D>::PixelRange() const
+    {
+        winrt::Windows::AI::MachineLearning::LearningModelPixelRange value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2)->get_PixelRange(reinterpret_cast<int32_t*>(&value)));
+        return value;
+    }
     template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::VideoFrame) consume_Windows_AI_MachineLearning_IImageFeatureValue<D>::VideoFrame() const
     {
         void* value{};
@@ -276,6 +282,10 @@ namespace winrt::impl
     template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_AI_MachineLearning_ILearningModelSessionOptions2<D>::CloseModelOnSessionCreation(bool value) const
     {
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2)->put_CloseModelOnSessionCreation(value));
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_AI_MachineLearning_ILearningModelSessionOptions3<D>::OverrideNamedDimension(param::hstring const& name, uint32_t dimension) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3)->OverrideNamedDimension(*(void**)(&name), dimension));
     }
     template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::AI::MachineLearning::LearningModel>) consume_Windows_AI_MachineLearning_ILearningModelStatics<D>::LoadFromStorageFileAsync(winrt::Windows::Storage::IStorageFile const& modelFile) const
     {
@@ -943,6 +953,19 @@ namespace winrt::impl
 #endif
 #ifndef WINRT_LEAN_AND_MEAN
     template <typename D>
+    struct produce<D, winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2> : produce_base<D, winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2>
+    {
+        int32_t __stdcall get_PixelRange(int32_t* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::AI::MachineLearning::LearningModelPixelRange>(this->shim().PixelRange());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
     struct produce<D, winrt::Windows::AI::MachineLearning::IImageFeatureValue> : produce_base<D, winrt::Windows::AI::MachineLearning::IImageFeatureValue>
     {
         int32_t __stdcall get_VideoFrame(void** value) noexcept final try
@@ -1347,6 +1370,19 @@ namespace winrt::impl
         {
             typename D::abi_guard guard(this->shim());
             this->shim().CloseModelOnSessionCreation(value);
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3> : produce_base<D, winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>
+    {
+        int32_t __stdcall OverrideNamedDimension(void* name, uint32_t dimension) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().OverrideNamedDimension(*reinterpret_cast<hstring const*>(&name), dimension);
             return 0;
         }
         catch (...) { return to_hresult(); }
@@ -2831,6 +2867,7 @@ namespace std
 {
 #ifndef WINRT_LEAN_AND_MEAN
     template<> struct hash<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::IImageFeatureValue> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::IImageFeatureValueStatics> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModel> : winrt::impl::hash_base {};
@@ -2848,6 +2885,7 @@ namespace std
     template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModelSessionFactory2> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::ILearningModelStatics> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::IMapFeatureDescriptor> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::AI::MachineLearning::ISequenceFeatureDescriptor> : winrt::impl::hash_base {};

@@ -14,6 +14,16 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Haptics
         [[nodiscard]] static auto RumbleContinuous();
         [[nodiscard]] static auto Press();
         [[nodiscard]] static auto Release();
+        [[nodiscard]] static auto BrushContinuous();
+        [[nodiscard]] static auto ChiselMarkerContinuous();
+        [[nodiscard]] static auto EraserContinuous();
+        [[nodiscard]] static auto Error();
+        [[nodiscard]] static auto GalaxyPenContinuous();
+        [[nodiscard]] static auto Hover();
+        [[nodiscard]] static auto InkContinuous();
+        [[nodiscard]] static auto MarkerContinuous();
+        [[nodiscard]] static auto PencilContinuous();
+        [[nodiscard]] static auto Success();
     };
     struct __declspec(empty_bases) SimpleHapticsController : winrt::Windows::Devices::Haptics::ISimpleHapticsController
     {

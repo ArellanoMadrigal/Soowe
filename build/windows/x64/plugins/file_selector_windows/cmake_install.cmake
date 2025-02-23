@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows
+# Install script for directory: C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

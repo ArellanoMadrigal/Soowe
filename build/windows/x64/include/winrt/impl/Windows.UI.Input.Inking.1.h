@@ -62,6 +62,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
         IInkInputConfiguration(std::nullptr_t = nullptr) noexcept {}
         IInkInputConfiguration(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IInkInputConfiguration2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IInkInputConfiguration2>
+    {
+        IInkInputConfiguration2(std::nullptr_t = nullptr) noexcept {}
+        IInkInputConfiguration2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IInkInputProcessingConfiguration :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IInkInputProcessingConfiguration>
@@ -229,6 +236,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
         IInkStroke3(std::nullptr_t = nullptr) noexcept {}
         IInkStroke3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IInkStroke4 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IInkStroke4>
+    {
+        IInkStroke4(std::nullptr_t = nullptr) noexcept {}
+        IInkStroke4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IInkStrokeBuilder :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IInkStrokeBuilder>
@@ -319,6 +333,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
     {
         IPenAndInkSettings(std::nullptr_t = nullptr) noexcept {}
         IPenAndInkSettings(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IPenAndInkSettings2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IPenAndInkSettings2>
+    {
+        IPenAndInkSettings2(std::nullptr_t = nullptr) noexcept {}
+        IPenAndInkSettings2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IPenAndInkSettingsStatics :
         winrt::Windows::Foundation::IInspectable,

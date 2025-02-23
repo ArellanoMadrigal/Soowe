@@ -13,7 +13,7 @@
 WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
 {
     struct __declspec(empty_bases) ImageFeatureDescriptor : winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor,
-        impl::require<ImageFeatureDescriptor, winrt::Windows::AI::MachineLearning::ILearningModelFeatureDescriptor>
+        impl::require<ImageFeatureDescriptor, winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2, winrt::Windows::AI::MachineLearning::ILearningModelFeatureDescriptor>
     {
         ImageFeatureDescriptor(std::nullptr_t) noexcept {}
         ImageFeatureDescriptor(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor(ptr, take_ownership_from_abi) {}
@@ -68,7 +68,7 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
         LearningModelSession(winrt::Windows::AI::MachineLearning::LearningModel const& model, winrt::Windows::AI::MachineLearning::LearningModelDevice const& deviceToRunOn, winrt::Windows::AI::MachineLearning::LearningModelSessionOptions const& learningModelSessionOptions);
     };
     struct __declspec(empty_bases) LearningModelSessionOptions : winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions,
-        impl::require<LearningModelSessionOptions, winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2>
+        impl::require<LearningModelSessionOptions, winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2, winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>
     {
         LearningModelSessionOptions(std::nullptr_t) noexcept {}
         LearningModelSessionOptions(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions(ptr, take_ownership_from_abi) {}

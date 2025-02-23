@@ -48,12 +48,33 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         IAnimationPropertyInfo(std::nullptr_t = nullptr) noexcept {}
         IAnimationPropertyInfo(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IAnimationPropertyInfo2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IAnimationPropertyInfo2>
+    {
+        IAnimationPropertyInfo2(std::nullptr_t = nullptr) noexcept {}
+        IAnimationPropertyInfo2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IBackEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IBackEasingFunction>
+    {
+        IBackEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        IBackEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IBooleanKeyFrameAnimation :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IBooleanKeyFrameAnimation>
     {
         IBooleanKeyFrameAnimation(std::nullptr_t = nullptr) noexcept {}
         IBooleanKeyFrameAnimation(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IBounceEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IBounceEasingFunction>
+    {
+        IBounceEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        IBounceEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IBounceScalarNaturalMotionAnimation :
         winrt::Windows::Foundation::IInspectable,
@@ -75,6 +96,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         IBounceVector3NaturalMotionAnimation(std::nullptr_t = nullptr) noexcept {}
         IBounceVector3NaturalMotionAnimation(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICircleEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICircleEasingFunction>
+    {
+        ICircleEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        ICircleEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IColorKeyFrameAnimation :
         winrt::Windows::Foundation::IInspectable,
@@ -265,6 +293,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICompositionEasingFunctionFactory(std::nullptr_t = nullptr) noexcept {}
         ICompositionEasingFunctionFactory(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICompositionEasingFunctionStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionEasingFunctionStatics>
+    {
+        ICompositionEasingFunctionStatics(std::nullptr_t = nullptr) noexcept {}
+        ICompositionEasingFunctionStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICompositionEffectBrush :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICompositionEffectBrush>
@@ -363,6 +398,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICompositionGraphicsDevice3(std::nullptr_t = nullptr) noexcept {}
         ICompositionGraphicsDevice3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICompositionGraphicsDevice4 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionGraphicsDevice4>
+    {
+        ICompositionGraphicsDevice4(std::nullptr_t = nullptr) noexcept {}
+        ICompositionGraphicsDevice4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICompositionLight :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICompositionLight>
@@ -453,6 +495,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         ICompositionObject4(std::nullptr_t = nullptr) noexcept {}
         ICompositionObject4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICompositionObject5 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionObject5>
+    {
+        ICompositionObject5(std::nullptr_t = nullptr) noexcept {}
+        ICompositionObject5(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ICompositionObjectFactory :
         winrt::Windows::Foundation::IInspectable,
@@ -608,6 +657,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICompositionSpriteShape(std::nullptr_t = nullptr) noexcept {}
         ICompositionSpriteShape(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICompositionSupportsSystemBackdrop :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionSupportsSystemBackdrop>
+    {
+        ICompositionSupportsSystemBackdrop(std::nullptr_t = nullptr) noexcept {}
+        ICompositionSupportsSystemBackdrop(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICompositionSurface :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICompositionSurface>
@@ -636,6 +692,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICompositionSurfaceBrush3(std::nullptr_t = nullptr) noexcept {}
         ICompositionSurfaceBrush3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICompositionSurfaceFacade :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionSurfaceFacade>
+    {
+        ICompositionSurfaceFacade(std::nullptr_t = nullptr) noexcept {}
+        ICompositionSurfaceFacade(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICompositionTarget :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICompositionTarget>
@@ -649,6 +712,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         ICompositionTargetFactory(std::nullptr_t = nullptr) noexcept {}
         ICompositionTargetFactory(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICompositionTexture :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionTexture>
+    {
+        ICompositionTexture(std::nullptr_t = nullptr) noexcept {}
+        ICompositionTexture(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICompositionTextureFactory :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositionTextureFactory>
+    {
+        ICompositionTextureFactory(std::nullptr_t = nullptr) noexcept {}
+        ICompositionTextureFactory(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ICompositionTransform :
         winrt::Windows::Foundation::IInspectable,
@@ -734,12 +811,33 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICompositor6(std::nullptr_t = nullptr) noexcept {}
         ICompositor6(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICompositor7 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositor7>
+    {
+        ICompositor7(std::nullptr_t = nullptr) noexcept {}
+        ICompositor7(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICompositor8 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositor8>
+    {
+        ICompositor8(std::nullptr_t = nullptr) noexcept {}
+        ICompositor8(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICompositorStatics :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICompositorStatics>
     {
         ICompositorStatics(std::nullptr_t = nullptr) noexcept {}
         ICompositorStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICompositorWithBlurredWallpaperBackdropBrush :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICompositorWithBlurredWallpaperBackdropBrush>
+    {
+        ICompositorWithBlurredWallpaperBackdropBrush(std::nullptr_t = nullptr) noexcept {}
+        ICompositorWithBlurredWallpaperBackdropBrush(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ICompositorWithProjectedShadow :
         winrt::Windows::Foundation::IInspectable,
@@ -783,6 +881,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         ICubicBezierEasingFunction(std::nullptr_t = nullptr) noexcept {}
         ICubicBezierEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IDelegatedInkTrailVisual :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IDelegatedInkTrailVisual>
+    {
+        IDelegatedInkTrailVisual(std::nullptr_t = nullptr) noexcept {}
+        IDelegatedInkTrailVisual(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IDelegatedInkTrailVisualStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IDelegatedInkTrailVisualStatics>
+    {
+        IDelegatedInkTrailVisualStatics(std::nullptr_t = nullptr) noexcept {}
+        IDelegatedInkTrailVisualStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IDistantLight :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IDistantLight>
@@ -810,6 +922,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         IDropShadow2(std::nullptr_t = nullptr) noexcept {}
         IDropShadow2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IElasticEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IElasticEasingFunction>
+    {
+        IElasticEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        IElasticEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IExponentialEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IExponentialEasingFunction>
+    {
+        IExponentialEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        IExponentialEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IExpressionAnimation :
         winrt::Windows::Foundation::IInspectable,
@@ -923,12 +1049,26 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         IPointLight3(std::nullptr_t = nullptr) noexcept {}
         IPointLight3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IPowerEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IPowerEasingFunction>
+    {
+        IPowerEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        IPowerEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IQuaternionKeyFrameAnimation :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IQuaternionKeyFrameAnimation>
     {
         IQuaternionKeyFrameAnimation(std::nullptr_t = nullptr) noexcept {}
         IQuaternionKeyFrameAnimation(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IRectangleClip :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IRectangleClip>
+    {
+        IRectangleClip(std::nullptr_t = nullptr) noexcept {}
+        IRectangleClip(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IRedirectVisual :
         winrt::Windows::Foundation::IInspectable,
@@ -971,6 +1111,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         IShapeVisual(std::nullptr_t = nullptr) noexcept {}
         IShapeVisual(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ISineEasingFunction :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ISineEasingFunction>
+    {
+        ISineEasingFunction(std::nullptr_t = nullptr) noexcept {}
+        ISineEasingFunction(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ISpotLight :
         winrt::Windows::Foundation::IInspectable,
@@ -1105,6 +1252,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
         IVisual3(std::nullptr_t = nullptr) noexcept {}
         IVisual3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IVisual4 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IVisual4>
+    {
+        IVisual4(std::nullptr_t = nullptr) noexcept {}
+        IVisual4(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IVisualCollection :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IVisualCollection>
@@ -1118,6 +1272,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Composition
     {
         IVisualElement(std::nullptr_t = nullptr) noexcept {}
         IVisualElement(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IVisualElement2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IVisualElement2>
+    {
+        IVisualElement2(std::nullptr_t = nullptr) noexcept {}
+        IVisualElement2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IVisualFactory :
         winrt::Windows::Foundation::IInspectable,

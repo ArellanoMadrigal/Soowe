@@ -6,7 +6,8 @@
 #include "winrt/impl/Windows.ApplicationModel.AppExtensions.1.h"
 WINRT_EXPORT namespace winrt::Windows::ApplicationModel::AppExtensions
 {
-    struct __declspec(empty_bases) AppExtension : winrt::Windows::ApplicationModel::AppExtensions::IAppExtension
+    struct __declspec(empty_bases) AppExtension : winrt::Windows::ApplicationModel::AppExtensions::IAppExtension,
+        impl::require<AppExtension, winrt::Windows::ApplicationModel::AppExtensions::IAppExtension2>
     {
         AppExtension(std::nullptr_t) noexcept {}
         AppExtension(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::AppExtensions::IAppExtension(ptr, take_ownership_from_abi) {}

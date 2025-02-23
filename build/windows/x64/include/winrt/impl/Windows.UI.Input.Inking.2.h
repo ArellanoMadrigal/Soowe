@@ -20,7 +20,8 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
         InkDrawingAttributesPencilProperties(std::nullptr_t) noexcept {}
         InkDrawingAttributesPencilProperties(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::Input::Inking::IInkDrawingAttributesPencilProperties(ptr, take_ownership_from_abi) {}
     };
-    struct __declspec(empty_bases) InkInputConfiguration : winrt::Windows::UI::Input::Inking::IInkInputConfiguration
+    struct __declspec(empty_bases) InkInputConfiguration : winrt::Windows::UI::Input::Inking::IInkInputConfiguration,
+        impl::require<InkInputConfiguration, winrt::Windows::UI::Input::Inking::IInkInputConfiguration2>
     {
         InkInputConfiguration(std::nullptr_t) noexcept {}
         InkInputConfiguration(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::Input::Inking::IInkInputConfiguration(ptr, take_ownership_from_abi) {}
@@ -86,7 +87,7 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
         InkRecognizerContainer();
     };
     struct __declspec(empty_bases) InkStroke : winrt::Windows::UI::Input::Inking::IInkStroke,
-        impl::require<InkStroke, winrt::Windows::UI::Input::Inking::IInkStroke2, winrt::Windows::UI::Input::Inking::IInkStroke3>
+        impl::require<InkStroke, winrt::Windows::UI::Input::Inking::IInkStroke2, winrt::Windows::UI::Input::Inking::IInkStroke3, winrt::Windows::UI::Input::Inking::IInkStroke4>
     {
         InkStroke(std::nullptr_t) noexcept {}
         InkStroke(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::Input::Inking::IInkStroke(ptr, take_ownership_from_abi) {}
@@ -139,7 +140,8 @@ WINRT_EXPORT namespace winrt::Windows::UI::Input::Inking
         InkUnprocessedInput(std::nullptr_t) noexcept {}
         InkUnprocessedInput(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::Input::Inking::IInkUnprocessedInput(ptr, take_ownership_from_abi) {}
     };
-    struct __declspec(empty_bases) PenAndInkSettings : winrt::Windows::UI::Input::Inking::IPenAndInkSettings
+    struct __declspec(empty_bases) PenAndInkSettings : winrt::Windows::UI::Input::Inking::IPenAndInkSettings,
+        impl::require<PenAndInkSettings, winrt::Windows::UI::Input::Inking::IPenAndInkSettings2>
     {
         PenAndInkSettings(std::nullptr_t) noexcept {}
         PenAndInkSettings(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::Input::Inking::IPenAndInkSettings(ptr, take_ownership_from_abi) {}

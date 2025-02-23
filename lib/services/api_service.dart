@@ -571,7 +571,6 @@ class ApiService {
       );
 
       _logger.i('Categorías obtenidas exitosamente');
-      debugPrint('Respuesta getCategories: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         return List<Map<String, dynamic>>.from(response.data);
@@ -580,6 +579,31 @@ class ApiService {
     } on DioException catch (e) {
       _logger.e('Error obteniendo categorías', error: e);
       debugPrint('Error en getCategories: ${e.response?.data}');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getServicesFromCategory(int categoryId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/admin/categorias/$categoryId",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger
+          .i('Servicios obtenidos exitosamente para la categoría: $categoryId');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo servicios de la categoría', error: e);
+      debugPrint('Error en getServicesFromCategory: ${e.response?.data}');
       return [];
     }
   }

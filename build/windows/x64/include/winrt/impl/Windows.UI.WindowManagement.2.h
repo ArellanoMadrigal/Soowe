@@ -90,6 +90,11 @@ WINRT_EXPORT namespace winrt::Windows::UI::WindowManagement
         FullScreenPresentationConfiguration(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::WindowManagement::IFullScreenPresentationConfiguration(ptr, take_ownership_from_abi) {}
         FullScreenPresentationConfiguration();
     };
+    struct WindowServices
+    {
+        WindowServices() = delete;
+        static auto FindAllTopLevelWindowIds();
+    };
     struct __declspec(empty_bases) WindowingEnvironment : winrt::Windows::UI::WindowManagement::IWindowingEnvironment
     {
         WindowingEnvironment(std::nullptr_t) noexcept {}

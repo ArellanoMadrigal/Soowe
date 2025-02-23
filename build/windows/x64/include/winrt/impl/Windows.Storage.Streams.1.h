@@ -100,6 +100,13 @@ WINRT_EXPORT namespace winrt::Windows::Storage::Streams
         IOutputStream(std::nullptr_t = nullptr) noexcept {}
         IOutputStream(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IPropertySetSerializer :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IPropertySetSerializer>
+    {
+        IPropertySetSerializer(std::nullptr_t = nullptr) noexcept {}
+        IPropertySetSerializer(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IRandomAccessStream :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IRandomAccessStream>,

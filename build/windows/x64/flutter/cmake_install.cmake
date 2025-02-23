@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/flutter
+# Install script for directory: C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/flutter
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

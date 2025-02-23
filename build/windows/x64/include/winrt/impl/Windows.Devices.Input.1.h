@@ -62,6 +62,13 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Input
         IPenDevice(std::nullptr_t = nullptr) noexcept {}
         IPenDevice(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IPenDevice2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IPenDevice2>
+    {
+        IPenDevice2(std::nullptr_t = nullptr) noexcept {}
+        IPenDevice2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IPenDeviceStatics :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IPenDeviceStatics>

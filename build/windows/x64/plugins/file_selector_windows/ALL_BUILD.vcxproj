@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -18,9 +21,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3E08AD7F-1CE3-3EED-843E-CDE589BE69C0}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{4F480B72-4DCC-37D4-9D23-8E2826796129}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
     <ProjectName>ALL_BUILD</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
@@ -29,17 +32,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -85,11 +88,11 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\CMakeLists.txt">
-      <StdOutEncoding>UTF-8</StdOutEncoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\file_selector_windows\windows\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -98,11 +101,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -111,11 +114,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/workCodes/UTMcodes/fluttercodes/Soowe/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/plugins/file_selector_windows/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -124,21 +127,21 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\file_selector_windows\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\ZERO_CHECK.vcxproj">
-      <Project>{B9BCBCF5-61AD-3028-925B-55B86F21A7DB}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\ZERO_CHECK.vcxproj">
+      <Project>{15819DF6-174B-30B5-AFDF-C8CAA3E01FE6}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\plugins\file_selector_windows\file_selector_windows_plugin.vcxproj">
-      <Project>{8C2AEF9B-B7C7-3624-9B92-3640C0EA443F}</Project>
+    <ProjectReference Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\plugins\file_selector_windows\file_selector_windows_plugin.vcxproj">
+      <Project>{8463D238-C1B9-3DF7-BE42-FEC2A94BE154}</Project>
       <Name>file_selector_windows_plugin</Name>
     </ProjectReference>
   </ItemGroup>

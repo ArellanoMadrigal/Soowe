@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\CMakeFiles\3a070c569986440fd963523851a3699c\flutter_windows.dll.rule">
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\CMakeFiles\b8354bd00e460ac2278577d1d42b1ac9\flutter_windows.dll.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\CMakeFiles\701ea6ad298b90d1833a5e6dc9a05d90\flutter_assemble.rule">
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\CMakeFiles\2457c1dc77e9234466a2bf59d49ac1fe\flutter_assemble.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\flutter\CMakeFiles\flutter_assemble" />
+    <None Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\flutter\CMakeFiles\flutter_assemble" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{32D74D3C-251C-3224-B94D-6E1B26B75223}</UniqueIdentifier>
+      <UniqueIdentifier>{C71EFBAF-36F7-3F13-AFAE-1A620A085D49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -109,6 +109,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Core
         ICoreDispatcherWithTaskPriority(std::nullptr_t = nullptr) noexcept {}
         ICoreDispatcherWithTaskPriority(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICoreIndependentInputSourceController :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreIndependentInputSourceController>
+    {
+        ICoreIndependentInputSourceController(std::nullptr_t = nullptr) noexcept {}
+        ICoreIndependentInputSourceController(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICoreIndependentInputSourceControllerStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICoreIndependentInputSourceControllerStatics>
+    {
+        ICoreIndependentInputSourceControllerStatics(std::nullptr_t = nullptr) noexcept {}
+        ICoreIndependentInputSourceControllerStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICoreInputSourceBase :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICoreInputSourceBase>

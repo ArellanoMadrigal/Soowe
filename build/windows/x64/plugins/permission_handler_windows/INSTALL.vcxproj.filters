@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\build\windows\x64\CMakeFiles\7c742e0c0fb71202a1102c3d001481e2\INSTALL_force.rule">
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\build\windows\x64\CMakeFiles\19bb08f4c9e0970edeb58a8549bb8c82\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{32D74D3C-251C-3224-B94D-6E1B26B75223}</UniqueIdentifier>
+      <UniqueIdentifier>{C71EFBAF-36F7-3F13-AFAE-1A620A085D49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

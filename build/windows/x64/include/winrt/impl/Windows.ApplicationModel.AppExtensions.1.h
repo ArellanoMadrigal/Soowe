@@ -13,6 +13,13 @@ WINRT_EXPORT namespace winrt::Windows::ApplicationModel::AppExtensions
         IAppExtension(std::nullptr_t = nullptr) noexcept {}
         IAppExtension(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IAppExtension2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IAppExtension2>
+    {
+        IAppExtension2(std::nullptr_t = nullptr) noexcept {}
+        IAppExtension2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IAppExtensionCatalog :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IAppExtensionCatalog>

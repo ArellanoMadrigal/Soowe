@@ -58,6 +58,12 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
         Map = 2,
         Image = 3,
     };
+    enum class LearningModelPixelRange : int32_t
+    {
+        ZeroTo255 = 0,
+        ZeroToOne = 1,
+        MinusOneToOne = 2,
+    };
     enum class TensorKind : int32_t
     {
         Undefined = 0,
@@ -78,6 +84,7 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
         Complex128 = 15,
     };
     struct IImageFeatureDescriptor;
+    struct IImageFeatureDescriptor2;
     struct IImageFeatureValue;
     struct IImageFeatureValueStatics;
     struct ILearningModel;
@@ -95,6 +102,7 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
     struct ILearningModelSessionFactory2;
     struct ILearningModelSessionOptions;
     struct ILearningModelSessionOptions2;
+    struct ILearningModelSessionOptions3;
     struct ILearningModelStatics;
     struct IMapFeatureDescriptor;
     struct ISequenceFeatureDescriptor;
@@ -167,6 +175,7 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
 namespace winrt::impl
 {
     template <> struct category<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor>{ using type = interface_category; };
+    template <> struct category<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::IImageFeatureValue>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::IImageFeatureValueStatics>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModel>{ using type = interface_category; };
@@ -184,6 +193,7 @@ namespace winrt::impl
     template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModelSessionFactory2>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2>{ using type = interface_category; };
+    template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::ILearningModelStatics>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::IMapFeatureDescriptor>{ using type = interface_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::ISequenceFeatureDescriptor>{ using type = interface_category; };
@@ -254,6 +264,7 @@ namespace winrt::impl
     template <> struct category<winrt::Windows::AI::MachineLearning::TensorUInt8Bit>{ using type = class_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::LearningModelDeviceKind>{ using type = enum_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::LearningModelFeatureKind>{ using type = enum_category; };
+    template <> struct category<winrt::Windows::AI::MachineLearning::LearningModelPixelRange>{ using type = enum_category; };
     template <> struct category<winrt::Windows::AI::MachineLearning::TensorKind>{ using type = enum_category; };
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ImageFeatureDescriptor> = L"Windows.AI.MachineLearning.ImageFeatureDescriptor";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ImageFeatureValue> = L"Windows.AI.MachineLearning.ImageFeatureValue";
@@ -281,8 +292,10 @@ namespace winrt::impl
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::TensorUInt8Bit> = L"Windows.AI.MachineLearning.TensorUInt8Bit";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::LearningModelDeviceKind> = L"Windows.AI.MachineLearning.LearningModelDeviceKind";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::LearningModelFeatureKind> = L"Windows.AI.MachineLearning.LearningModelFeatureKind";
+    template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::LearningModelPixelRange> = L"Windows.AI.MachineLearning.LearningModelPixelRange";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::TensorKind> = L"Windows.AI.MachineLearning.TensorKind";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor> = L"Windows.AI.MachineLearning.IImageFeatureDescriptor";
+    template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2> = L"Windows.AI.MachineLearning.IImageFeatureDescriptor2";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::IImageFeatureValue> = L"Windows.AI.MachineLearning.IImageFeatureValue";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::IImageFeatureValueStatics> = L"Windows.AI.MachineLearning.IImageFeatureValueStatics";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModel> = L"Windows.AI.MachineLearning.ILearningModel";
@@ -300,6 +313,7 @@ namespace winrt::impl
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionFactory2> = L"Windows.AI.MachineLearning.ILearningModelSessionFactory2";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions> = L"Windows.AI.MachineLearning.ILearningModelSessionOptions";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2> = L"Windows.AI.MachineLearning.ILearningModelSessionOptions2";
+    template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3> = L"Windows.AI.MachineLearning.ILearningModelSessionOptions3";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ILearningModelStatics> = L"Windows.AI.MachineLearning.ILearningModelStatics";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::IMapFeatureDescriptor> = L"Windows.AI.MachineLearning.IMapFeatureDescriptor";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ISequenceFeatureDescriptor> = L"Windows.AI.MachineLearning.ISequenceFeatureDescriptor";
@@ -345,6 +359,7 @@ namespace winrt::impl
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ITensorUInt8BitStatics> = L"Windows.AI.MachineLearning.ITensorUInt8BitStatics";
     template <> inline constexpr auto& name_v<winrt::Windows::AI::MachineLearning::ITensorUInt8BitStatics2> = L"Windows.AI.MachineLearning.ITensorUInt8BitStatics2";
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor>{ 0x365585A5,0x171A,0x4A2A,{ 0x98,0x5F,0x26,0x51,0x59,0xD3,0x89,0x5A } }; // 365585A5-171A-4A2A-985F-265159D3895A
+    template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2>{ 0x2B27CCA7,0xD533,0x5862,{ 0xBB,0x98,0x16,0x11,0xB1,0x55,0xB0,0xE1 } }; // 2B27CCA7-D533-5862-BB98-1611B155B0E1
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::IImageFeatureValue>{ 0xF0414FD9,0xC9AA,0x4405,{ 0xB7,0xFB,0x94,0xF8,0x7C,0x8A,0x30,0x37 } }; // F0414FD9-C9AA-4405-B7FB-94F87C8A3037
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::IImageFeatureValueStatics>{ 0x1BC317FD,0x23CB,0x4610,{ 0xB0,0x85,0xC8,0xE1,0xC8,0x7E,0xBA,0xA0 } }; // 1BC317FD-23CB-4610-B085-C8E1C87EBAA0
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModel>{ 0x5B8E4920,0x489F,0x4E86,{ 0x91,0x28,0x26,0x5A,0x32,0x7B,0x78,0xFA } }; // 5B8E4920-489F-4E86-9128-265A327B78FA
@@ -362,6 +377,7 @@ namespace winrt::impl
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionFactory2>{ 0x4E5C88BF,0x0A1F,0x5FEC,{ 0xAD,0xE0,0x2F,0xD9,0x1E,0x4E,0xF2,0x9B } }; // 4E5C88BF-0A1F-5FEC-ADE0-2FD91E4EF29B
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions>{ 0xB8F63FA1,0x134D,0x5133,{ 0x8C,0xFF,0x3A,0x5C,0x3C,0x26,0x3B,0xEB } }; // B8F63FA1-134D-5133-8CFF-3A5C3C263BEB
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2>{ 0x6FCD1DC4,0x175F,0x5BD2,{ 0x8D,0xE5,0x2F,0x20,0x06,0xA2,0x5A,0xDF } }; // 6FCD1DC4-175F-5BD2-8DE5-2F2006A25ADF
+    template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>{ 0x58E15CEE,0xD8C2,0x56FC,{ 0x92,0xE8,0x76,0xD7,0x51,0x08,0x10,0x86 } }; // 58E15CEE-D8C2-56FC-92E8-76D751081086
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ILearningModelStatics>{ 0xE3B977E8,0x6952,0x4E47,{ 0x8E,0xF4,0x1F,0x7F,0x07,0x89,0x7C,0x6D } }; // E3B977E8-6952-4E47-8EF4-1F7F07897C6D
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::IMapFeatureDescriptor>{ 0x530424BD,0xA257,0x436D,{ 0x9E,0x60,0xC2,0x98,0x1F,0x7C,0xC5,0xC4 } }; // 530424BD-A257-436D-9E60-C2981F7CC5C4
     template <> inline constexpr guid guid_v<winrt::Windows::AI::MachineLearning::ISequenceFeatureDescriptor>{ 0x84F6945A,0x562B,0x4D62,{ 0xA8,0x51,0x73,0x9A,0xCE,0xD9,0x66,0x68 } }; // 84F6945A-562B-4D62-A851-739ACED96668
@@ -438,6 +454,13 @@ namespace winrt::impl
             virtual int32_t __stdcall get_BitmapAlphaMode(int32_t*) noexcept = 0;
             virtual int32_t __stdcall get_Width(uint32_t*) noexcept = 0;
             virtual int32_t __stdcall get_Height(uint32_t*) noexcept = 0;
+        };
+    };
+    template <> struct abi<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2>
+    {
+        struct __declspec(novtable) type : inspectable_abi
+        {
+            virtual int32_t __stdcall get_PixelRange(int32_t*) noexcept = 0;
         };
     };
     template <> struct abi<winrt::Windows::AI::MachineLearning::IImageFeatureValue>
@@ -581,6 +604,13 @@ namespace winrt::impl
         {
             virtual int32_t __stdcall get_CloseModelOnSessionCreation(bool*) noexcept = 0;
             virtual int32_t __stdcall put_CloseModelOnSessionCreation(bool) noexcept = 0;
+        };
+    };
+    template <> struct abi<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>
+    {
+        struct __declspec(novtable) type : inspectable_abi
+        {
+            virtual int32_t __stdcall OverrideNamedDimension(void*, uint32_t) noexcept = 0;
         };
     };
     template <> struct abi<winrt::Windows::AI::MachineLearning::ILearningModelStatics>
@@ -965,6 +995,15 @@ namespace winrt::impl
         template <typename D> using type = consume_Windows_AI_MachineLearning_IImageFeatureDescriptor<D>;
     };
     template <typename D>
+    struct consume_Windows_AI_MachineLearning_IImageFeatureDescriptor2
+    {
+        [[nodiscard]] WINRT_IMPL_AUTO(winrt::Windows::AI::MachineLearning::LearningModelPixelRange) PixelRange() const;
+    };
+    template <> struct consume<winrt::Windows::AI::MachineLearning::IImageFeatureDescriptor2>
+    {
+        template <typename D> using type = consume_Windows_AI_MachineLearning_IImageFeatureDescriptor2<D>;
+    };
+    template <typename D>
     struct consume_Windows_AI_MachineLearning_IImageFeatureValue
     {
         [[nodiscard]] WINRT_IMPL_AUTO(winrt::Windows::Media::VideoFrame) VideoFrame() const;
@@ -1140,6 +1179,15 @@ namespace winrt::impl
     template <> struct consume<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions2>
     {
         template <typename D> using type = consume_Windows_AI_MachineLearning_ILearningModelSessionOptions2<D>;
+    };
+    template <typename D>
+    struct consume_Windows_AI_MachineLearning_ILearningModelSessionOptions3
+    {
+        WINRT_IMPL_AUTO(void) OverrideNamedDimension(param::hstring const& name, uint32_t dimension) const;
+    };
+    template <> struct consume<winrt::Windows::AI::MachineLearning::ILearningModelSessionOptions3>
+    {
+        template <typename D> using type = consume_Windows_AI_MachineLearning_ILearningModelSessionOptions3<D>;
     };
     template <typename D>
     struct consume_Windows_AI_MachineLearning_ILearningModelStatics

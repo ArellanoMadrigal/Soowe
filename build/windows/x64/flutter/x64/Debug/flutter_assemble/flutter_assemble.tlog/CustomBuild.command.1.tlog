@@ -1,6 +1,6 @@
-^C:\USERS\LENOVO\DOWNLOADS\SOOWE_MOVIL_-API-CONNECTION\BUILD\WINDOWS\X64\CMAKEFILES\3A070C569986440FD963523851A3699C\FLUTTER_WINDOWS.DLL.RULE
+^C:\WORKCODES\UTMCODES\FLUTTERCODES\SOOWE\BUILD\WINDOWS\X64\CMAKEFILES\B8354BD00E460AC2278577D1D42B1AC9\FLUTTER_WINDOWS.DLL.RULE
 setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\src\flutter PROJECT_DIR=C:\Users\lenovo\Downloads\soowe_movil_-api-connection FLUTTER_ROOT=C:\src\flutter FLUTTER_EPHEMERAL_DIR=C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral PROJECT_DIR=C:\Users\lenovo\Downloads\soowe_movil_-api-connection FLUTTER_TARGET=C:\Users\lenovo\Downloads\soowe_movil_-api-connection\lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=C:\Users\lenovo\Downloads\soowe_movil_-api-connection\.dart_tool\package_config.json C:/src/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\workCodes\flutter PROJECT_DIR=C:\workCodes\UTMcodes\fluttercodes\Soowe FLUTTER_ROOT=C:\workCodes\flutter FLUTTER_EPHEMERAL_DIR=C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral PROJECT_DIR=C:\workCodes\UTMcodes\fluttercodes\Soowe FLUTTER_TARGET=C:\workCodes\UTMcodes\fluttercodes\Soowe\lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=C:\workCodes\UTMcodes\fluttercodes\Soowe\.dart_tool\package_config.json C:/workCodes/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
@@ -8,7 +8,7 @@ endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
-^C:\USERS\LENOVO\DOWNLOADS\SOOWE_MOVIL_-API-CONNECTION\BUILD\WINDOWS\X64\CMAKEFILES\701EA6AD298B90D1833A5E6DC9A05D90\FLUTTER_ASSEMBLE.RULE
+^C:\WORKCODES\UTMCODES\FLUTTERCODES\SOOWE\BUILD\WINDOWS\X64\CMAKEFILES\2457C1DC77E9234466A2BF59D49AC1FE\FLUTTER_ASSEMBLE.RULE
 setlocal
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
@@ -16,9 +16,9 @@ endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
-^C:\USERS\LENOVO\DOWNLOADS\SOOWE_MOVIL_-API-CONNECTION\WINDOWS\FLUTTER\CMAKELISTS.TXT
+^C:\WORKCODES\UTMCODES\FLUTTERCODES\SOOWE\WINDOWS\FLUTTER\CMAKELISTS.TXT
 setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/lenovo/Downloads/soowe_movil_-api-connection/windows -BC:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64 --check-stamp-file C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/flutter/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workCodes/UTMcodes/fluttercodes/Soowe/windows -BC:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64 --check-stamp-file C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/flutter/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

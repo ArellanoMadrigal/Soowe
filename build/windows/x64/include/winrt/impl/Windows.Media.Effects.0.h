@@ -87,6 +87,8 @@ WINRT_EXPORT namespace winrt::Windows::Media::Effects
         SpeakerProtection = 15,
         SpeakerCompensation = 16,
         DynamicRangeCompression = 17,
+        FarFieldBeamForming = 18,
+        DeepNoiseSuppression = 19,
     };
     enum class MediaEffectClosedReason : int32_t
     {

@@ -59,6 +59,18 @@ namespace winrt::impl
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController)->GetDeviceProperty(*(void**)(&propertyId), &propertyValue));
         return winrt::Windows::Foundation::IInspectable{ propertyValue, take_ownership_from_abi };
     }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::CameraOcclusionInfo) consume_Windows_Media_Devices_IAdvancedVideoCaptureDeviceController10<D>::CameraOcclusionInfo() const
+    {
+        void* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController10)->get_CameraOcclusionInfo(&value));
+        return winrt::Windows::Media::Devices::CameraOcclusionInfo{ value, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_IAdvancedVideoCaptureDeviceController11<D>::TryAcquireExclusiveControl(param::hstring const& deviceId, winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlReleaseMode const& mode) const
+    {
+        bool result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController11)->TryAcquireExclusiveControl(*(void**)(&deviceId), static_cast<int32_t>(mode), &result));
+        return result;
+    }
     template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::LowLagPhotoSequenceControl) consume_Windows_Media_Devices_IAdvancedVideoCaptureDeviceController2<D>::LowLagPhotoSequence() const
     {
         void* value{};
@@ -235,6 +247,12 @@ namespace winrt::impl
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController8)->get_PanelBasedOptimizationControl(&value));
         return winrt::Windows::Media::Devices::PanelBasedOptimizationControl{ value, take_ownership_from_abi };
     }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::DigitalWindowControl) consume_Windows_Media_Devices_IAdvancedVideoCaptureDeviceController9<D>::DigitalWindowControl() const
+    {
+        void* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController9)->get_DigitalWindowControl(&value));
+        return winrt::Windows::Media::Devices::DigitalWindowControl{ value, take_ownership_from_abi };
+    }
     template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IAudioDeviceController<D>::Muted(bool value) const
     {
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAudioDeviceController)->put_Muted(value));
@@ -335,6 +353,50 @@ namespace winrt::impl
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IAudioDeviceModulesManagerFactory)->Create(*(void**)(&deviceId), &result));
         return winrt::Windows::Media::Devices::AudioDeviceModulesManager{ result, take_ownership_from_abi };
     }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::CameraOcclusionState) consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::GetState() const
+    {
+        void* result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionInfo)->GetState(&result));
+        return winrt::Windows::Media::Devices::CameraOcclusionState{ result, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::IsOcclusionKindSupported(winrt::Windows::Media::Devices::CameraOcclusionKind const& occlusionKind) const
+    {
+        bool result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionInfo)->IsOcclusionKindSupported(static_cast<int32_t>(occlusionKind), &result));
+        return result;
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::event_token) consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::StateChanged(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Media::Devices::CameraOcclusionInfo, winrt::Windows::Media::Devices::CameraOcclusionStateChangedEventArgs> const& handler) const
+    {
+        winrt::event_token token{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionInfo)->add_StateChanged(*(void**)(&handler), put_abi(token)));
+        return token;
+    }
+    template <typename D> typename consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::StateChanged_revoker consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::StateChanged(auto_revoke_t, winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Media::Devices::CameraOcclusionInfo, winrt::Windows::Media::Devices::CameraOcclusionStateChangedEventArgs> const& handler) const
+    {
+        return impl::make_event_revoker<D, StateChanged_revoker>(this, StateChanged(handler));
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_ICameraOcclusionInfo<D>::StateChanged(winrt::event_token const& token) const noexcept
+    {
+        WINRT_VERIFY_(0, WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionInfo)->remove_StateChanged(impl::bind_in(token)));
+    }
+    template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_ICameraOcclusionState<D>::IsOccluded() const
+    {
+        bool value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionState)->get_IsOccluded(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_ICameraOcclusionState<D>::IsOcclusionKind(winrt::Windows::Media::Devices::CameraOcclusionKind const& occlusionKind) const
+    {
+        bool result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionState)->IsOcclusionKind(static_cast<int32_t>(occlusionKind), &result));
+        return result;
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::CameraOcclusionState) consume_Windows_Media_Devices_ICameraOcclusionStateChangedEventArgs<D>::State() const
+    {
+        void* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::ICameraOcclusionStateChangedEventArgs)->get_State(&value));
+        return winrt::Windows::Media::Devices::CameraOcclusionState{ value, take_ownership_from_abi };
+    }
     template <typename D> WINRT_IMPL_AUTO(hstring) consume_Windows_Media_Devices_IDefaultAudioDeviceChangedEventArgs<D>::Id() const
     {
         void* value{};
@@ -346,6 +408,117 @@ namespace winrt::impl
         winrt::Windows::Media::Devices::AudioDeviceRole value{};
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDefaultAudioDeviceChangedEventArgs)->get_Role(reinterpret_cast<int32_t*>(&value)));
         return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::NormalizedOriginTop() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->get_NormalizedOriginTop(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::NormalizedOriginTop(double value) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->put_NormalizedOriginTop(value));
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::NormalizedOriginLeft() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->get_NormalizedOriginLeft(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::NormalizedOriginLeft(double value) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->put_NormalizedOriginLeft(value));
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::Scale() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->get_Scale(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IDigitalWindowBounds<D>::Scale(double value) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowBounds)->put_Scale(value));
+    }
+    template <typename D> WINRT_IMPL_AUTO(int32_t) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::Width() const
+    {
+        int32_t value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_Width(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(int32_t) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::Height() const
+    {
+        int32_t value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_Height(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::MinScaleValue() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_MinScaleValue(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::MaxScaleValue() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_MaxScaleValue(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(double) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::MinScaleValueWithoutUpsampling() const
+    {
+        double value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_MinScaleValueWithoutUpsampling(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Foundation::Rect) consume_Windows_Media_Devices_IDigitalWindowCapability<D>::NormalizedFieldOfViewLimit() const
+    {
+        winrt::Windows::Foundation::Rect value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowCapability)->get_NormalizedFieldOfViewLimit(put_abi(value)));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_IDigitalWindowControl<D>::IsSupported() const
+    {
+        bool value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->get_IsSupported(&value));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(com_array<winrt::Windows::Media::Devices::DigitalWindowMode>) consume_Windows_Media_Devices_IDigitalWindowControl<D>::SupportedModes() const
+    {
+        uint32_t value_impl_size{};
+        int32_t* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->get_SupportedModes(&value_impl_size, &value));
+        return com_array<winrt::Windows::Media::Devices::DigitalWindowMode>{ value, value_impl_size, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::DigitalWindowMode) consume_Windows_Media_Devices_IDigitalWindowControl<D>::CurrentMode() const
+    {
+        winrt::Windows::Media::Devices::DigitalWindowMode value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->get_CurrentMode(reinterpret_cast<int32_t*>(&value)));
+        return value;
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::DigitalWindowBounds) consume_Windows_Media_Devices_IDigitalWindowControl<D>::GetBounds() const
+    {
+        void* result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->GetBounds(&result));
+        return winrt::Windows::Media::Devices::DigitalWindowBounds{ result, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IDigitalWindowControl<D>::Configure(winrt::Windows::Media::Devices::DigitalWindowMode const& digitalWindowMode) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->Configure(static_cast<int32_t>(digitalWindowMode)));
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_Media_Devices_IDigitalWindowControl<D>::Configure(winrt::Windows::Media::Devices::DigitalWindowMode const& digitalWindowMode, winrt::Windows::Media::Devices::DigitalWindowBounds const& digitalWindowBounds) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->ConfigureWithBounds(static_cast<int32_t>(digitalWindowMode), *(void**)(&digitalWindowBounds)));
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Media::Devices::DigitalWindowCapability>) consume_Windows_Media_Devices_IDigitalWindowControl<D>::SupportedCapabilities() const
+    {
+        void* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->get_SupportedCapabilities(&value));
+        return winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Media::Devices::DigitalWindowCapability>{ value, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::Media::Devices::DigitalWindowCapability) consume_Windows_Media_Devices_IDigitalWindowControl<D>::GetCapabilityForSize(int32_t width, int32_t height) const
+    {
+        void* result{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::Media::Devices::IDigitalWindowControl)->GetCapabilityForSize(width, height, &result));
+        return winrt::Windows::Media::Devices::DigitalWindowCapability{ result, take_ownership_from_abi };
     }
     template <typename D> WINRT_IMPL_AUTO(bool) consume_Windows_Media_Devices_IExposureCompensationControl<D>::Supported() const
     {
@@ -1665,6 +1838,33 @@ namespace winrt::impl
 #endif
 #ifndef WINRT_LEAN_AND_MEAN
     template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController10> : produce_base<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController10>
+    {
+        int32_t __stdcall get_CameraOcclusionInfo(void** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Media::Devices::CameraOcclusionInfo>(this->shim().CameraOcclusionInfo());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController11> : produce_base<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController11>
+    {
+        int32_t __stdcall TryAcquireExclusiveControl(void* deviceId, int32_t mode, bool* result) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<bool>(this->shim().TryAcquireExclusiveControl(*reinterpret_cast<hstring const*>(&deviceId), *reinterpret_cast<winrt::Windows::Media::Capture::MediaCaptureDeviceExclusiveControlReleaseMode const*>(&mode)));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
     struct produce<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController2> : produce_base<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController2>
     {
         int32_t __stdcall get_LowLagPhotoSequence(void** value) noexcept final try
@@ -1941,6 +2141,20 @@ namespace winrt::impl
 #endif
 #ifndef WINRT_LEAN_AND_MEAN
     template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController9> : produce_base<D, winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController9>
+    {
+        int32_t __stdcall get_DigitalWindowControl(void** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Media::Devices::DigitalWindowControl>(this->shim().DigitalWindowControl());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
     struct produce<D, winrt::Windows::Media::Devices::IAudioDeviceController> : produce_base<D, winrt::Windows::Media::Devices::IAudioDeviceController>
     {
         int32_t __stdcall put_Muted(bool value) noexcept final try
@@ -2096,6 +2310,75 @@ namespace winrt::impl
         catch (...) { return to_hresult(); }
     };
 #endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::ICameraOcclusionInfo> : produce_base<D, winrt::Windows::Media::Devices::ICameraOcclusionInfo>
+    {
+        int32_t __stdcall GetState(void** result) noexcept final try
+        {
+            clear_abi(result);
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<winrt::Windows::Media::Devices::CameraOcclusionState>(this->shim().GetState());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall IsOcclusionKindSupported(int32_t occlusionKind, bool* result) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<bool>(this->shim().IsOcclusionKindSupported(*reinterpret_cast<winrt::Windows::Media::Devices::CameraOcclusionKind const*>(&occlusionKind)));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall add_StateChanged(void* handler, winrt::event_token* token) noexcept final try
+        {
+            zero_abi<winrt::event_token>(token);
+            typename D::abi_guard guard(this->shim());
+            *token = detach_from<winrt::event_token>(this->shim().StateChanged(*reinterpret_cast<winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Media::Devices::CameraOcclusionInfo, winrt::Windows::Media::Devices::CameraOcclusionStateChangedEventArgs> const*>(&handler)));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall remove_StateChanged(winrt::event_token token) noexcept final
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().StateChanged(*reinterpret_cast<winrt::event_token const*>(&token));
+            return 0;
+        }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::ICameraOcclusionState> : produce_base<D, winrt::Windows::Media::Devices::ICameraOcclusionState>
+    {
+        int32_t __stdcall get_IsOccluded(bool* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<bool>(this->shim().IsOccluded());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall IsOcclusionKind(int32_t occlusionKind, bool* result) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<bool>(this->shim().IsOcclusionKind(*reinterpret_cast<winrt::Windows::Media::Devices::CameraOcclusionKind const*>(&occlusionKind)));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::ICameraOcclusionStateChangedEventArgs> : produce_base<D, winrt::Windows::Media::Devices::ICameraOcclusionStateChangedEventArgs>
+    {
+        int32_t __stdcall get_State(void** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Media::Devices::CameraOcclusionState>(this->shim().State());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
     template <typename D>
     struct produce<D, winrt::Windows::Media::Devices::IDefaultAudioDeviceChangedEventArgs> : produce_base<D, winrt::Windows::Media::Devices::IDefaultAudioDeviceChangedEventArgs>
     {
@@ -2115,6 +2398,169 @@ namespace winrt::impl
         }
         catch (...) { return to_hresult(); }
     };
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IDigitalWindowBounds> : produce_base<D, winrt::Windows::Media::Devices::IDigitalWindowBounds>
+    {
+        int32_t __stdcall get_NormalizedOriginTop(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().NormalizedOriginTop());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall put_NormalizedOriginTop(double value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().NormalizedOriginTop(value);
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_NormalizedOriginLeft(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().NormalizedOriginLeft());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall put_NormalizedOriginLeft(double value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().NormalizedOriginLeft(value);
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_Scale(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().Scale());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall put_Scale(double value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().Scale(value);
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IDigitalWindowCapability> : produce_base<D, winrt::Windows::Media::Devices::IDigitalWindowCapability>
+    {
+        int32_t __stdcall get_Width(int32_t* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<int32_t>(this->shim().Width());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_Height(int32_t* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<int32_t>(this->shim().Height());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_MinScaleValue(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().MinScaleValue());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_MaxScaleValue(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().MaxScaleValue());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_MinScaleValueWithoutUpsampling(double* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<double>(this->shim().MinScaleValueWithoutUpsampling());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_NormalizedFieldOfViewLimit(winrt::Windows::Foundation::Rect* value) noexcept final try
+        {
+            zero_abi<winrt::Windows::Foundation::Rect>(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Foundation::Rect>(this->shim().NormalizedFieldOfViewLimit());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
+    struct produce<D, winrt::Windows::Media::Devices::IDigitalWindowControl> : produce_base<D, winrt::Windows::Media::Devices::IDigitalWindowControl>
+    {
+        int32_t __stdcall get_IsSupported(bool* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<bool>(this->shim().IsSupported());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_SupportedModes(uint32_t* __valueSize, int32_t** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            std::tie(*__valueSize, *value) = detach_abi(this->shim().SupportedModes());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_CurrentMode(int32_t* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Media::Devices::DigitalWindowMode>(this->shim().CurrentMode());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall GetBounds(void** result) noexcept final try
+        {
+            clear_abi(result);
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<winrt::Windows::Media::Devices::DigitalWindowBounds>(this->shim().GetBounds());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall Configure(int32_t digitalWindowMode) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().Configure(*reinterpret_cast<winrt::Windows::Media::Devices::DigitalWindowMode const*>(&digitalWindowMode));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall ConfigureWithBounds(int32_t digitalWindowMode, void* digitalWindowBounds) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().Configure(*reinterpret_cast<winrt::Windows::Media::Devices::DigitalWindowMode const*>(&digitalWindowMode), *reinterpret_cast<winrt::Windows::Media::Devices::DigitalWindowBounds const*>(&digitalWindowBounds));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall get_SupportedCapabilities(void** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Media::Devices::DigitalWindowCapability>>(this->shim().SupportedCapabilities());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall GetCapabilityForSize(int32_t width, int32_t height, void** result) noexcept final try
+        {
+            clear_abi(result);
+            typename D::abi_guard guard(this->shim());
+            *result = detach_from<winrt::Windows::Media::Devices::DigitalWindowCapability>(this->shim().GetCapabilityForSize(width, height));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
 #ifndef WINRT_LEAN_AND_MEAN
     template <typename D>
     struct produce<D, winrt::Windows::Media::Devices::IExposureCompensationControl> : produce_base<D, winrt::Windows::Media::Devices::IExposureCompensationControl>
@@ -3930,6 +4376,10 @@ WINRT_EXPORT namespace winrt::Windows::Media::Devices
         AudioDeviceModulesManager(impl::call_factory<AudioDeviceModulesManager, IAudioDeviceModulesManagerFactory>([&](IAudioDeviceModulesManagerFactory const& f) { return f.Create(deviceId); }))
     {
     }
+    inline DigitalWindowBounds::DigitalWindowBounds() :
+        DigitalWindowBounds(impl::call_factory_cast<DigitalWindowBounds(*)(winrt::Windows::Foundation::IActivationFactory const&), DigitalWindowBounds>([](winrt::Windows::Foundation::IActivationFactory const& f) { return f.template ActivateInstance<DigitalWindowBounds>(); }))
+    {
+    }
     inline FocusSettings::FocusSettings() :
         FocusSettings(impl::call_factory_cast<FocusSettings(*)(winrt::Windows::Foundation::IActivationFactory const&), FocusSettings>([](winrt::Windows::Foundation::IActivationFactory const& f) { return f.template ActivateInstance<FocusSettings>(); }))
     {
@@ -3995,6 +4445,8 @@ namespace std
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedPhotoCaptureSettings> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedPhotoControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController10> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController11> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController2> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController3> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController4> : winrt::impl::hash_base {};
@@ -4002,12 +4454,19 @@ namespace std
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController6> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController7> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController8> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IAdvancedVideoCaptureDeviceController9> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAudioDeviceController> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAudioDeviceModule> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAudioDeviceModuleNotificationEventArgs> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAudioDeviceModulesManager> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IAudioDeviceModulesManagerFactory> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::ICameraOcclusionInfo> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::ICameraOcclusionState> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::ICameraOcclusionStateChangedEventArgs> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IDefaultAudioDeviceChangedEventArgs> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IDigitalWindowBounds> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IDigitalWindowCapability> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::IDigitalWindowControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IExposureCompensationControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IExposureControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::IExposurePriorityVideoControl> : winrt::impl::hash_base {};
@@ -4048,8 +4507,14 @@ namespace std
     template<> struct hash<winrt::Windows::Media::Devices::AudioDeviceModule> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::AudioDeviceModuleNotificationEventArgs> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::AudioDeviceModulesManager> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::CameraOcclusionInfo> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::CameraOcclusionState> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::CameraOcclusionStateChangedEventArgs> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::DefaultAudioCaptureDeviceChangedEventArgs> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::DefaultAudioRenderDeviceChangedEventArgs> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::DigitalWindowBounds> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::DigitalWindowCapability> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::Media::Devices::DigitalWindowControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::ExposureCompensationControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::ExposureControl> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::Media::Devices::ExposurePriorityVideoControl> : winrt::impl::hash_base {};

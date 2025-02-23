@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_windows.cpp">
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_windows.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_plugin.cpp">
+    <ClCompile Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include\geolocator_windows\geolocator_windows.h">
+    <ClInclude Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\include\geolocator_windows\geolocator_windows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_plugin.h">
+    <ClInclude Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_enums.h">
+    <ClInclude Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\geolocator_enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\lenovo\Downloads\soowe_movil_-api-connection\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\CMakeLists.txt" />
+    <CustomBuild Include="C:\workCodes\UTMcodes\fluttercodes\Soowe\windows\flutter\ephemeral\.plugin_symlinks\geolocator_windows\windows\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{A711C600-A955-3342-B1A6-7928627184A7}</UniqueIdentifier>
+      <UniqueIdentifier>{155A71B6-1D4C-3E95-9CEE-0F3EF751E782}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{2237A602-7355-3697-9B14-50E158125656}</UniqueIdentifier>
+      <UniqueIdentifier>{5CE5D2A5-9A2C-31D2-8797-3F137889AF48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

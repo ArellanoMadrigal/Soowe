@@ -34,6 +34,13 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Capture
         IDirect3D11CaptureFramePoolStatics2(std::nullptr_t = nullptr) noexcept {}
         IDirect3D11CaptureFramePoolStatics2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IGraphicsCaptureAccessStatics :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IGraphicsCaptureAccessStatics>
+    {
+        IGraphicsCaptureAccessStatics(std::nullptr_t = nullptr) noexcept {}
+        IGraphicsCaptureAccessStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IGraphicsCaptureItem :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IGraphicsCaptureItem>
@@ -47,6 +54,13 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Capture
     {
         IGraphicsCaptureItemStatics(std::nullptr_t = nullptr) noexcept {}
         IGraphicsCaptureItemStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IGraphicsCaptureItemStatics2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IGraphicsCaptureItemStatics2>
+    {
+        IGraphicsCaptureItemStatics2(std::nullptr_t = nullptr) noexcept {}
+        IGraphicsCaptureItemStatics2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IGraphicsCapturePicker :
         winrt::Windows::Foundation::IInspectable,
@@ -68,6 +82,13 @@ WINRT_EXPORT namespace winrt::Windows::Graphics::Capture
     {
         IGraphicsCaptureSession2(std::nullptr_t = nullptr) noexcept {}
         IGraphicsCaptureSession2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IGraphicsCaptureSession3 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IGraphicsCaptureSession3>
+    {
+        IGraphicsCaptureSession3(std::nullptr_t = nullptr) noexcept {}
+        IGraphicsCaptureSession3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IGraphicsCaptureSessionStatics :
         winrt::Windows::Foundation::IInspectable,

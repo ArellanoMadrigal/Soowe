@@ -510,6 +510,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Controls
         ICalendarView(std::nullptr_t = nullptr) noexcept {}
         ICalendarView(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) ICalendarView2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICalendarView2>
+    {
+        ICalendarView2(std::nullptr_t = nullptr) noexcept {}
+        ICalendarView2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) ICalendarViewDayItem :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<ICalendarViewDayItem>
@@ -558,6 +565,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Controls
     {
         ICalendarViewStatics(std::nullptr_t = nullptr) noexcept {}
         ICalendarViewStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ICalendarViewStatics2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ICalendarViewStatics2>
+    {
+        ICalendarViewStatics2(std::nullptr_t = nullptr) noexcept {}
+        ICalendarViewStatics2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ICandidateWindowBoundsChangedEventArgs :
         winrt::Windows::Foundation::IInspectable,
@@ -1875,6 +1889,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Controls
         IHandwritingView(std::nullptr_t = nullptr) noexcept {}
         IHandwritingView(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IHandwritingView2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHandwritingView2>
+    {
+        IHandwritingView2(std::nullptr_t = nullptr) noexcept {}
+        IHandwritingView2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IHandwritingViewCandidatesChangedEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHandwritingViewCandidatesChangedEventArgs>
+    {
+        IHandwritingViewCandidatesChangedEventArgs(std::nullptr_t = nullptr) noexcept {}
+        IHandwritingViewCandidatesChangedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IHandwritingViewFactory :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IHandwritingViewFactory>
@@ -1888,6 +1916,20 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Controls
     {
         IHandwritingViewStatics(std::nullptr_t = nullptr) noexcept {}
         IHandwritingViewStatics(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IHandwritingViewStatics2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHandwritingViewStatics2>
+    {
+        IHandwritingViewStatics2(std::nullptr_t = nullptr) noexcept {}
+        IHandwritingViewStatics2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) IHandwritingViewTextSubmittedEventArgs :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IHandwritingViewTextSubmittedEventArgs>
+    {
+        IHandwritingViewTextSubmittedEventArgs(std::nullptr_t = nullptr) noexcept {}
+        IHandwritingViewTextSubmittedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) IHub :
         winrt::Windows::Foundation::IInspectable,

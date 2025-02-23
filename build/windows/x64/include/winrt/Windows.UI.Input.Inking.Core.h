@@ -156,6 +156,16 @@ namespace winrt::impl
         check_hresult(WINRT_IMPL_SHIM(winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource)->get_InkPresenter(&value));
         return winrt::Windows::UI::Input::Inking::InkPresenter{ value, take_ownership_from_abi };
     }
+    template <typename D> WINRT_IMPL_AUTO(winrt::Windows::UI::Core::CoreCursor) consume_Windows_UI_Input_Inking_Core_ICoreInkIndependentInputSource2<D>::PointerCursor() const
+    {
+        void* value{};
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource2)->get_PointerCursor(&value));
+        return winrt::Windows::UI::Core::CoreCursor{ value, take_ownership_from_abi };
+    }
+    template <typename D> WINRT_IMPL_AUTO(void) consume_Windows_UI_Input_Inking_Core_ICoreInkIndependentInputSource2<D>::PointerCursor(winrt::Windows::UI::Core::CoreCursor const& value) const
+    {
+        check_hresult(WINRT_IMPL_SHIM(winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource2)->put_PointerCursor(*(void**)(&value)));
+    }
     template <typename D> WINRT_IMPL_AUTO(winrt::Windows::UI::Input::Inking::Core::CoreInkIndependentInputSource) consume_Windows_UI_Input_Inking_Core_ICoreInkIndependentInputSourceStatics<D>::Create(winrt::Windows::UI::Input::Inking::InkPresenter const& inkPresenter) const
     {
         void* inkIndependentInputSource{};
@@ -456,6 +466,27 @@ namespace winrt::impl
 #endif
 #ifndef WINRT_LEAN_AND_MEAN
     template <typename D>
+    struct produce<D, winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource2> : produce_base<D, winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource2>
+    {
+        int32_t __stdcall get_PointerCursor(void** value) noexcept final try
+        {
+            clear_abi(value);
+            typename D::abi_guard guard(this->shim());
+            *value = detach_from<winrt::Windows::UI::Core::CoreCursor>(this->shim().PointerCursor());
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+        int32_t __stdcall put_PointerCursor(void* value) noexcept final try
+        {
+            typename D::abi_guard guard(this->shim());
+            this->shim().PointerCursor(*reinterpret_cast<winrt::Windows::UI::Core::CoreCursor const*>(&value));
+            return 0;
+        }
+        catch (...) { return to_hresult(); }
+    };
+#endif
+#ifndef WINRT_LEAN_AND_MEAN
+    template <typename D>
     struct produce<D, winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSourceStatics> : produce_base<D, winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSourceStatics>
     {
         int32_t __stdcall Create(void* inkPresenter, void** inkIndependentInputSource) noexcept final try
@@ -656,6 +687,7 @@ namespace std
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreIncrementalInkStroke> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreIncrementalInkStrokeFactory> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource> : winrt::impl::hash_base {};
+    template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSource2> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreInkIndependentInputSourceStatics> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreInkPresenterHost> : winrt::impl::hash_base {};
     template<> struct hash<winrt::Windows::UI::Input::Inking::Core::ICoreWetStrokeUpdateEventArgs> : winrt::impl::hash_base {};

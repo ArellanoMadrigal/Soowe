@@ -22,14 +22,14 @@ function(check_file_hash has_hash hash_is_good)
   set("${has_hash}" TRUE PARENT_SCOPE)
 
   message(STATUS "verifying file...
-       file='C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'")
+       file='C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'")
 
-  file("SHA256" "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe" actual_value)
+  file("SHA256" "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe" actual_value)
 
   if(NOT "${actual_value}" STREQUAL "04eb6c4fe4213907e2773e1be1bbbd730e9a655a3c9c58387ce8d4a714a5b9e1")
     set("${hash_is_good}" FALSE PARENT_SCOPE)
     message(STATUS "SHA256 hash of
-    C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe
+    C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe
   does not match expected value
     expected: '04eb6c4fe4213907e2773e1be1bbbd730e9a655a3c9c58387ce8d4a714a5b9e1'
       actual: '${actual_value}'")
@@ -71,51 +71,43 @@ function(sleep_before_download attempt)
   execute_process(COMMAND "${CMAKE_COMMAND}" -E sleep "${sleep_seconds}")
 endfunction()
 
-if("C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe" STREQUAL "")
-  message(FATAL_ERROR "LOCAL can't be empty")
-endif()
-
-if("https://dist.nuget.org/win-x86-commandline/v6.0.0/nuget.exe" STREQUAL "")
-  message(FATAL_ERROR "REMOTE can't be empty")
-endif()
-
-if(EXISTS "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
+if(EXISTS "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
   check_file_hash(has_hash hash_is_good)
   if(has_hash)
     if(hash_is_good)
       message(STATUS "File already exists and hash match (skip download):
-  file='C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
+  file='C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
   SHA256='04eb6c4fe4213907e2773e1be1bbbd730e9a655a3c9c58387ce8d4a714a5b9e1'"
       )
       return()
     else()
       message(STATUS "File already exists but hash mismatch. Removing...")
-      file(REMOVE "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
+      file(REMOVE "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
     endif()
   else()
     message(STATUS "File already exists but no hash specified (use URL_HASH):
-  file='C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
+  file='C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
 Old file will be removed and new file downloaded from URL."
     )
-    file(REMOVE "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
+    file(REMOVE "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
   endif()
 endif()
 
 set(retry_number 5)
 
 message(STATUS "Downloading...
-   dst='C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
+   dst='C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe'
    timeout='none'
    inactivity timeout='none'"
 )
-set(download_retry_codes 7 6 8 15)
+set(download_retry_codes 7 6 8 15 28)
 set(skip_url_list)
 set(status_code)
 foreach(i RANGE ${retry_number})
   if(status_code IN_LIST download_retry_codes)
     sleep_before_download(${i})
   endif()
-  foreach(url https://dist.nuget.org/win-x86-commandline/v6.0.0/nuget.exe)
+  foreach(url IN ITEMS [====[https://dist.nuget.org/win-x86-commandline/v6.0.0/nuget.exe]====])
     if(NOT url IN_LIST skip_url_list)
       message(STATUS "Using src='${url}'")
 
@@ -126,7 +118,7 @@ foreach(i RANGE ${retry_number})
 
       file(
         DOWNLOAD
-        "${url}" "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe"
+        "${url}" "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe"
         SHOW_PROGRESS
         # no TIMEOUT
         # no INACTIVITY_TIMEOUT
@@ -143,7 +135,7 @@ foreach(i RANGE ${retry_number})
         check_file_hash(has_hash hash_is_good)
         if(has_hash AND NOT hash_is_good)
           message(STATUS "Hash mismatch, removing...")
-          file(REMOVE "C:/Users/lenovo/Downloads/soowe_movil_-api-connection/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
+          file(REMOVE "C:/workCodes/UTMcodes/fluttercodes/Soowe/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget.exe")
         else()
           message(STATUS "Downloading... done")
           return()

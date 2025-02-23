@@ -332,6 +332,12 @@ WINRT_EXPORT namespace winrt::Windows::UI::WebUI
         WebUINavigatedOperation(std::nullptr_t) noexcept {}
         WebUINavigatedOperation(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::UI::WebUI::IWebUINavigatedOperation(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) WebUIPhoneCallActivatedEventArgs : winrt::Windows::ApplicationModel::Activation::IPhoneCallActivatedEventArgs,
+        impl::require<WebUIPhoneCallActivatedEventArgs, winrt::Windows::ApplicationModel::Activation::IActivatedEventArgsWithUser, winrt::Windows::UI::WebUI::IActivatedEventArgsDeferral>
+    {
+        WebUIPhoneCallActivatedEventArgs(std::nullptr_t) noexcept {}
+        WebUIPhoneCallActivatedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::Activation::IPhoneCallActivatedEventArgs(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) WebUIPrintWorkflowForegroundTaskActivatedEventArgs : winrt::Windows::ApplicationModel::Activation::IActivatedEventArgs,
         impl::require<WebUIPrintWorkflowForegroundTaskActivatedEventArgs, winrt::Windows::UI::WebUI::IActivatedEventArgsDeferral>
     {

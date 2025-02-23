@@ -17,7 +17,8 @@ WINRT_EXPORT namespace winrt::Windows::System::Profile
         [[nodiscard]] static auto DeviceForm();
         static auto GetSystemPropertiesAsync(param::async_iterable<hstring> const& attributeNames);
     };
-    struct __declspec(empty_bases) AnalyticsVersionInfo : winrt::Windows::System::Profile::IAnalyticsVersionInfo
+    struct __declspec(empty_bases) AnalyticsVersionInfo : winrt::Windows::System::Profile::IAnalyticsVersionInfo,
+        impl::require<AnalyticsVersionInfo, winrt::Windows::System::Profile::IAnalyticsVersionInfo2>
     {
         AnalyticsVersionInfo(std::nullptr_t) noexcept {}
         AnalyticsVersionInfo(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::System::Profile::IAnalyticsVersionInfo(ptr, take_ownership_from_abi) {}
@@ -42,6 +43,32 @@ WINRT_EXPORT namespace winrt::Windows::System::Profile
         HardwareToken(std::nullptr_t) noexcept {}
         HardwareToken(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::System::Profile::IHardwareToken(ptr, take_ownership_from_abi) {}
     };
+    struct KnownRetailInfoProperties
+    {
+        KnownRetailInfoProperties() = delete;
+        [[nodiscard]] static auto RetailAccessCode();
+        [[nodiscard]] static auto ManufacturerName();
+        [[nodiscard]] static auto ModelName();
+        [[nodiscard]] static auto DisplayModelName();
+        [[nodiscard]] static auto Price();
+        [[nodiscard]] static auto IsFeatured();
+        [[nodiscard]] static auto FormFactor();
+        [[nodiscard]] static auto ScreenSize();
+        [[nodiscard]] static auto Weight();
+        [[nodiscard]] static auto DisplayDescription();
+        [[nodiscard]] static auto BatteryLifeDescription();
+        [[nodiscard]] static auto ProcessorDescription();
+        [[nodiscard]] static auto Memory();
+        [[nodiscard]] static auto StorageDescription();
+        [[nodiscard]] static auto GraphicsDescription();
+        [[nodiscard]] static auto FrontCameraDescription();
+        [[nodiscard]] static auto RearCameraDescription();
+        [[nodiscard]] static auto HasNfc();
+        [[nodiscard]] static auto HasSdSlot();
+        [[nodiscard]] static auto HasOpticalDrive();
+        [[nodiscard]] static auto IsOfficeInstalled();
+        [[nodiscard]] static auto WindowsEdition();
+    };
     struct PlatformDiagnosticsAndUsageDataSettings
     {
         PlatformDiagnosticsAndUsageDataSettings() = delete;
@@ -52,11 +79,26 @@ WINRT_EXPORT namespace winrt::Windows::System::Profile
         static auto CollectionLevelChanged(winrt::event_token const& token);
         static auto CanCollectDiagnostics(winrt::Windows::System::Profile::PlatformDataCollectionLevel const& level);
     };
+    struct RetailInfo
+    {
+        RetailInfo() = delete;
+        [[nodiscard]] static auto IsDemoModeEnabled();
+        [[nodiscard]] static auto Properties();
+    };
     struct SharedModeSettings
     {
         SharedModeSettings() = delete;
         [[nodiscard]] static auto IsEnabled();
         [[nodiscard]] static auto ShouldAvoidLocalStorage();
+    };
+    struct SmartAppControlPolicy
+    {
+        SmartAppControlPolicy() = delete;
+        [[nodiscard]] static auto IsEnabled();
+        static auto Changed(winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler);
+        using Changed_revoker = impl::factory_event_revoker<winrt::Windows::System::Profile::ISmartAppControlPolicyStatics, &impl::abi_t<winrt::Windows::System::Profile::ISmartAppControlPolicyStatics>::remove_Changed>;
+        [[nodiscard]] static Changed_revoker Changed(auto_revoke_t, winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler);
+        static auto Changed(winrt::event_token const& token);
     };
     struct SystemIdentification
     {

@@ -141,6 +141,12 @@ WINRT_EXPORT namespace winrt::Windows::ApplicationModel::Activation
         LockScreenComponentActivatedEventArgs(std::nullptr_t) noexcept {}
         LockScreenComponentActivatedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::Activation::IActivatedEventArgs(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) PhoneCallActivatedEventArgs : winrt::Windows::ApplicationModel::Activation::IPhoneCallActivatedEventArgs,
+        impl::require<PhoneCallActivatedEventArgs, winrt::Windows::ApplicationModel::Activation::IActivatedEventArgsWithUser>
+    {
+        PhoneCallActivatedEventArgs(std::nullptr_t) noexcept {}
+        PhoneCallActivatedEventArgs(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::ApplicationModel::Activation::IPhoneCallActivatedEventArgs(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) PickerReturnedActivatedEventArgs : winrt::Windows::ApplicationModel::Activation::IPickerReturnedActivatedEventArgs
     {
         PickerReturnedActivatedEventArgs(std::nullptr_t) noexcept {}

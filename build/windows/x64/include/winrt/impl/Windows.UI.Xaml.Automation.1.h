@@ -167,6 +167,13 @@ WINRT_EXPORT namespace winrt::Windows::UI::Xaml::Automation
         IAutomationPropertiesStatics8(std::nullptr_t = nullptr) noexcept {}
         IAutomationPropertiesStatics8(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IAutomationPropertiesStatics9 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IAutomationPropertiesStatics9>
+    {
+        IAutomationPropertiesStatics9(std::nullptr_t = nullptr) noexcept {}
+        IAutomationPropertiesStatics9(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IAutomationProperty :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IAutomationProperty>

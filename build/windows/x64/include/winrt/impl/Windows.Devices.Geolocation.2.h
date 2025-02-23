@@ -47,12 +47,13 @@ WINRT_EXPORT namespace winrt::Windows::Devices::Geolocation
         Geocircle(winrt::Windows::Devices::Geolocation::BasicGeoposition const& position, double radius, winrt::Windows::Devices::Geolocation::AltitudeReferenceSystem const& altitudeReferenceSystem, uint32_t spatialReferenceId);
     };
     struct __declspec(empty_bases) Geocoordinate : winrt::Windows::Devices::Geolocation::IGeocoordinate,
-        impl::require<Geocoordinate, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPositionData, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPoint, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPositionSourceTimestamp>
+        impl::require<Geocoordinate, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPositionData, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPoint, winrt::Windows::Devices::Geolocation::IGeocoordinateWithPositionSourceTimestamp, winrt::Windows::Devices::Geolocation::IGeocoordinateWithRemoteSource>
     {
         Geocoordinate(std::nullptr_t) noexcept {}
         Geocoordinate(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Devices::Geolocation::IGeocoordinate(ptr, take_ownership_from_abi) {}
     };
-    struct __declspec(empty_bases) GeocoordinateSatelliteData : winrt::Windows::Devices::Geolocation::IGeocoordinateSatelliteData
+    struct __declspec(empty_bases) GeocoordinateSatelliteData : winrt::Windows::Devices::Geolocation::IGeocoordinateSatelliteData,
+        impl::require<GeocoordinateSatelliteData, winrt::Windows::Devices::Geolocation::IGeocoordinateSatelliteData2>
     {
         GeocoordinateSatelliteData(std::nullptr_t) noexcept {}
         GeocoordinateSatelliteData(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Devices::Geolocation::IGeocoordinateSatelliteData(ptr, take_ownership_from_abi) {}

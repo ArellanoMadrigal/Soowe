@@ -13,6 +13,13 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
         IImageFeatureDescriptor(std::nullptr_t = nullptr) noexcept {}
         IImageFeatureDescriptor(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
+    struct __declspec(empty_bases) IImageFeatureDescriptor2 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<IImageFeatureDescriptor2>
+    {
+        IImageFeatureDescriptor2(std::nullptr_t = nullptr) noexcept {}
+        IImageFeatureDescriptor2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
     struct __declspec(empty_bases) IImageFeatureValue :
         winrt::Windows::Foundation::IInspectable,
         impl::consume_t<IImageFeatureValue>
@@ -131,6 +138,13 @@ WINRT_EXPORT namespace winrt::Windows::AI::MachineLearning
     {
         ILearningModelSessionOptions2(std::nullptr_t = nullptr) noexcept {}
         ILearningModelSessionOptions2(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
+    };
+    struct __declspec(empty_bases) ILearningModelSessionOptions3 :
+        winrt::Windows::Foundation::IInspectable,
+        impl::consume_t<ILearningModelSessionOptions3>
+    {
+        ILearningModelSessionOptions3(std::nullptr_t = nullptr) noexcept {}
+        ILearningModelSessionOptions3(void* ptr, take_ownership_from_abi_t) noexcept : winrt::Windows::Foundation::IInspectable(ptr, take_ownership_from_abi) {}
     };
     struct __declspec(empty_bases) ILearningModelStatics :
         winrt::Windows::Foundation::IInspectable,
