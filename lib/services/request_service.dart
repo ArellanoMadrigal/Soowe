@@ -6,7 +6,7 @@ class RequestService {
   final ApiService _apiService = ApiService();
 
   Future<List<Request>> getAllRequests({
-    required int usuarioId,
+    required String usuarioId,
     required int organizacionId,
   }) async {
     try {

@@ -31,13 +31,15 @@ class Service {
 }
 
 class ListServiceScreen extends StatefulWidget {
-  final String categoryId;
+  final int categoryId;
   final String categoryTitle;
+  final String categoryDescription;
 
   const ListServiceScreen({
     super.key,
     required this.categoryId,
     required this.categoryTitle,
+    required this.categoryDescription,
   });
 
   @override

@@ -11,6 +11,8 @@ class CategoryService {
       final List<Map<String, dynamic>> rawCategories =
           await _apiService.getAllCategories();
 
+      debugPrint("Categorías en el service ${rawCategories.length}");
+
       return rawCategories.map((data) => CategoryModel.fromJson(data)).toList();
     } catch (e) {
       debugPrint('Error en getAllCategories: $e');
