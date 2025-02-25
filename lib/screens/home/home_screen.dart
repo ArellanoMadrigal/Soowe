@@ -50,13 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _selectedIndex = widget.initialIndex ?? 0;
 
-    _categoriesFuture = _categoryService.getAllCategories();
-    _categoriesFuture.then((categories) {
-      debugPrint("Categorías obtenidas: ${categories.length}");
-    }).catchError((error) {
-      debugPrint("Error obteniendo categorías: $error");
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       debugPrint("Llamando a _loadData...");
       await _loadData();
@@ -83,62 +76,44 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
 
-      try {
-        final userData = await authService.getUserProfile();
-        if (!mounted) return;
+      final userData = await authService.getUserProfile();
+      if (!mounted) return;
 
-        setState(() {
-          _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
-          _profileImageUrl = userData['foto_perfil']?['url'];
-        });
+      setState(() {
+        _userName = '${userData['nombre']} ${userData['apellido']}'.trim();
+        _profileImageUrl = userData['foto_perfil']?['url'];
+      });
 
-        final futures = await Future.wait([
-          _requestService.getAllRequests(
-            usuarioId: userId,
-            organizacionId: 0,
-          ),
-          _apiService.fetchNotifications(),
-          CategoryService().getAllCategories(),
-        ]);
+      final futures = await Future.wait([
+        _requestService.getAllRequests(
+          usuarioId: userId,
+          organizacionId: 0,
+        ),
+        _apiService.fetchNotifications(),
+        _categoryService.getAllCategories(),
+      ]);
 
-        if (!mounted) return;
+      if (!mounted) return;
 
-        setState(() {
-          requests = (futures[0] as List<dynamic>)
-              .map((item) =>
-                  MedicalRequest.fromJson(item as Map<String, dynamic>))
-              .toList();
-          _notifications = (futures[1] as List<Map<String, dynamic>>)
-              .where((n) => !n['read'])
-              .toList();
-          _categories = (futures[2] as List<dynamic>).map((item) {
-            debugPrint("Item: $item");
-            return CategoryModel.fromJson(item as Map<String, dynamic>);
-          }).toList();
-          debugPrint("Categorías actualizadas: ${_categories.length}");
-          debugPrint("Contenido de futures[2]: ${futures[2]}");
-        });
-      } catch (e) {
-        debugPrint('Error cargando datos: $e');
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error al cargar los datos: $e'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
+      debugPrint("Contenido de futures[2]: ${futures[2]}");
+      
+
+      setState(() {
+        _notifications = (futures[1] as List<Map<String, dynamic>>)
+            .where((n) => !n['read'])
+            .toList();
+        _categories = (futures[2] as List<CategoryModel>).toList();
+        debugPrint("Categorías actualizadas: ${_categories.length}");
+      });
     } catch (e) {
-      debugPrint('Error crítico: $e');
+      debugPrint('Error cargando datos: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Error de autenticación. Por favor, inicie sesión nuevamente.'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          content: Text('Error al cargar los datos: $e'),
+          backgroundColor: Colors.orange,
         ),
       );
-      await _handleLogout();
     } finally {
       if (mounted) {
         setState(() {
@@ -289,23 +264,25 @@ class _HomeScreenState extends State<HomeScreen> {
             IndexedStack(
               index: _selectedIndex,
               children: [
-                _ServicesView(
-                  userName: _userName,
-                  profileImageUrl: _profileImageUrl,
-                  onProfileTap: _navigateToProfile,
-                  onNotificationTap: _toggleNotifications,
-                  onCategoryTap: _navigateToCategories,
-                  onServiceTap: _navigateToListService,
-                  onRefresh: _loadData,
-                  categories: _categories,
-                ),
-                RequestsView(
-                  key: ValueKey(_selectedIndex),
-                  requests: requests,
-                ),
-                ProfileView(
-                  onLogout: _handleLogout,
-                ),
+              _categories.isEmpty
+                ? const Center(child: Text("No hay categorias disponibles"))
+                : _ServicesView(
+                    userName: _userName,
+                    profileImageUrl: _profileImageUrl,
+                    onProfileTap: _navigateToProfile,
+                    onNotificationTap: _toggleNotifications,
+                    onCategoryTap: _navigateToCategories,
+                    onServiceTap: _navigateToListService,
+                    onRefresh: _loadData,
+                    categories: _categories,
+                  ),
+                  RequestsView(
+                    key: ValueKey(_selectedIndex),
+                    requests: requests,
+                  ),
+                  ProfileView(
+                    onLogout: _handleLogout,
+                  ),
               ],
             ),
             if (_showNotifications)
