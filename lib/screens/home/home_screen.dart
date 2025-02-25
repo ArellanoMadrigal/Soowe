@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ApiService _apiService = ApiService();
   final RequestService _requestService = RequestService();
   final CategoryService _categoryService = CategoryService();
-  late Future<List<CategoryModel>> _categoriesFuture;
 
   bool _showNotifications = false;
   bool _isLoading = true;
@@ -349,7 +348,6 @@ class _ServicesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    debugPrint("Categorías en _ServicesView: ${categories.length}");
     return RefreshIndicator(
       onRefresh: onRefresh,
       child: CustomScrollView(
@@ -434,39 +432,27 @@ class _ServicesView extends StatelessWidget {
               ),
             ),
           ),
-          // Aquí agregamos un GridView para mostrar las categorías
-          SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final category = categories[index];
-                debugPrint("Construyendo categoría: ${category.nombre}");
-                return GestureDetector(
-                  onTap: () {
-                    onServiceTap(category); // Pasar la categoría al servicio
-                  },
-                  child: Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(
-                        category.nombre, // Muestra el nombre de la categoría
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              childCount: categories.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // Puedes ajustar la cantidad de columnas
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
+          SliverPadding(
+            padding: const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final category = categories[index];
+                  return _CategoryCard(
+                    category: category,
+                    onTap: () {
+                      onServiceTap(category);
+                    },
+                  );
+                },
+                childCount: categories.length,
+              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+                childAspectRatio: 0.9,
+              ),
             ),
           ),
         ],
@@ -500,9 +486,10 @@ class _CategoryCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16), // Padding general de la tarjeta
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // Ajusta la columna al contenido
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
@@ -516,21 +503,27 @@ class _CategoryCard extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 8), // Espaciado entre el ícono y el texto
               Text(
                 category.nombre,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
-              Text(
-                category.descripcion,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.outline,
-                    ),
+              const SizedBox(height: 8),
+              Flexible( // Usar Flexible para que el texto ocupe el espacio restante
+                child: Text(
+                  category.descripcion,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: colorScheme.outline,
+                        fontSize: 12,
+                      ),
+                  maxLines: 3, // Limitar a 3 líneas
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
