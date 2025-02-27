@@ -50,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _selectedIndex = widget.initialIndex ?? 0;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      debugPrint("Llamando a _loadData...");
       await _loadData();
 
       if (widget.newRequest != null) {
@@ -94,18 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (!mounted) return;
 
-      debugPrint("Contenido de futures[2]: ${futures[2]}");
-      
-
       setState(() {
         _notifications = (futures[1] as List<Map<String, dynamic>>)
             .where((n) => !n['read'])
             .toList();
         _categories = (futures[2] as List<CategoryModel>).toList();
-        debugPrint("Categorías actualizadas: ${_categories.length}");
       });
     } catch (e) {
-      debugPrint('Error cargando datos: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -214,23 +208,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _navigateToCategories() async {
-    if (!mounted) return;
-    await Navigator.push(
-      context,
-      SearchPageTransition(
-        page: const CategoriesScreen(),
-      ),
-    );
-  }
-
-  void _navigateToListService(CategoryModel category) async {
+  void _navigateToCategoryServices(CategoryModel category) async {
     if (!mounted) return;
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ListServiceScreen(
-          categoryId: category.id, // Usamos el ID de CategoryModel
+          categoryId: category.id ?? 0,
           categoryTitle: category.nombre,
           categoryDescription: category.descripcion,
         ),
@@ -265,13 +249,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
               _categories.isEmpty
                 ? const Center(child: Text("No hay categorias disponibles"))
-                : _ServicesView(
+                : _CategoriesView(
                     userName: _userName,
                     profileImageUrl: _profileImageUrl,
                     onProfileTap: _navigateToProfile,
                     onNotificationTap: _toggleNotifications,
-                    onCategoryTap: _navigateToCategories,
-                    onServiceTap: _navigateToListService,
+                    onCategoryTap: _navigateToCategoryServices,
                     onRefresh: _loadData,
                     categories: _categories,
                   ),
@@ -324,23 +307,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _ServicesView extends StatelessWidget {
+class _CategoriesView extends StatelessWidget {
   final String userName;
   final String? profileImageUrl;
   final VoidCallback onProfileTap;
   final VoidCallback onNotificationTap;
-  final VoidCallback onCategoryTap;
-  final Function(CategoryModel) onServiceTap;
+  final Function(CategoryModel) onCategoryTap;
   final Future<void> Function() onRefresh;
   final List<CategoryModel> categories;
 
-  const _ServicesView({
+  const _CategoriesView({
     required this.userName,
     this.profileImageUrl,
     required this.onProfileTap,
     required this.onNotificationTap,
     required this.onCategoryTap,
-    required this.onServiceTap,
     required this.onRefresh,
     required this.categories,
   });
@@ -412,7 +393,6 @@ class _ServicesView extends StatelessWidget {
                   const SizedBox(height: 16),
                   TextField(
                     readOnly: true,
-                    onTap: onCategoryTap,
                     decoration: InputDecoration(
                       hintText: 'Buscar servicios',
                       prefixIcon: const Icon(Icons.search),
@@ -441,7 +421,7 @@ class _ServicesView extends StatelessWidget {
                   return _CategoryCard(
                     category: category,
                     onTap: () {
-                      onServiceTap(category);
+                      onCategoryTap(category);
                     },
                   );
                 },

@@ -583,28 +583,120 @@ class ApiService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getServicesFromCategory(int categoryId) async {
+  Future<List<Map<String, dynamic>>> getServicesFromCategory(
+      int categoryId) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
     }
 
     try {
       final response = await _dio.get(
-        "api/admin/categorias/$categoryId",
+        "api/admin/categorias/$categoryId/servicios",
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
       _logger
-          .i('Servicios obtenidos exitosamente para la categoría: $categoryId');
+          .i('Servicios obtenidos exitosamente para la categoría $categoryId');
 
       if (response.statusCode == 200 && response.data != null) {
-        return List<Map<String, dynamic>>.from(response.data);
+        if (response.data is List) {
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map &&
+            response.data.containsKey('servicios')) {
+          final data = response.data['servicios'];
+          if (data is List) {
+            return List<Map<String, dynamic>>.from(data);
+          }
+        }
       }
       return [];
     } on DioException catch (e) {
       _logger.e('Error obteniendo servicios de la categoría', error: e);
       debugPrint('Error en getServicesFromCategory: ${e.response?.data}');
       return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAllPatientsFromUser(
+      String userId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/usuarios/$userId",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Pacientes obtenidos exitosamente para el usuario $userId');
+
+      if (response.statusCode == 200 && response.data != null) {
+        if (response.data is Map && response.data.containsKey('pacientes')) {
+          final data = response.data['pacientes'];
+          if (data is List) {
+            return List<Map<String, dynamic>>.from(data);
+          }
+        }
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo pacientes del usuario', error: e);
+      debugPrint('Error en getAllPatientsFromUser: ${e.response?.data}');
+      return [];
+    }
+  }
+
+  Future<bool> createPatient(Map<String, dynamic> patientData) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.post(
+        "api/mobile/pacientes",
+        data: patientData,
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Paciente creado exitosamente');
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception(
+          'Error al crear paciente. Código de estado: ${response.statusCode}, Respuesta: ${response.data}',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('Error creando paciente', error: e);
+      debugPrint(
+          'Error en createPatient: ${e.message}, Respuesta: ${e.response?.data}');
+      return false;
+    }
+  }
+
+  Future<bool> updatePatient(
+      String patientId, Map<String, dynamic> updateData) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.put(
+        "api/mobile/pacientes/$patientId",
+        data: updateData,
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Paciente actualizado exitosamente para ID: $patientId');
+      debugPrint('Respuesta updatePatient: ${response.data}');
+
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      _logger.e('Error actualizando paciente', error: e);
+      debugPrint('Error en updatePatient: ${e.response?.data}');
+      throw Exception(handleError(e));
     }
   }
 }

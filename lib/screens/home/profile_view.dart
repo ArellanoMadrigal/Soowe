@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_service.dart';
+import '../../models/patient.dart';
+import '../../services/patient_service.dart';
+import '../../services/auth_service.dart';
 
 class PhoneInputFormatter extends TextInputFormatter {
   @override
@@ -14,7 +17,7 @@ class PhoneInputFormatter extends TextInputFormatter {
   ) {
     // Solo permitir números
     final text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (text.isEmpty) {
       return newValue.copyWith(text: '');
     }
@@ -22,7 +25,7 @@ class PhoneInputFormatter extends TextInputFormatter {
     // Limitar a 10 dígitos
     final trimmedText = text.length > 10 ? text.substring(0, 10) : text;
     var formattedText = '';
-    
+
     // Formatear como (XXX) - XXX - XXXX
     if (trimmedText.length >= 3) {
       formattedText = '(${trimmedText.substring(0, 3)})';
@@ -41,9 +44,11 @@ class PhoneInputFormatter extends TextInputFormatter {
     // Calcular la nueva posición del cursor
     var cursorPosition = formattedText.length;
     if (newValue.selection.baseOffset < text.length) {
-      cursorPosition = newValue.selection.baseOffset + (formattedText.length - text.length);
+      cursorPosition =
+          newValue.selection.baseOffset + (formattedText.length - text.length);
       if (cursorPosition < 0) cursorPosition = 0;
-      if (cursorPosition > formattedText.length) cursorPosition = formattedText.length;
+      if (cursorPosition > formattedText.length)
+        cursorPosition = formattedText.length;
     }
 
     return TextEditingValue(
@@ -70,6 +75,8 @@ class _ProfileViewState extends State<ProfileView> {
   final AuthService _authService = AuthService();
   final ApiService _apiService = ApiService();
   final ImagePicker _picker = ImagePicker();
+  List<PatientModel> patients = [];
+  final PatientService _patientService = PatientService();
 
   String name = 'Cargando...';
   String email = '';
@@ -82,12 +89,13 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     super.initState();
     _loadUserProfile();
+    _loadUserPatients();
   }
 
   String _formatPhoneNumber(String phone) {
     final cleaned = phone.replaceAll(RegExp(r'[^\d]'), '');
     if (cleaned.length != 10) return phone;
-    
+
     return '(${cleaned.substring(0, 3)}) - ${cleaned.substring(3, 6)} - ${cleaned.substring(6, 10)}';
   }
 
@@ -114,7 +122,7 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-Future<void> _handleProfileImageUpload() async {
+  Future<void> _handleProfileImageUpload() async {
     try {
       // Mostrar diálogo para elegir la fuente de la imagen
       if (!mounted) return;
@@ -139,7 +147,8 @@ Future<void> _handleProfileImageUpload() async {
                   } else {
                     if (!context.mounted) return;
                     Navigator.pop(context);
-                    _showErrorSnackBar('Se requiere permiso para usar la cámara');
+                    _showErrorSnackBar(
+                        'Se requiere permiso para usar la cámara');
                   }
                 },
               ),
@@ -155,7 +164,8 @@ Future<void> _handleProfileImageUpload() async {
                     } else {
                       if (!context.mounted) return;
                       Navigator.pop(context);
-                      _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
+                      _showErrorSnackBar(
+                          'Se requieren permisos para acceder a las fotos');
                     }
                   } else {
                     final status = await Permission.photos.request();
@@ -165,7 +175,8 @@ Future<void> _handleProfileImageUpload() async {
                     } else {
                       if (!context.mounted) return;
                       Navigator.pop(context);
-                      _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
+                      _showErrorSnackBar(
+                          'Se requieren permisos para acceder a las fotos');
                     }
                   }
                 },
@@ -184,15 +195,15 @@ Future<void> _handleProfileImageUpload() async {
         maxHeight: 1024,
         imageQuality: 80,
       );
-      
+
       if (pickedFile == null) return;
 
       // Convertir a File y verificar tamaño
       final File imageFile = File(pickedFile.path);
       final fileSize = await imageFile.length();
-      
+
       if (!mounted) return;
-      
+
       // Verificar tamaño máximo (5MB)
       if (fileSize > 5 * 1024 * 1024) {
         _showErrorSnackBar('La imagen es demasiado grande (máximo 5MB)');
@@ -223,7 +234,7 @@ Future<void> _handleProfileImageUpload() async {
         }
 
         final uploadedImage = await _apiService.uploadProfilePicture(imageFile);
-        
+
         if (!mounted) return;
         Navigator.of(context).pop();
 
@@ -240,7 +251,7 @@ Future<void> _handleProfileImageUpload() async {
               duration: Duration(seconds: 2),
             ),
           );
-          
+
           await _loadUserProfile();
         } else {
           _showErrorSnackBar('Error al procesar la imagen');
@@ -286,9 +297,9 @@ Future<void> _handleProfileImageUpload() async {
         if (userId != null) {
           await _apiService.updateUserProfile(userId, {
             'nombre': result['name'].split(' ')[0],
-            'apellido': result['name'].split(' ').length > 1 
-              ? result['name'].split(' ').sublist(1).join(' ')
-              : '',
+            'apellido': result['name'].split(' ').length > 1
+                ? result['name'].split(' ').sublist(1).join(' ')
+                : '',
             'telefono': result['phone'],
             'direccion': result['address']
           });
@@ -299,6 +310,41 @@ Future<void> _handleProfileImageUpload() async {
         _showErrorSnackBar('No se pudo actualizar el perfil');
       }
     }
+  }
+
+  Future<void> _loadUserPatients() async {
+    try {
+      final userId = _authService.getCurrentUserId();
+      if (userId != null) {
+        final patientList =
+            await _patientService.getAllPatientsFromUser(userId);
+        setState(() {
+          patients = patientList;
+        });
+      }
+    } catch (e) {
+      _showErrorSnackBar('No se pudo cargar la lista de pacientes');
+    }
+  }
+
+  void _navigateToPatientDetails(PatientModel patient) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PatientDetailsScreen(patient: patient),
+      ),
+    );
+  }
+
+  void _navigateToAddPatient() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddPatientScreen(),
+      ),
+    ).then((_) {
+      _loadUserPatients();
+    });
   }
 
   @override
@@ -349,6 +395,36 @@ Future<void> _handleProfileImageUpload() async {
               ),
               const SizedBox(height: 16),
               _SectionGroup(
+                title: 'Pacientes',
+                children: [
+                  // Lista de pacientes
+                  if (patients.isNotEmpty)
+                    ...patients
+                        .map((patient) => _ProfileItem(
+                              icon: Icons.person_outline,
+                              title: patient.nombre,
+                              subtitle: patient.descripcion,
+                              showArrow: true,
+                              onTap: () {
+                                // Navegar a la pantalla de detalles del paciente
+                                _navigateToPatientDetails(patient);
+                              },
+                            ))
+                        .toList(),
+
+                  // Botón para agregar paciente
+                  _ProfileItem(
+                    icon: Icons.person_add_outlined,
+                    title: 'Agregar paciente',
+                    onTap: () {
+                      // Navegar a la pantalla de agregar paciente
+                      _navigateToAddPatient();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _SectionGroup(
                 title: 'Preferencias',
                 children: [
                   _ProfileItem(
@@ -370,7 +446,8 @@ Future<void> _handleProfileImageUpload() async {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('Cerrar sesión'),
-                          content: const Text('¿Estás seguro que deseas cerrar sesión?'),
+                          content: const Text(
+                              '¿Estás seguro que deseas cerrar sesión?'),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
@@ -436,7 +513,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _formatInitialPhone(String phone) {
     final cleaned = phone.replaceAll(RegExp(r'[^\d]'), '');
     if (cleaned.length != 10) return phone;
-    
+
     return '(${cleaned.substring(0, 3)}) - ${cleaned.substring(3, 6)} - ${cleaned.substring(6, 10)}';
   }
 
@@ -611,16 +688,21 @@ class _ProfileHeader extends StatelessWidget {
                   radius: 40,
                   backgroundColor: Colors.grey.shade300,
                   backgroundImage: profileImageUrl != null
-                    ? NetworkImage(profileImageUrl!)
-                    : null,
+                      ? NetworkImage(profileImageUrl!)
+                      : null,
                   child: profileImageUrl == null
-                    ? const Icon(Icons.person_outline, size: 40, color: Colors.white)
-                    : null,
+                      ? const Icon(Icons.person_outline,
+                          size: 40, color: Colors.white)
+                      : null,
                 ),
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: 32,
+                      maxHeight: 32,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -770,5 +852,229 @@ class _ProfileItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PatientDetailsScreen extends StatelessWidget {
+  final PatientModel patient;
+
+  const PatientDetailsScreen({super.key, required this.patient});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(patient.nombre),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              // Navegar a la pantalla de edición del paciente
+              _navigateToEditPatient(context, patient);
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              patient.nombre,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Descripción: ${patient.descripcion}',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Alergias: ${patient.alergias.join(", ")}',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Cuidados necesarios: ${patient.cuidadosNecesarios ?? "Ninguno"}',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _navigateToEditPatient(BuildContext context, PatientModel patient) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddPatientScreen(patient: patient),
+      ),
+    ).then((_) {
+      // Recargar los detalles del paciente si es necesario
+      Navigator.pop(context, true); // Actualizar la pantalla anterior
+    });
+  }
+}
+
+class AddPatientScreen extends StatefulWidget {
+  final PatientModel? patient;
+
+  const AddPatientScreen({super.key, this.patient});
+
+  @override
+  State<AddPatientScreen> createState() => _AddPatientScreenState();
+}
+
+class _AddPatientScreenState extends State<AddPatientScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _allergiesController = TextEditingController();
+  final _conditionController = TextEditingController();
+  final _careController = TextEditingController();
+
+  final _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Si se está editando un paciente, llenar los campos con sus datos
+    if (widget.patient != null) {
+      _nameController.text = widget.patient!.nombre;
+      _descriptionController.text = widget.patient!.descripcion;
+      _allergiesController.text = widget.patient!.alergias.join(", ");
+      _conditionController.text = widget.patient!.estado ?? 'En Espera';
+      _careController.text = widget.patient!.cuidadosNecesarios ?? 'Ninguno';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            widget.patient == null ? 'Agregar Paciente' : 'Editar Paciente'),
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(labelText: 'Nombre'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa el nombre';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(labelText: 'Descripción'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa una descripción';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _allergiesController,
+                    decoration: const InputDecoration(
+                        labelText: 'Alergias (separadas por comas)'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _careController,
+                    decoration:
+                        const InputDecoration(labelText: 'Cuidados necesarios'),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: _isLoading? null : _submitForm,
+                    child: Text(widget.patient == null
+                        ? 'Agregar Paciente'
+                        : 'Guardar Cambios'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      )
+    );
+  }
+
+  void _submitForm() async {
+    PatientService patientService = PatientService();
+    AuthService authService = AuthService();
+
+    if (_formKey.currentState!.validate()) {
+      final userId = authService.getCurrentUserId();
+      if (userId == null) {
+        _showErrorSnackBar('Error de autenticación');
+        return;
+      }
+
+      // Crear el objeto de paciente
+      final patientData = PatientModel(
+        nombre: _nameController.text,
+        descripcion: _descriptionController.text,
+        alergias: _allergiesController.text.split(',').map((e) => e.trim()).toList(),
+        estado: _conditionController.text,
+        cuidadosNecesarios: _careController.text.isNotEmpty ? _careController.text : null,
+        usuarioId: userId,
+      );
+
+      try {
+        // Llamar a la API para agregar el paciente
+        await patientService.createNewPatient(patientData);
+
+        // Navegar de regreso con un resultado
+        Navigator.pop(context, true);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _allergiesController.dispose();
+    _conditionController.dispose();
+    _careController.dispose();
+    super.dispose();
   }
 }

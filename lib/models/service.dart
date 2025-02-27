@@ -3,7 +3,7 @@ import 'dart:convert';
 class ServiceModel {
   int serviciosId;
   String nombre;
-  double precioEstimado;
+  String precioEstimado;
   String descripcion;
   int categoriaId;
 
@@ -19,7 +19,7 @@ class ServiceModel {
     return ServiceModel(
       serviciosId: json['servicios_id'] ?? 0,
       nombre: json['nombre'] ?? '',
-      precioEstimado: (json['precio_estimado'] as num?)?.toDouble() ?? 0.0,
+      precioEstimado: json['precio_estimado'] ?? '',
       descripcion: json['descripcion'] ?? '',
       categoriaId: json['categoria_id'] ?? 0,
     );

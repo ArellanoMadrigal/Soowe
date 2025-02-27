@@ -1,34 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../services/api_service.dart';
-import 'solicit_medical.dart';
-
-class ServiceCategory {
-  final String id;
-  final String title;
-  final List<Service> services;
-
-  ServiceCategory({
-    required this.id,
-    required this.title,
-    required this.services,
-  });
-}
-
-class Service {
-  final String id;
-  final String title;
-  final String description;
-  final double price;
-  
-
-  Service({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.price,
-    
-  });
-}
+import '../../services/services_service.dart';
+import '../../models/service.dart';
+import 'request_medical.dart';
 
 class ListServiceScreen extends StatefulWidget {
   final int categoryId;
@@ -47,8 +20,8 @@ class ListServiceScreen extends StatefulWidget {
 }
 
 class _ListServiceScreenState extends State<ListServiceScreen> {
-  final ApiService _apiService = ApiService();
-  List<ServiceCategory> _categories = [];
+  final ServicesService _servicesService = ServicesService();
+  List<ServiceModel> _services = [];
   bool _isLoading = true;
 
   @override
@@ -57,93 +30,27 @@ class _ListServiceScreenState extends State<ListServiceScreen> {
     _loadServices();
   }
 
-Future<void> _loadServices() async {
-  try {
-    // Simular carga de datos de la API
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _categories = [
-        ServiceCategory(
-          id: '1',
-          title: 'Servicios de Sutura',
-          services: [
-            Service(
-              id: '1',
-              title: 'Sutura de heridas',
-              description: 'Sutura profesional de heridas para una cicatrización adecuada.',
-              price: 400.00,
-            ),
-            Service(
-              id: '2',
-              title: 'Retiro de Suturas',
-              description: 'Retiro seguro y profesional de suturas después de la cicatrización.',
-              price: 200.00,
-            ),
-            Service(
-              id: '3',
-              title: 'Sutura de Laceraciones Profundas',
-              description: 'Tratamiento especializado para heridas profundas que requieren múltiples capas de sutura.',
-              price: 600.00,
-            ),
-            Service(
-              id: '4',
-              title: 'Sutura Estética',
-              description: 'Técnica especial de sutura para minimizar cicatrices en zonas visibles.',
-              price: 800.00,
-            ),
-            Service(
-              id: '5',
-              title: 'Sutura de Emergencia',
-              description: 'Servicio urgente de sutura disponible 24/7 para casos que requieren atención inmediata.',
-              price: 750.00,
-            ),
-            Service(
-              id: '6',
-              title: 'Revisión y Seguimiento de Suturas',
-              description: 'Evaluación del proceso de cicatrización y estado de las suturas con recomendaciones de cuidado.',
-              price: 150.00,
-            ),
-            Service(
-              id: '7',
-              title: 'Sutura Pediátrica',
-              description: 'Servicio especializado de suturas para niños con técnicas y materiales adaptados.',
-              price: 500.00,
-            ),
-            Service(
-              id: '8',
-              title: 'Limpieza y Sutura',
-              description: 'Servicio completo que incluye limpieza profunda de la herida antes de la sutura.',
-              price: 550.00,
-            ),
-            Service(
-              id: '9',
-              title: 'Sutura con Técnicas Especiales',
-              description: 'Aplicación de técnicas avanzadas de sutura para casos complejos o específicos.',
-              price: 700.00,
-            ),
-            Service(
-              id: '10',
-              title: 'Sutura Post-Quirúrgica',
-              description: 'Servicio de sutura especializado para heridas post-operatorias.',
-              price: 650.00,
-            ),
-          ],
-        ),
-      ];
-      _isLoading = false;
-    });
-  } catch (e) {
-    setState(() => _isLoading = false);
-    _showErrorDialog();
+  Future<void> _loadServices() async {
+    try {
+      final services =
+          await _servicesService.getServicesFromCategory(widget.categoryId);
+      setState(() {
+        _services = services;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      _showErrorDialog();
+    }
   }
-}
 
   void _showErrorDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Error'),
-        content: const Text('No se pudieron cargar los servicios. Por favor, intenta de nuevo más tarde.'),
+        content: const Text(
+            'No se pudieron cargar los servicios. Por favor, intenta de nuevo más tarde.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -154,13 +61,13 @@ Future<void> _loadServices() async {
     );
   }
 
-  void _navigateToSolicitMedical(Service service) {
+  void _navigateToRequestMedical(ServiceModel service) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SolicitMedicalScreen(
-          
-        ),
+        builder: (context) => RequestMedicalScreen(
+            service: service,
+            ),
       ),
     );
   }
@@ -175,8 +82,8 @@ Future<void> _loadServices() async {
         title: Text(
           widget.categoryTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+                fontWeight: FontWeight.w600,
+              ),
         ),
       ),
       body: _isLoading
@@ -186,15 +93,13 @@ Future<void> _loadServices() async {
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 16),
                 ),
-                ...List.generate(_categories.length, (index) {
-                  final category = _categories[index];
-                  return SliverToBoxAdapter(
-                    child: _CategorySection(
-                      category: category,
-                      onServiceTap: _navigateToSolicitMedical,
-                    ),
-                  );
-                }),
+                SliverToBoxAdapter(
+                  child: _CategorySection(
+                    categoryDescription: widget.categoryDescription,
+                    services: _services,
+                    onServiceTap: _navigateToRequestMedical,
+                  ),
+                ),
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 24),
                 ),
@@ -205,37 +110,65 @@ Future<void> _loadServices() async {
 }
 
 class _CategorySection extends StatelessWidget {
-  final ServiceCategory category;
-  final Function(Service) onServiceTap;
+  final String categoryDescription;
+  final List<ServiceModel> services;
+  final Function(ServiceModel) onServiceTap;
 
   const _CategorySection({
-    required this.category,
+    required this.categoryDescription,
+    required this.services,
     required this.onServiceTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
-          child: Text(
-            category.title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+        // Sección de descripción de la categoría
+        Container(
+          margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceVariant.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.info_outline, // Ícono relacionado con la descripción
+                size: 20,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  categoryDescription,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
+                  maxLines: 3, // Limita el número de líneas
+                  overflow: TextOverflow.ellipsis, // Añade puntos suspensivos si el texto es muy largo
+                ),
+              ),
+            ],
           ),
         ),
+        // Lista de servicios
         ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: category.services.length,
+          itemCount: services.length,
           itemBuilder: (context, index) {
             return _ServiceCard(
-              service: category.services[index],
-              onTap: () => onServiceTap(category.services[index]),
+              service: services[index],
+              onTap: () => onServiceTap(services[index]),
             );
           },
         ),
@@ -245,7 +178,7 @@ class _CategorySection extends StatelessWidget {
 }
 
 class _ServiceCard extends StatelessWidget {
-  final Service service;
+  final ServiceModel service;
   final VoidCallback onTap;
 
   const _ServiceCard({
@@ -256,9 +189,10 @@ class _ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Card(
-      elevation: 0,
+      elevation: 2, // Añade una sombra sutil
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -274,27 +208,44 @@ class _ServiceCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                service.title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              // Título del servicio
+              Row(
+                children: [
+                  Icon(
+                    Icons.medical_services_outlined,
+                    size: 24,
+                    color: colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      service.nombre,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
+              // Descripción del servicio
               Text(
-                service.description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                service.descripcion,
+                style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   height: 1.4,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 16),
+              // Precio del servicio
               Row(
                 children: [
                   const Spacer(),
                   Text(
-                    '\$${service.price.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    '\$${double.parse(service.precioEstimado).toStringAsFixed(2)}',
+                    style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.primary,
                     ),
