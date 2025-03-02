@@ -860,11 +860,9 @@ class PatientDetailsScreen extends StatelessWidget {
   final PatientModel patient;
 
   const PatientDetailsScreen({super.key, required this.patient});
-  
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(patient.nombre),

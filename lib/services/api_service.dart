@@ -625,18 +625,21 @@ class ApiService {
 
     try {
       final response = await _dio.get(
-        "api/mobile/usuarios/$userId",
+        "api/mobile/usuarios/$userId/pacientes",
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
       _logger.i('Pacientes obtenidos exitosamente para el usuario $userId');
 
       if (response.statusCode == 200 && response.data != null) {
-        if (response.data is Map && response.data.containsKey('pacientes')) {
-          final data = response.data['pacientes'];
-          if (data is List) {
-            return List<Map<String, dynamic>>.from(data);
-          }
+        if (response.data is List) {
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map &&
+          response.data.containsKey('pacientes')) {
+            final data = response.data['pacientes'];
+            if (data is List) {
+              return List<Map<String, dynamic>>.from(data);
+            }
         }
       }
       return [];

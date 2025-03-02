@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'models.dart';
-import '../../services/request_service.dart';
 import 'medical_request_card.dart';
 
 class RequestsView extends StatefulWidget {

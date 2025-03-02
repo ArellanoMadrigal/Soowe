@@ -12,7 +12,7 @@ class PatientService {
 
       return rawPatients.map((data) => PatientModel.fromJson(data)).toList();
     } catch (e) {
-      debugPrint('Error en getServicesFromCategory: $e');
+      debugPrint('Error en getAllPatientsFromUser: $e');
       return [];
     }
   }

@@ -1,6 +1,5 @@
 import 'package:appdesarrollo/services/user_service.dart';
 import 'package:flutter/material.dart';
-import '../../services/api_service.dart';
 
 class EditProfileScreen extends StatefulWidget {
  final String name;
@@ -26,7 +25,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
  late TextEditingController _phoneController;
  late TextEditingController _addressController;
  final _formKey = GlobalKey<FormState>();
- final ApiService _apiService = ApiService();
 
  @override
  void initState() {
