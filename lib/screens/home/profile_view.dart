@@ -7,7 +7,6 @@ import '../../services/auth_service.dart';
 import '../../services/api_service.dart';
 import '../../models/patient.dart';
 import '../../services/patient_service.dart';
-import '../../services/auth_service.dart';
 
 class PhoneInputFormatter extends TextInputFormatter {
   @override
@@ -75,8 +74,8 @@ class _ProfileViewState extends State<ProfileView> {
   final AuthService _authService = AuthService();
   final ApiService _apiService = ApiService();
   final ImagePicker _picker = ImagePicker();
-  List<PatientModel> patients = [];
   final PatientService _patientService = PatientService();
+  List<PatientModel> patients = [];
 
   String name = 'Cargando...';
   String email = '';
@@ -313,17 +312,26 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<void> _loadUserPatients() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final userId = _authService.getCurrentUserId();
       if (userId != null) {
-        final patientList =
+        List<PatientModel> fetchedPatients =
             await _patientService.getAllPatientsFromUser(userId);
+
         setState(() {
-          patients = patientList;
+          patients = fetchedPatients;
         });
       }
     } catch (e) {
       _showErrorSnackBar('No se pudo cargar la lista de pacientes');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -397,27 +405,20 @@ class _ProfileViewState extends State<ProfileView> {
               _SectionGroup(
                 title: 'Pacientes',
                 children: [
-                  // Lista de pacientes
                   if (patients.isNotEmpty)
-                    ...patients
-                        .map((patient) => _ProfileItem(
-                              icon: Icons.person_outline,
-                              title: patient.nombre,
-                              subtitle: patient.descripcion,
-                              showArrow: true,
-                              onTap: () {
-                                // Navegar a la pantalla de detalles del paciente
-                                _navigateToPatientDetails(patient);
-                              },
-                            ))
-                        .toList(),
-
-                  // Botón para agregar paciente
+                    ...patients.map((patient) => _ProfileItem(
+                          icon: Icons.person_outline,
+                          title: patient.nombre,
+                          subtitle: patient.descripcion,
+                          showArrow: true,
+                          onTap: () {
+                            _navigateToPatientDetails(patient);
+                          },
+                        )),
                   _ProfileItem(
                     icon: Icons.person_add_outlined,
                     title: 'Agregar paciente',
                     onTap: () {
-                      // Navegar a la pantalla de agregar paciente
                       _navigateToAddPatient();
                     },
                   ),
@@ -859,9 +860,11 @@ class PatientDetailsScreen extends StatelessWidget {
   final PatientModel patient;
 
   const PatientDetailsScreen({super.key, required this.patient});
+  
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(patient.nombre),
@@ -955,69 +958,69 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            widget.patient == null ? 'Agregar Paciente' : 'Editar Paciente'),
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Nombre'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa el nombre';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(labelText: 'Descripción'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa una descripción';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _allergiesController,
-                    decoration: const InputDecoration(
-                        labelText: 'Alergias (separadas por comas)'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _careController,
-                    decoration:
-                        const InputDecoration(labelText: 'Cuidados necesarios'),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: _isLoading? null : _submitForm,
-                    child: Text(widget.patient == null
-                        ? 'Agregar Paciente'
-                        : 'Guardar Cambios'),
-                  ),
-                ],
+        appBar: AppBar(
+          title: Text(
+              widget.patient == null ? 'Agregar Paciente' : 'Editar Paciente'),
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(labelText: 'Nombre'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa el nombre';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _descriptionController,
+                      decoration:
+                          const InputDecoration(labelText: 'Descripción'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa una descripción';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _allergiesController,
+                      decoration: const InputDecoration(
+                          labelText: 'Alergias (separadas por comas)'),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _careController,
+                      decoration: const InputDecoration(
+                          labelText: 'Cuidados necesarios'),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _submitForm,
+                      child: Text(widget.patient == null
+                          ? 'Agregar Paciente'
+                          : 'Guardar Cambios'),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-        ],
-      )
-    );
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+          ],
+        ));
   }
 
   void _submitForm() async {
@@ -1035,9 +1038,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       final patientData = PatientModel(
         nombre: _nameController.text,
         descripcion: _descriptionController.text,
-        alergias: _allergiesController.text.split(',').map((e) => e.trim()).toList(),
+        alergias:
+            _allergiesController.text.split(',').map((e) => e.trim()).toList(),
         estado: _conditionController.text,
-        cuidadosNecesarios: _careController.text.isNotEmpty ? _careController.text : null,
+        cuidadosNecesarios:
+            _careController.text.isNotEmpty ? _careController.text : null,
         usuarioId: userId,
       );
 

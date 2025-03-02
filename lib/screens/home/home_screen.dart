@@ -2,16 +2,12 @@ import 'package:appdesarrollo/services/category_service.dart';
 import 'package:flutter/material.dart';
 import 'package:appdesarrollo/services/auth_service.dart';
 import '../../services/api_service.dart';
-import '../../transitions/search_page_transition.dart';
 import 'models.dart';
 import 'profile_view.dart';
 import 'requests_view.dart';
-import 'categories_screen.dart';
 import 'list_service.dart';
 import '../../services/request_service.dart';
 import '../../models/category.dart';
-import '../../models/service.dart';
-import 'category_service_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? initialIndex;
