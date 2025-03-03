@@ -710,4 +710,30 @@ class ApiService {
       throw Exception(handleError(e));
     }
   }
+
+  Future<Map<String, dynamic>> createPayment(Map<String, dynamic> paymentData) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.post(
+        "api/mobile/pagos",
+        data: paymentData,
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Pago creado exitosamente');
+      debugPrint('Respuesta createPayment: ${response.data}');
+
+      if (response.statusCode == 201 && response.data != null) {
+        return response.data;
+      }
+      throw Exception("Error al crear el pago");
+    } on DioException catch (e) {
+      _logger.e('Error creando pago', error: e);
+      debugPrint('Error en createPayment: ${e.response?.data}');
+      throw Exception(handleError(e));
+    }
+  }
 }

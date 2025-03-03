@@ -47,10 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadData();
-
-      if (widget.newRequest != null) {
-        await _handleNewRequest(widget.newRequest!);
-      }
     });
   }
 
@@ -112,66 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _handleNewRequest(Map<String, dynamic> newRequest) async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      final authService = AuthService();
-      final userId = authService.getCurrentUserId();
-
-      if (userId == null) {
-        throw Exception('Usuario no autenticado');
-      }
-
-      await _requestService.createRequest(
-        usuarioId: userId, // Ya no necesitamos convertir a int
-        pacienteId: newRequest['paciente_id'].toString(),
-        metodoPago:
-            newRequest['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
-        organizacionId: newRequest['organizacion_id']?.toString(),
-        fechaServicio: DateTime.parse('2025-02-20 05:00:47'),
-        comentarios: newRequest['comentarios'] ?? '',
-      );
-
-      await _loadData();
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Solicitud creada exitosamente'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-
-      setState(() {
-        _selectedIndex = 1;
-      });
-    } catch (e) {
-      debugPrint('Error al crear la solicitud: $e');
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString().contains('Exception:')
-              ? e.toString().split('Exception:')[1].trim()
-              : 'Error al crear la solicitud: $e'),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 4),
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   Future<void> _handleLogout() async {
     try {
       await AuthService().logout();
@@ -206,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _navigateToCategoryServices(CategoryModel category) async {
     if (!mounted) return;
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ListServiceScreen(
@@ -216,12 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-
-    if (result != null && result is Map<String, dynamic>) {
-      if (result['action'] == 'new_request' && mounted) {
-        await _handleNewRequest(result['data'] ?? result);
-      }
-    }
   }
 
   @override

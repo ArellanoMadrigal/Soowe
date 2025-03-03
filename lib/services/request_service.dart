@@ -20,34 +20,39 @@ class RequestService {
   }
 
   Future<Request> createRequest({
-  required String usuarioId,  // Cambiado a String
-  required String pacienteId, // Cambiado a String
-  required String metodoPago,
-  String? organizacionId,     // Cambiado a String
-  String? enfermeroId,        // Cambiado a String
-  DateTime? fechaServicio,
-  String? comentarios,
-}) async {
-  try {
-    final requestData = {
-      'usuario_id': usuarioId,
-      'paciente_id': pacienteId,
-      'organizacion_id': organizacionId,
-      'enfermero_id': enfermeroId,
-      'metodo_pago': metodoPago.toLowerCase(),
-      'fecha_solicitud': DateTime.now().toIso8601String(),
-      'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.parse('2025-02-20 05:00:47').toIso8601String(),
-      'comentarios': comentarios ?? '',
-      'estado': 'pending_assignment',
-    };
+    required String usuarioId,
+    required String pacienteId,
+    required String metodoPago,
+    required String estado,
+    required String ubicacion,
+    required DateTime fechaSolicitud,
+    String? enfermeroId,
+    DateTime? fechaServicio,
+    String? comentarios,
+  }) async {
+    try {
+      final requestData = {
+        'usuario_id': usuarioId,
+        'paciente_id': pacienteId,
+        'estado': estado.toLowerCase(),
+        'enfermero_id': enfermeroId,
+        'metodo_pago': metodoPago.toLowerCase(),
+        'fecha_solicitud': fechaSolicitud.toIso8601String(),
+        'fecha_servicio': fechaServicio?.toIso8601String() ?? DateTime.now().toIso8601String(),
+        'comentarios': comentarios ?? ' ',
+        'ubicacion': ubicacion,
+      };
 
-    final response = await _apiService.createMedicalRequest(requestData);
-    return Request.fromJson(response);
-  } catch (e) {
-    debugPrint('Error en createRequest: $e');
-    rethrow;
+      final response = await _apiService.createMedicalRequest(requestData);
+
+      debugPrint('Solicitud creada con ID: ${response['solicitud_id']}');
+
+      return Request.fromJson(response);
+    } catch (e) {
+      debugPrint('Error en createRequest: $e');
+      rethrow;
+    }
   }
-}
 
   Future<Request> updateRequest(int solicitudId, Map<String, dynamic> data) async {
     try {

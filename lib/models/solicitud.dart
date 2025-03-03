@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class RequestModel {
+  final int? solicitudId;
   final String usuarioId;
   final String pacienteId;
   final int? organizacionId;
@@ -9,10 +10,13 @@ class RequestModel {
   final String estado;
   final String metodoPago;
   final DateTime fechaSolicitud;
-  final DateTime? fechaServicio;
+  final DateTime fechaServicio;
+  final DateTime? fechaRespuesta;
   final String? comentarios;
+  final String ubicacion;
 
   RequestModel({
+    this.solicitudId,
     required this.usuarioId,
     required this.pacienteId,
     this.organizacionId,
@@ -20,8 +24,10 @@ class RequestModel {
     required this.estado,
     required this.metodoPago,
     required this.fechaSolicitud,
-    this.fechaServicio,
+    required this.fechaServicio,
+    this.fechaRespuesta,
     this.comentarios,
+    required this.ubicacion,
   });
 
   factory RequestModel.fromJson(Map<String, dynamic> json) {
@@ -33,12 +39,14 @@ class RequestModel {
       estado: json['estado'],
       metodoPago: json['metodo_pago'],
       fechaSolicitud: DateTime.parse(json['fecha_solicitud']),
-      fechaServicio: _parseFechaServicio(json['fecha_servicio']),
+      fechaServicio: DateTime.parse(json['fecha_servicio']),
+      fechaRespuesta: _parseFechaRespuesta(json['fecha_respuesta']),
       comentarios: json['comentarios'],
+      ubicacion: json['ubicacion'],
     );
   }
 
-  static DateTime? _parseFechaServicio(dynamic fechaServicio) {
+  static DateTime? _parseFechaRespuesta(dynamic fechaServicio) {
     if (fechaServicio == null || fechaServicio.toString().isEmpty) {
       return null;
     }
@@ -59,8 +67,10 @@ class RequestModel {
       'estado': estado,
       'metodo_pago': metodoPago,
       'fecha_solicitud': fechaSolicitud.toIso8601String(),
-      'fecha_servicio': fechaServicio?.toIso8601String(),
+      'fecha_servicio': fechaServicio.toIso8601String(),
+      'fecha_respuesta': fechaRespuesta?.toIso8601String(),
       'comentarios': comentarios,
+      'ubicacion': ubicacion,
     };
   }
 

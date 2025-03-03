@@ -9,6 +9,11 @@ import 'payment_step.dart';
 import 'home_screen.dart';
 import '../../services/api_service.dart';
 import '../../models/service.dart';
+import '../../models/solicitud.dart';
+import '../../models/payment.dart';
+import '../../services/auth_service.dart';
+import '../../services/request_service.dart';
+import '../../services/payment_service.dart';
 
 class RequestMedicalScreen extends StatefulWidget {
   final ServiceModel service;
@@ -24,7 +29,8 @@ class RequestMedicalScreen extends StatefulWidget {
 
 class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
   final PageController _pageController = PageController();
-  final GlobalKey<PaymentStepState> _paymentStepKey = GlobalKey<PaymentStepState>();
+  final GlobalKey<PaymentStepState> _paymentStepKey =
+      GlobalKey<PaymentStepState>();
   int currentStep = 0;
 
   // Date selection
@@ -68,105 +74,112 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
     }
   }
 
-void _submitRequest() async {
-  final paymentState = _paymentStepKey.currentState;
-
-  if (paymentState != null &&
-      paymentState.selectedPaymentMethod == PaymentMethod.card &&
-      !paymentState.formKey.currentState!.validate()) {
-    return;
-  }
-
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(
-      child: CircularProgressIndicator(),
-    ),
-  );
-
-  try {
-    final requestData = {
-      'service_id': widget.service.serviciosId.toString(),
-      'fecha': DateFormat('yyyy-MM-dd').format(selectedDate),
-      'hora': selectedTime.format(context),
-      'paciente': {
-        'nombre': _nameController.text,
-        'edad': int.parse(_ageController.text),
-        'telefono': _phoneController.text,
-        'condicion': _conditionController.text,
-      },
-      'ubicacion': {
-        'direccion': _addressController.text,
-      },
-      'pago': {
-        'metodo': paymentState?.selectedPaymentMethod.toString().split('.').last ?? 'efectivo',
-        'tarjeta': paymentState?.selectedPaymentMethod == PaymentMethod.card
-            ? {
-                'numero': paymentState?.cardNumberController.text ?? '',
-                'titular': paymentState?.cardHolderController.text ?? '',
-                'vencimiento': paymentState?.expiryController.text ?? '',
-                'cvv': paymentState?.cvvController.text ?? '',
-              }
-            : null,
-      },
-      'status': 'pending_assignment'
-    };
-
+  void _submitRequest() async {
+    final paymentState = _paymentStepKey.currentState;
     final apiService = ApiService();
-    final response = await apiService.createMedicalRequest(requestData);
+    final authService = AuthService();
+    final requestService = RequestService();
+    final paymentService = PaymentService();
 
-    Navigator.pop(context);
+    // Validar el formulario de pago si se selecciona tarjeta
+    if (paymentState != null &&
+        paymentState.selectedPaymentMethod == PaymentMethod.card &&
+        !paymentState.formKey.currentState!.validate()) {
+      return;
+    }
 
-    // Mostrar diálogo de éxito
+    // Mostrar indicador de carga
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('Solicitud Enviada'),
-        content: const Text('Tu solicitud ha sido procesada exitosamente.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Cerrar el diálogo
-              
-              // Volver a la pantalla principal con la nueva solicitud
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(
-                    initialIndex: 1,
-                    newRequest: response, // Usar la respuesta de la API
-                  ),
-                ),
-                (route) => false,
-              );
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
       ),
     );
-  } catch (e) {
-    // Cerrar el indicador de carga
-    Navigator.pop(context);
 
-    // Mostrar error
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(e.toString()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Aceptar'),
-          ),
-        ],
-      ),
-    );
+    try {
+      final response = await requestService.createRequest(
+        usuarioId: authService.getCurrentUserId() ?? '',
+        pacienteId: ' ',
+        estado: 'en espera',
+        metodoPago:
+            paymentState?.selectedPaymentMethod.toString().split('.').last ??
+                'efectivo',
+        fechaSolicitud: DateTime.now(),
+        fechaServicio: selectedDate,
+        comentarios: _conditionController.text,
+        ubicacion: _addressController.text,
+      );
+
+      debugPrint('id recibida de la nueva solicitud: ${response.id}');
+
+      final payment = Payment(
+        amount: widget.service
+            .precioEstimado,
+        paymentMethod: response.metodoPago,
+        paymentDate: DateTime.now(),
+        status: 'pendiente', // Estado inicial del pago
+        details: paymentState?.selectedPaymentMethod == PaymentMethod.card
+            ? 'Tarjeta: ${paymentState?.cardNumberController.text}'
+            : 'Pago en efectivo',
+        requestId: int.parse(response.id),
+      );
+
+      // Llamar al servicio para crear el pago
+      await paymentService.createPayment(payment);
+
+      // Cerrar el indicador de carga
+      Navigator.pop(context);
+
+      // Mostrar diálogo de éxito
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: const Text('Solicitud Enviada'),
+          content: const Text('Tu solicitud ha sido procesada exitosamente.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo
+
+                // Volver a la pantalla principal con la nueva solicitud
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(
+                      initialIndex: 1,
+                      newRequest: response.toJson(), // Convertir la respuesta a Map<String, dynamic>
+                    ),
+                  ),
+                  (route) => false,
+                );
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      // Cerrar el indicador de carga
+      Navigator.pop(context);
+
+      // Mostrar error
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
