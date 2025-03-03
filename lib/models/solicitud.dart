@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class RequestModel {
-  final int id;
   final String usuarioId;
   final String pacienteId;
   final int? organizacionId;
@@ -14,7 +13,6 @@ class RequestModel {
   final String? comentarios;
 
   RequestModel({
-    required this.id,
     required this.usuarioId,
     required this.pacienteId,
     this.organizacionId,
@@ -28,7 +26,6 @@ class RequestModel {
 
   factory RequestModel.fromJson(Map<String, dynamic> json) {
     return RequestModel(
-      id: json['solicitud_id'],
       usuarioId: json['usuario_id'],
       pacienteId: json['paciente_id'],
       organizacionId: json['organizacion_id'],
@@ -55,7 +52,6 @@ class RequestModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'solicitud_id': id,
       'usuario_id': usuarioId,
       'paciente_id': pacienteId,
       'organizacion_id': organizacionId,

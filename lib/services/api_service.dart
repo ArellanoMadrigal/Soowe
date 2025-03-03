@@ -380,6 +380,13 @@ class ApiService {
     }
 
     try {
+      if (requestData['usuario_id'] == null) {
+        throw Exception("El campo 'usuario_id' es requerido");
+      }
+      if (requestData['paciente_id'] == null) {
+        throw Exception("El campo 'paciente_id' es requerido");
+      }
+
       // Asegurarse de que los campos requeridos estén en el formato correcto
       final formattedData = {
         ...requestData,
@@ -391,9 +398,10 @@ class ApiService {
         'fecha_solicitud': DateTime.now().toIso8601String(),
       };
 
+      // Enviar la solicitud al endpoint correcto
       final response = await _dio.post(
-        "api/mobile/solicitudes",
-        data: formattedData,
+        "api/mobile/solicitudes", // Ruta correcta
+        data: formattedData, // Datos de la solicitud en el cuerpo
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
