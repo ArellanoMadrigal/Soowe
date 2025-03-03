@@ -88,6 +88,33 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
       return;
     }
 
+    // Validar que la fecha y la hora sean correctas
+    DateTime now = DateTime.now();
+    DateTime fullSelectedDate = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    if (fullSelectedDate.isBefore(now)) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Fecha inválida'),
+          content: const Text('La fecha y hora seleccionadas deben ser futuras.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
     // Mostrar indicador de carga
     showDialog(
       context: context,
@@ -105,27 +132,26 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
         metodoPago:
             paymentState?.selectedPaymentMethod.toString().split('.').last ??
                 'efectivo',
-        fechaSolicitud: DateTime.now(),
-        fechaServicio: selectedDate,
+        fechaSolicitud: now,
+        fechaServicio: fullSelectedDate,
         comentarios: _conditionController.text,
         ubicacion: _addressController.text,
       );
 
-      debugPrint('id recibida de la nueva solicitud: ${response.id}');
+      debugPrint('ID recibida de la nueva solicitud: ${response.id}');
 
       final payment = Payment(
-        amount: widget.service
-            .precioEstimado,
+        amount: widget.service.precioEstimado,
         paymentMethod: response.metodoPago,
-        paymentDate: DateTime.now(),
-        status: 'pendiente', // Estado inicial del pago
+        paymentDate: now,
+        status: 'pendiente',
         details: paymentState?.selectedPaymentMethod == PaymentMethod.card
             ? 'Tarjeta: ${paymentState?.cardNumberController.text}'
             : 'Pago en efectivo',
         requestId: int.parse(response.id),
       );
 
-      // Llamar al servicio para crear el pago
+      // Crear el pago
       await paymentService.createPayment(payment);
 
       // Cerrar el indicador de carga
@@ -141,15 +167,13 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Cerrar el diálogo
-
-                // Volver a la pantalla principal con la nueva solicitud
+                Navigator.pop(context);
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => HomeScreen(
                       initialIndex: 1,
-                      newRequest: response.toJson(), // Convertir la respuesta a Map<String, dynamic>
+                      newRequest: response.toJson(),
                     ),
                   ),
                   (route) => false,
@@ -161,10 +185,7 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
         ),
       );
     } catch (e) {
-      // Cerrar el indicador de carga
       Navigator.pop(context);
-
-      // Mostrar error
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
