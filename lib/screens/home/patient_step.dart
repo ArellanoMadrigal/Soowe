@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../../models/patient.dart';
 import '../../services/auth_service.dart';
 import '../../services/patient_service.dart';
+import 'request_medical.dart';
 
 class PatientStep extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -10,6 +11,7 @@ class PatientStep extends StatefulWidget {
   final TextEditingController ageController;
   final TextEditingController phoneController;
   final TextEditingController conditionController;
+  final Function(String) onPatientSelected;
 
   const PatientStep({
     super.key,
@@ -18,6 +20,7 @@ class PatientStep extends StatefulWidget {
     required this.ageController,
     required this.phoneController,
     required this.conditionController,
+    required this.onPatientSelected,
   });
 
   @override
@@ -28,6 +31,8 @@ class _PatientStepState extends State<PatientStep> {
   final AuthService _authService = AuthService();
   final PatientService _patientService = PatientService();
   List<PatientModel> _patients = [];
+  PatientModel? _selectedPatient;
+  String? _selectedPatientId;
   bool _isLoading = false;
 
   @override
@@ -99,7 +104,7 @@ class _PatientStepState extends State<PatientStep> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Información del Paciente',
+                  'Pacientes',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
@@ -120,17 +125,28 @@ class _PatientStepState extends State<PatientStep> {
 
   Widget _buildPatientList() {
     return Column(
-      children: [
-        ..._patients.map((patient) => ListTile(
-              leading: const Icon(Icons.person_outline, color: Colors.black54),
-              title: Text(patient.nombre),
-              subtitle: Text(patient.descripcion),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                _navigateToPatientDetails(patient);
-              },
-            )),
-      ],
+      children: _patients.map((patient) {
+        bool isSelected = _selectedPatient == patient;
+        return ListTile(
+          leading: Icon(
+            Icons.person_outline,
+            color: isSelected ? Colors.blue : Colors.black54,
+          ),
+          title: Text(patient.nombre),
+          subtitle: Text(patient.descripcion),
+          trailing: isSelected
+              ? const Icon(Icons.check_circle, color: Colors.blue)
+              : null,
+          onTap: () {
+            setState(() {
+              _selectedPatient = patient;
+              _selectedPatientId = patient.id;
+            });
+            debugPrint("Selected Patient ID: $_selectedPatientId");
+            widget.onPatientSelected(_selectedPatientId!);
+          },
+        );
+      }).toList(),
     );
   }
 

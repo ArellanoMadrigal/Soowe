@@ -16,11 +16,11 @@ import '../../services/request_service.dart';
 import '../../services/payment_service.dart';
 
 class RequestMedicalScreen extends StatefulWidget {
-  final ServiceModel service;
+  final ServiceModel? service;
 
   const RequestMedicalScreen({
     super.key,
-    required this.service,
+    this.service,
   });
 
   @override
@@ -39,6 +39,7 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
   String _selectedTimeOption = 'Fecha específica';
 
   // Patient information
+  String? patientId;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _ageController = TextEditingController();
@@ -49,9 +50,10 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
   final _addressController = TextEditingController();
 
   void _nextPage() {
-    if (currentStep == 1 && !_formKey.currentState!.validate()) {
-      return;
-    }
+    if (currentStep == 1 && _formKey.currentState != null && !_formKey.currentState!.validate()) {
+    return;
+  }
+
 
     if (currentStep < 3) {
       _pageController.nextPage(
@@ -60,6 +62,78 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
       );
       setState(() => currentStep++);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (currentStep > 0) {
+          _previousPage();
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black87),
+            onPressed: _previousPage,
+          ),
+          title: Text(
+            'Nueva Solicitud',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+        ),
+        body: Column(
+          children: [
+            StepIndicator(currentStep: currentStep),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  DateStep(
+                    selectedTimeOption: _selectedTimeOption,
+                    selectedDate: selectedDate,
+                    selectedTime: selectedTime,
+                    onTimeOptionChanged: (value) =>
+                        setState(() => _selectedTimeOption = value),
+                    onDateChanged: (date) =>
+                        setState(() => selectedDate = date),
+                    onTimeChanged: (time) =>
+                        setState(() => selectedTime = time),
+                  ),
+                  PatientStep(
+                    formKey: _formKey,
+                    nameController: _nameController,
+                    ageController: _ageController,
+                    phoneController: _phoneController,
+                    conditionController: _conditionController,
+                    onPatientSelected: (id) => setState(() => patientId = id),
+                  ),
+                  LocationStep(
+                    addressController: _addressController,
+                  ),
+                  PaymentStep(
+                    key: _paymentStepKey,
+                    selectedDate: selectedDate,
+                    selectedTime: selectedTime,
+                  ),
+                ],
+              ),
+            ),
+            _buildBottomNavigation(),
+          ],
+        ),
+      ),
+    );
   }
 
   void _previousPage() {
@@ -81,7 +155,7 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
     final requestService = RequestService();
     final paymentService = PaymentService();
 
-    // Validar el formulario de pago si se selecciona tarjeta
+      // Validar el formulario de pago si se selecciona tarjeta
     if (paymentState != null &&
         paymentState.selectedPaymentMethod == PaymentMethod.card &&
         !paymentState.formKey.currentState!.validate()) {
@@ -127,21 +201,17 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
     try {
       final response = await requestService.createRequest(
         usuarioId: authService.getCurrentUserId() ?? '',
-        pacienteId: ' ',
+        pacienteId: patientId!,
         estado: 'en espera',
-        metodoPago:
-            paymentState?.selectedPaymentMethod.toString().split('.').last ??
-                'efectivo',
+        metodoPago: paymentState?.selectedPaymentMethod.toString().split('.').last ?? 'efectivo',
         fechaSolicitud: now,
         fechaServicio: fullSelectedDate,
         comentarios: _conditionController.text,
         ubicacion: _addressController.text,
       );
 
-      debugPrint('ID recibida de la nueva solicitud: ${response.id}');
-
       final payment = Payment(
-        amount: widget.service.precioEstimado,
+        amount: widget.service?.precioEstimado.toString() ?? '0',
         paymentMethod: response.metodoPago,
         paymentDate: now,
         status: 'pendiente',
@@ -202,76 +272,6 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (currentStep > 0) {
-          _previousPage();
-          return false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.grey[50],
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black87),
-            onPressed: _previousPage,
-          ),
-          title: Text(
-            'Nueva Solicitud',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                ),
-          ),
-        ),
-        body: Column(
-          children: [
-            StepIndicator(currentStep: currentStep),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  DateStep(
-                    selectedTimeOption: _selectedTimeOption,
-                    selectedDate: selectedDate,
-                    selectedTime: selectedTime,
-                    onTimeOptionChanged: (value) =>
-                        setState(() => _selectedTimeOption = value),
-                    onDateChanged: (date) =>
-                        setState(() => selectedDate = date),
-                    onTimeChanged: (time) =>
-                        setState(() => selectedTime = time),
-                  ),
-                  PatientStep(
-                    formKey: _formKey,
-                    nameController: _nameController,
-                    ageController: _ageController,
-                    phoneController: _phoneController,
-                    conditionController: _conditionController,
-                  ),
-                  LocationStep(
-                    addressController: _addressController,
-                  ),
-                  PaymentStep(
-                    key: _paymentStepKey,
-                    selectedDate: selectedDate,
-                    selectedTime: selectedTime,
-                  ),
-                ],
-              ),
-            ),
-            _buildBottomNavigation(),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildBottomNavigation() {
     return Container(

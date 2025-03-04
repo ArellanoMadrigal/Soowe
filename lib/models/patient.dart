@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class PatientModel {
+  final String? id;
   final String nombre;
   final String descripcion;
   final List<String> alergias;
@@ -9,6 +10,7 @@ class PatientModel {
   final String usuarioId;
 
   PatientModel({
+    this.id,
     required this.nombre,
     required this.descripcion,
     required this.alergias,
@@ -19,6 +21,7 @@ class PatientModel {
 
   factory PatientModel.fromJson(Map<String, dynamic> json) {
     return PatientModel(
+      id: json['_id'],
       nombre: json['nombre'],
       descripcion: json['descripcion'],
       alergias: List<String>.from(json['alergias'] ?? ['Ninguna']),
@@ -40,7 +43,7 @@ class PatientModel {
   }
 
   @override
-    String toString() {
-      return jsonEncode(toJson());
-    }
+  String toString() {
+    return jsonEncode(toJson());
+  }
 }

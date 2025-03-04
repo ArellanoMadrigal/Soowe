@@ -7,9 +7,6 @@ class PaymentStep extends StatefulWidget {
   final DateTime selectedDate;
   final TimeOfDay selectedTime;
 
-  static const String _currentDateTime = '2025-02-19 04:18:17';
-  static const String _currentUser = 'ArellanoMadrigal';
-
   const PaymentStep({
     super.key,
     required this.selectedDate,
@@ -427,13 +424,6 @@ class PaymentStepState extends State<PaymentStep> {
             isBold: true,
           ),
           const SizedBox(height: 8),
-          Text(
-            'Última actualización: ${PaymentStep._currentDateTime}\nRegistrado por: ${PaymentStep._currentUser}',
-            style: TextStyle(
-              color: Colors.blue.withOpacity(0.6),
-              fontSize: 12,
-            ),
-          ),
         ],
       ),
     );
@@ -495,8 +485,6 @@ class _CardNumberFormatter extends TextInputFormatter {
 }
 
 class _ExpiryDateFormatter extends TextInputFormatter {
-  static const String _currentDateTime = '2025-02-19 04:19:54';
-  static const String _currentUser = 'ArellanoMadrigal';
 
   @override
   TextEditingValue formatEditUpdate(
@@ -608,29 +596,4 @@ class CreditCardValidator {
 
     return null;
   }
-}
-
-class PaymentAudit {
-  final String timestamp;
-  final String user;
-  final PaymentMethod method;
-  final bool isSuccessful;
-
-  PaymentAudit({
-    String? timestamp,
-    String? user,
-    required this.method,
-    required this.isSuccessful,
-  })  : timestamp = timestamp ?? _currentDateTime,
-        user = user ?? _currentUser;
-
-  static const String _currentDateTime = '2025-02-19 04:19:54';
-  static const String _currentUser = 'ArellanoMadrigal';
-
-  Map<String, dynamic> toJson() => {
-        'timestamp': timestamp,
-        'user': user,
-        'method': method.toString().split('.').last,
-        'isSuccessful': isSuccessful,
-      };
 }

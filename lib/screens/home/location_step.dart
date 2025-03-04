@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart' as loc;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geocoding/geocoding.dart';
+import 'dart:async';
 
-class LocationStep extends StatelessWidget {
+class LocationStep extends StatefulWidget {
   final TextEditingController addressController;
-
-  static const String _currentDateTime = '2025-02-19 04:16:44';
-  static const String _currentUser = 'ArellanoMadrigal';
 
   const LocationStep({
     super.key,
     required this.addressController,
   });
+
+  @override
+  _LocationStepState createState() => _LocationStepState();
+}
+
+class _LocationStepState extends State<LocationStep> {
+  late GoogleMapController _mapController;
+  LatLng _initialPosition =
+      LatLng(37.7749, -122.4194); // Coordenadas por defecto (San Francisco)
+  LatLng? _selectedLocation;
+  Timer? _debounceTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLocationPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,73 +56,112 @@ class LocationStep extends StatelessWidget {
     );
   }
 
+  Future<loc.LocationData> getUserLocation() async {
+    loc.Location location = loc.Location();
+    bool serviceEnabled;
+    loc.PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return Future.error('El servicio de ubicación está desactivado');
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) {
+        return Future.error('Permisos de ubicación denegados');
+      }
+    }
+
+    return await location.getLocation();
+  }
+
+  Future<void> updateAddressFromCoordinates(LatLng location) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          location.latitude, location.longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String address = '${placemark.street}, ${placemark.locality}, ${placemark.country}';
+        setState(() {
+          widget.addressController.text = address;
+        });
+      } else {
+        // Handle case where no address is found
+        widget.addressController.text = 'Dirección no encontrada';
+      }
+    } catch (e) {
+      // Handle error in geocoding
+      widget.addressController.text = 'Error al obtener la dirección';
+    }
+  }
+
+  Future<void> _checkLocationPermission() async {
+    loc.Location location = loc.Location();
+    bool serviceEnabled;
+    loc.PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    var locationData = await location.getLocation();
+    setState(() {
+      _initialPosition = LatLng(locationData.latitude!, locationData.longitude!);
+    });
+  }
+
+
   Widget _buildMapPreview() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Stack(
-          children: [
-            const Center(
-              child: Text('Mapa en desarrollo'),
-            ),
-            Positioned(
-              right: 16,
-              bottom: 16,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Seleccionar en mapa',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
+    return SizedBox(
+      height: 300,
+      child: _initialPosition.latitude == 37.7749 && _initialPosition.longitude == -122.4194
+          ? Center(child: CircularProgressIndicator()) // Loading spinner
+          : GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: 14.0,
               ),
+              onMapCreated: (controller) {
+                _mapController = controller;
+              },
+              markers: _selectedLocation == null
+                  ? {}
+                  : {
+                      Marker(
+                        markerId: MarkerId('selected_location'),
+                        position: _selectedLocation!,
+                      ),
+                    },
+              onTap: (LatLng location) {
+                setState(() {
+                  _selectedLocation = location;
+                  widget.addressController.text =
+                      'Lat: ${location.latitude}, Long: ${location.longitude}';
+                  updateAddressFromCoordinates(location); // Actualiza la dirección
+                });
+              },
             ),
-          ],
-        ),
-      ),
     );
   }
 
+  // Botones de ubicación
   Widget _buildLocationButtons(BuildContext context) {
     return Row(
       children: [
@@ -113,9 +170,16 @@ class LocationStep extends StatelessWidget {
             context: context,
             icon: Icons.my_location_outlined,
             label: 'Usar mi ubicación',
-            onPressed: () {
-              // Implementar obtención de ubicación actual
-              addressController.text = 'Ubicación actual (en desarrollo)';
+            onPressed: () async {
+              var locationData = await getUserLocation();
+              setState(() {
+                _initialPosition =
+                    LatLng(locationData.latitude!, locationData.longitude!);
+                _selectedLocation = _initialPosition;
+                widget.addressController.text =
+                    'Ubicación actual: ${_initialPosition.latitude}, ${_initialPosition.longitude}';
+                updateAddressFromCoordinates(_initialPosition); // Actualiza la dirección
+              });
             },
           ),
         ),
@@ -125,15 +189,32 @@ class LocationStep extends StatelessWidget {
             context: context,
             icon: Icons.search_outlined,
             label: 'Buscar dirección',
-            onPressed: () {
-              // Implementar búsqueda de dirección
-            },
+            onPressed: () async {
+              String address = widget.addressController.text;
+              try {
+                List<Location> locations = await locationFromAddress(address);
+                if (locations.isNotEmpty) {
+                  LatLng newLocation = LatLng(locations[0].latitude, locations[0].longitude);
+                  setState(() {
+                    _selectedLocation = newLocation;
+                    _mapController.animateCamera(CameraUpdate.newLatLng(newLocation));
+                  });
+                } else {
+                  // Handle no results
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Dirección no encontrada')));
+                }
+              } catch (e) {
+                // Handle error in searching for an address
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al buscar la dirección')));
+              }
+            }
           ),
         ),
       ],
     );
   }
 
+  // Botón personalizado
   Widget _buildActionButton({
     required BuildContext context,
     required IconData icon,
@@ -154,6 +235,7 @@ class LocationStep extends StatelessWidget {
     );
   }
 
+  // Campo de dirección
   Widget _buildAddressField() {
     return Container(
       decoration: BoxDecoration(
@@ -168,7 +250,7 @@ class LocationStep extends StatelessWidget {
         ],
       ),
       child: TextFormField(
-        controller: addressController,
+        controller: widget.addressController,
         maxLines: 3,
         decoration: InputDecoration(
           labelText: 'Dirección completa',
@@ -189,31 +271,46 @@ class LocationStep extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: Colors.grey[300]!),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[300]!),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.blue),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.all(16),
         ),
-        validator: (value) {
-          if (value?.isEmpty ?? true) {
-            return 'Por favor ingrese la dirección completa';
+        onChanged: (value) {
+            if (value.isNotEmpty) {
+            _debounceSearch(value);
           }
-          if (value!.length < 10) {
-            return 'La dirección debe ser más específica';
-          }
-          return null;
         },
       ),
     );
   }
 
+  // Debounce search method
+  void _debounceSearch(String value) {
+    if (_debounceTimer?.isActive ?? false) {
+      _debounceTimer?.cancel(); // Cancel any previous timers
+    }
+    // Start a new timer
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (value.isNotEmpty) {
+        try {
+          // Perform location search based on address entered
+          List<Location> locations = await locationFromAddress(value);
+          if (locations.isNotEmpty) {
+            LatLng newLocation = LatLng(locations[0].latitude, locations[0].longitude);
+            setState(() {
+              _selectedLocation = newLocation;
+              _mapController.animateCamera(CameraUpdate.newLatLng(newLocation));
+            });
+          } else {
+            // Handle no results found
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Dirección no encontrada')));
+          }
+        } catch (e) {
+          // Handle error
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al buscar la dirección')));
+        }
+      }
+    });
+  }
+
+  // Nota de ubicación
   Widget _buildLocationNote(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -252,53 +349,8 @@ class LocationStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            'Última actualización: $_currentDateTime\nRegistrado por: $_currentUser',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor.withOpacity(0.6),
-              fontSize: 12,
-            ),
-          ),
         ],
       ),
     );
-  }
-}
-
-class LocationService {
-  static const String _currentDateTime = '2025-02-19 04:22:27';
-  static const String _currentUser = 'ArellanoMadrigal';
-
-  static Future<Map<String, dynamic>> getCurrentLocation() async {
-    // Implementar obtención de ubicación actual
-    await Future.delayed(const Duration(seconds: 1));
-    return {
-      'latitude': 0.0,
-      'longitude': 0.0,
-      'address': 'Ubicación actual (en desarrollo)',
-      'timestamp': _currentDateTime,
-      'user': _currentUser,
-    };
-  }
-
-  static Future<List<Map<String, dynamic>>> searchAddress(String query) async {
-    // Implementar búsqueda de direcciones
-    await Future.delayed(const Duration(seconds: 1));
-    return [
-      {
-        'address': 'Dirección de ejemplo 1',
-        'latitude': 0.0,
-        'longitude': 0.0,
-        'timestamp': _currentDateTime,
-        'user': _currentUser,
-      },
-      {
-        'address': 'Dirección de ejemplo 2',
-        'latitude': 0.0,
-        'longitude': 0.0,
-        'timestamp': _currentDateTime,
-        'user': _currentUser,
-      },
-    ];
   }
 }

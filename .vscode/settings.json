@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/workCodes/UTMcodes/fluttercodes/Soowe/linux"
+    "cmake.sourceDirectory": "C:/workCodes/UTMcodes/fluttercodes/Soowe/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
