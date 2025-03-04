@@ -31,6 +31,10 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+/build/
+build/.last_build_id
+build/flutter_assets/
+build/windows/
 
 
 # Symbolication related
