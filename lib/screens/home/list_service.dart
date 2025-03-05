@@ -62,12 +62,11 @@ class _ListServiceScreenState extends State<ListServiceScreen> {
   }
 
   void _navigateToRequestMedical(ServiceModel service) {
+    debugPrint("Servicio seleccionado: ${service.toJson()}");
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RequestMedicalScreen(
-            service: service,
-            ),
+        builder: (context) => RequestMedicalScreen(service: service),
       ),
     );
   }

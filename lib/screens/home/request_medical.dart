@@ -50,10 +50,11 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
   final _addressController = TextEditingController();
 
   void _nextPage() {
-    if (currentStep == 1 && _formKey.currentState != null && !_formKey.currentState!.validate()) {
-    return;
-  }
-
+    if (currentStep == 1 &&
+        _formKey.currentState != null &&
+        !_formKey.currentState!.validate()) {
+      return;
+    }
 
     if (currentStep < 3) {
       _pageController.nextPage(
@@ -155,7 +156,7 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
     final requestService = RequestService();
     final paymentService = PaymentService();
 
-      // Validar el formulario de pago si se selecciona tarjeta
+    // Validar el formulario de pago si se selecciona tarjeta
     if (paymentState != null &&
         paymentState.selectedPaymentMethod == PaymentMethod.card &&
         !paymentState.formKey.currentState!.validate()) {
@@ -177,7 +178,8 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Fecha inválida'),
-          content: const Text('La fecha y hora seleccionadas deben ser futuras.'),
+          content:
+              const Text('La fecha y hora seleccionadas deben ser futuras.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -202,27 +204,38 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
       final response = await requestService.createRequest(
         usuarioId: authService.getCurrentUserId() ?? '',
         pacienteId: patientId!,
+        serviciosId: widget.service?.serviciosId ?? 0,
         estado: 'en espera',
-        metodoPago: paymentState?.selectedPaymentMethod.toString().split('.').last ?? 'efectivo',
+        metodoPago:
+            paymentState?.selectedPaymentMethod.toString().split('.').last ??
+                'Pago en efectivo',
         fechaSolicitud: now,
         fechaServicio: fullSelectedDate,
         comentarios: _conditionController.text,
         ubicacion: _addressController.text,
       );
 
-      final payment = Payment(
-        amount: widget.service?.precioEstimado.toString() ?? '0',
-        paymentMethod: response.metodoPago,
-        paymentDate: now,
-        status: 'pendiente',
-        details: paymentState?.selectedPaymentMethod == PaymentMethod.card
-            ? 'Tarjeta: ${paymentState?.cardNumberController.text}'
-            : 'Pago en efectivo',
-        requestId: int.parse(response.id),
-      );
+      final responseId = response.solicitudId;
+      debugPrint('ID de la solicitud: $responseId');
 
-      // Crear el pago
-      await paymentService.createPayment(payment);
+      // Verificamos si el ID es un número válido
+      if (int.tryParse(responseId.toString()) != null) {
+        // Creamos el pago con los datos correspondientes
+        final payment = await paymentService.createPayment(
+          amount: double.tryParse(widget.service?.precioEstimado ?? '0.0') ?? 0.0,
+          paymentMethod: response.metodoPago.isNotEmpty
+            ? response.metodoPago : 'efectivo',
+          paymentDate: now,
+          status: 'completado',
+          details: paymentState?.selectedPaymentMethod == PaymentMethod.card
+              ? 'Tarjeta: ${paymentState?.cardNumberController.text}'
+              : 'Pago en efectivo',
+          requestId: int.tryParse(responseId.toString()) ?? 0,
+        );
+      } else {
+        // Si el ID de la solicitud no es válido, mostramos un mensaje de error
+        debugPrint('Error: ID de solicitud no válido');
+      }
 
       // Cerrar el indicador de carga
       Navigator.pop(context);
@@ -271,7 +284,6 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
       );
     }
   }
-
 
   Widget _buildBottomNavigation() {
     return Container(

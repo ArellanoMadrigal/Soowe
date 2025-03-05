@@ -9,10 +9,10 @@ class RequestModel {
   final int? enfermeroId;
   final String estado;
   final String metodoPago;
-  final DateTime fechaSolicitud;
-  final DateTime fechaServicio;
+  final DateTime? fechaSolicitud;
+  final DateTime? fechaServicio;
   final DateTime? fechaRespuesta;
-  final String? comentarios;
+  final String comentarios;
   final String ubicacion;
 
   RequestModel({
@@ -23,26 +23,27 @@ class RequestModel {
     this.enfermeroId,
     required this.estado,
     required this.metodoPago,
-    required this.fechaSolicitud,
-    required this.fechaServicio,
+    this.fechaSolicitud,
+    this.fechaServicio,
     this.fechaRespuesta,
-    this.comentarios,
+    String? comentarios,
     required this.ubicacion,
-  });
+  }) : comentarios = comentarios ?? '';
 
   factory RequestModel.fromJson(Map<String, dynamic> json) {
     return RequestModel(
-      usuarioId: json['usuario_id'],
-      pacienteId: json['paciente_id'],
+      solicitudId: json['solicitud_id'] ?? '',
+      usuarioId: json['usuario_id'] ?? '',
+      pacienteId: json['paciente_id'] ?? '',
       organizacionId: json['organizacion_id'],
       enfermeroId: json['enfermero_id'],
-      estado: json['estado'],
-      metodoPago: json['metodo_pago'],
-      fechaSolicitud: DateTime.parse(json['fecha_solicitud']),
-      fechaServicio: DateTime.parse(json['fecha_servicio']),
+      estado: json['estado'] ?? '',
+      metodoPago: json['metodo_pago'] ?? '',
+      fechaSolicitud: json['fecha_solicitud'] != null ? DateTime.parse(json['fecha_solicitud']) : null,
+      fechaServicio: json['fecha_servicio'] != null ? DateTime.parse(json['fecha_servicio']) : null,
       fechaRespuesta: _parseFechaRespuesta(json['fecha_respuesta']),
-      comentarios: json['comentarios'],
-      ubicacion: json['ubicacion'],
+      comentarios: json['comentarios'] ?? '',
+      ubicacion: json['ubicacion'] ?? '',
     );
   }
 
@@ -66,8 +67,8 @@ class RequestModel {
       'enfermero_id': enfermeroId,
       'estado': estado,
       'metodo_pago': metodoPago,
-      'fecha_solicitud': fechaSolicitud.toIso8601String(),
-      'fecha_servicio': fechaServicio.toIso8601String(),
+      'fecha_solicitud': fechaSolicitud?.toIso8601String(),
+      'fecha_servicio': fechaServicio?.toIso8601String(),
       'fecha_respuesta': fechaRespuesta?.toIso8601String(),
       'comentarios': comentarios,
       'ubicacion': ubicacion,

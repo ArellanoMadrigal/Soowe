@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Payment {
-  final String amount;
+  final double amount;
   final String paymentMethod;
   final DateTime paymentDate;
   final String status;
@@ -19,23 +19,23 @@ class Payment {
 
   Map<String, dynamic> toJson() {
     return {
-      'amount': amount,
-      'payment_method': paymentMethod,
-      'payment_date': paymentDate.toIso8601String(),
-      'status': status,
-      'details': details,
-      'request_id': requestId,
+      'monto': amount,
+      'metodo_pago': paymentMethod,
+      'fecha_pago': paymentDate.toIso8601String(),
+      'estado': status,
+      'detalles': details,
+      'solicitud_id': requestId,
     };
   }
 
   factory Payment.fromJson(Map<String, dynamic> json) {
     return Payment(
-      amount: json['monto'].toDouble(),
-      paymentMethod: json['metodo_pago'],
-      paymentDate: DateTime.parse(json['fecha_pago']),
-      status: json['estado'],
-      details: json['detalles'],
-      requestId: json['solicitud_id'],
+      amount: json['monto'] ?? 0.0,
+      paymentMethod: json['metodo_pago'] ?? '',
+      paymentDate: DateTime.parse(json['fecha_pago'] ?? DateTime.now().toIso8601String()),
+      status: json['estado'] ?? '',
+      details: json['detalles'] ?? '',
+      requestId: json['solicitud_id'] ?? '',
     );
   }
 

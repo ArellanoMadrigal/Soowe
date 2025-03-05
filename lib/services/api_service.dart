@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/foundation.dart';
@@ -387,28 +388,29 @@ class ApiService {
         throw Exception("El campo 'paciente_id' es requerido");
       }
 
-      // Asegurarse de que los campos requeridos estén en el formato correcto
-      final formattedData = {
-        ...requestData,
-        'usuario_id': requestData['usuario_id'].toString(),
-        'paciente_id': requestData['paciente_id'].toString(),
-        'estado': 'pending_assignment', // Valor válido para el estado
-        'metodo_pago':
-            requestData['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
-        'fecha_solicitud': DateTime.now().toIso8601String(),
-      };
+      debugPrint('Datos enviados a la API: $requestData');
 
       // Enviar la solicitud al endpoint correcto
-      final response = await _dio.post(
+      Response response = await _dio.post(
         "api/mobile/solicitudes", // Ruta correcta
-        data: formattedData, // Datos de la solicitud en el cuerpo
+          data: {
+          ...requestData,
+          "usuario_id": requestData['usuario_id'].toString(),
+          "paciente_id": requestData['paciente_id'].toString(),
+          "servicios_id": requestData['servicios_id'],
+          "estado": "pendiente",
+          "metodo_pago":
+            requestData['metodo_pago']?.toString().toLowerCase() ?? 'efectivo',
+          'fecha_solicitud': DateTime.now().toIso8601String(),
+        },
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
       _logger.i('Solicitud médica creada exitosamente');
       debugPrint('Respuesta createMedicalRequest: ${response.data}');
 
-      if (response.statusCode == 201 && response.data != null) {
+      if (response.statusCode == 200 && response.data != null) {
+        debugPrint('Respuesta completa: ${response.data}');
         return response.data;
       }
       throw Exception("Error al crear la solicitud médica");
@@ -432,7 +434,6 @@ class ApiService {
       );
 
       _logger.i('Solicitudes obtenidas exitosamente');
-      debugPrint('Respuesta getAllRequests: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         return List<Map<String, dynamic>>.from(response.data);
@@ -643,11 +644,11 @@ class ApiService {
         if (response.data is List) {
           return List<Map<String, dynamic>>.from(response.data);
         } else if (response.data is Map &&
-          response.data.containsKey('pacientes')) {
-            final data = response.data['pacientes'];
-            if (data is List) {
-              return List<Map<String, dynamic>>.from(data);
-            }
+            response.data.containsKey('pacientes')) {
+          final data = response.data['pacientes'];
+          if (data is List) {
+            return List<Map<String, dynamic>>.from(data);
+          }
         }
       }
       return [];
@@ -711,22 +712,29 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> createPayment(Map<String, dynamic> paymentData) async {
+  Future<Map<String, dynamic>> createPayment(
+      Map<String, dynamic> paymentData) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
     }
-
     try {
+      debugPrint('Datos enviados a createPayment: ${jsonEncode(paymentData)}');
+      final monto = paymentData['monto'] ?? 0.0;
       final response = await _dio.post(
         "api/mobile/pagos",
-        data: paymentData,
+        data: {
+          ...paymentData,
+          'fecha_pago': DateTime.now().toIso8601String(),
+          'solicitud_id': paymentData['solicitud_id'],
+          'total': monto,
+        },
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
       _logger.i('Pago creado exitosamente');
       debugPrint('Respuesta createPayment: ${response.data}');
 
-      if (response.statusCode == 201 && response.data != null) {
+      if (response.statusCode == 200 && response.data != null) {
         return response.data;
       }
       throw Exception("Error al crear el pago");
