@@ -12,6 +12,11 @@
 .swiftpm/
 migrate_working_dir/
 
+# build inmediate
+.build/app/intermediates/
+.build/app/outputs/
+.build/cache.dill.track.dill
+
 # IntelliJ related
 *.iml
 *.ipr
