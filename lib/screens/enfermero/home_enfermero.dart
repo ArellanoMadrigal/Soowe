@@ -1,209 +1,340 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-import 'package:appdesarrollo/screens/enfermero/perfil_enfermero.dart';
-import 'package:appdesarrollo/screens/enfermero/solicitudes_enfermero.dart';
-import 'package:appdesarrollo/screens/enfermero/estadisticas_enfermero.dart';
+import '../../services/api_service.dart';
+import '../../services/auth_service.dart';
+import 'package:intl/intl.dart';
 
 class HomeEnfermero extends StatefulWidget {
+  const HomeEnfermero({super.key});
+
   @override
-  _HomeEnfermeroState createState() => _HomeEnfermeroState();
+  State<HomeEnfermero> createState() => _HomeEnfermeroState();
 }
 
 class _HomeEnfermeroState extends State<HomeEnfermero> {
-  int _selectedIndex = 0;
-  File? _profileImage;
-  bool _showWelcomeNotification = false;
-  static const String KEY_IMAGE_PATH = 'profile_image_path';
-  static const String KEY_FIRST_OPEN = 'first_app_open';
-
-  final List<Widget> _screens = [
-    SolicitudesEnfermero(),
-    EstadisticasEnfermero(),
-    PerfilEnfermero(),
-  ];
+  final _apiService = ApiService();
+  final _authService = AuthService();
+  bool _isLoading = true;
+  List<Map<String, dynamic>> _solicitudes = [];
+  String _errorMessage = '';
 
   @override
   void initState() {
     super.initState();
-    _loadInitialData();
+    _loadSolicitudes();
   }
 
-  // Cargar datos iniciales: imagen de perfil y notificación de bienvenida
-  Future<void> _loadInitialData() async {
-    final prefs = await SharedPreferences.getInstance();
-    
-    // Cargar imagen de perfil
-    final String? imagePath = prefs.getString(KEY_IMAGE_PATH);
-    if (imagePath != null) {
-      final file = File(imagePath);
-      if (await file.exists()) {
+  Future<void> _loadSolicitudes() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = '';
+      });
+      
+      final solicitudes = await _apiService.getEnfermeroAssignedRequests();
+      
+      if (mounted) {
         setState(() {
-          _profileImage = file;
+          _solicitudes = solicitudes;
+          _isLoading = false;
         });
       }
-    }
-
-    // Verificar si es la primera vez que se abre la app
-    final bool isFirstOpen = prefs.getBool(KEY_FIRST_OPEN) ?? true;
-    if (isFirstOpen) {
-      setState(() {
-        _showWelcomeNotification = true;
-      });
-      // Marcar que ya no es la primera vez
-      await prefs.setBool(KEY_FIRST_OPEN, false);
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.toString();
+          _isLoading = false;
+        });
+        _showErrorSnackBar('Error al cargar solicitudes: $e');
+      }
     }
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _handleLogout() async {
+    try {
+      await _authService.logout();
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    } catch (e) {
+      _showErrorSnackBar('Error al cerrar sesión: $e');
+    }
   }
 
-  // Mostrar diálogo de bienvenida
-  void _mostrarNotificacionBienvenida() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('¡Bienvenida!'),
-          content: Text('Fernanda, estás lista para comenzar tu turno. Revisa tus solicitudes y mantente atenta.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Entendido'),
-              onPressed: () {
-                setState(() {
-                  _showWelcomeNotification = false;
-                });
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
     );
   }
 
-  // Construir AppBar para la pantalla de inicio
-  PreferredSizeWidget? _buildAppBar() {
-    // Solo mostrar la barra con el ícono de notificación en la pantalla de inicio
-    if (_selectedIndex == 0) {
-      // Mostrar notificación de bienvenida si está activa
-      if (_showWelcomeNotification) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _mostrarNotificacionBienvenida();
-        });
-      }
-
-      return AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.blue, 
-              radius: 20,
-              backgroundImage: _profileImage != null ? FileImage(_profileImage!) : null,
-              child: _profileImage == null
-                  ? Icon(Icons.person, color: Colors.white)
-                  : null,
-            ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Fernanda Arellano",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black
-                  )
-                ),
-                Text(
-                  "Enfermera de Urgencias",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey
-                  )
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          // Si hay notificación de bienvenida, mostrar un punto rojo
-          _showWelcomeNotification 
-            ? Stack(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.notifications, color: Colors.black),
-                    onPressed: _mostrarNotificacionBienvenida,
-                  ),
-                  Positioned(
-                    right: 11,
-                    top: 11,
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 12,
-                        minHeight: 12,
-                      ),
-                    ),
-                  )
-                ],
-              )
-            : IconButton(
-                icon: Icon(Icons.notifications_none, color: Colors.black),
-                onPressed: null,
-              ),
-        ],
-        backgroundColor: Colors.white,
-        elevation: 0,
-      );
+  String _formatFecha(String? fechaStr) {
+    if (fechaStr == null) return 'Fecha no disponible';
+    try {
+      final fecha = DateTime.parse(fechaStr);
+      return DateFormat('dd/MM/yyyy HH:mm').format(fecha);
+    } catch (e) {
+      return fechaStr;
     }
-    // Para otras pantallas, no mostrar AppBar
-    return null;
+  }
+
+  Color _getStatusColor(String? status) {
+    return switch (status?.toLowerCase()) {
+      'pendiente' => Colors.orange,
+      'en_proceso' => Colors.blue,
+      'completado' => Colors.green,
+      'cancelado' => Colors.red,
+      _ => Colors.grey,
+    };
+  }
+
+  String _getStatusText(String? status) {
+    return switch (status?.toLowerCase()) {
+      'pendiente' => 'Pendiente',
+      'en_proceso' => 'En Proceso',
+      'completado' => 'Completado',
+      'cancelado' => 'Cancelado',
+      _ => 'Estado Desconocido',
+    };
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          // Recargar la imagen de perfil
-          await _loadInitialData();
-        },
-        child: IndexedStack(
-          index: _selectedIndex,
-          children: _screens,
+      appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 1,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Panel de Enfermero'),
+            Text(
+              'Bienvenido, ${_authService.getUserName() ?? "Enfermero"}',
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+          ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue.shade700,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment),
-            label: "Solicitudes"
+        actions: [
+          IconButton.filledTonal(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadSolicitudes,
+            tooltip: 'Actualizar',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: "Estadísticas"
+          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _handleLogout,
+            tooltip: 'Cerrar sesión',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Perfil"
-          ),
+          const SizedBox(width: 8),
         ],
       ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : _errorMessage.isNotEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: colorScheme.error,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Error al cargar las solicitudes',
+                        style: textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _errorMessage,
+                        style: textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      FilledButton.icon(
+                        onPressed: _loadSolicitudes,
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Reintentar'),
+                      ),
+                    ],
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: _loadSolicitudes,
+                  child: _solicitudes.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.assignment_outlined,
+                                size: 64,
+                                color: colorScheme.primary.withOpacity(0.5),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No hay solicitudes asignadas',
+                                style: textTheme.titleLarge?.copyWith(
+                                  color: colorScheme.onSurface.withOpacity(0.7),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              FilledButton.icon(
+                                onPressed: _loadSolicitudes,
+                                icon: const Icon(Icons.refresh),
+                                label: const Text('Actualizar'),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _solicitudes.length,
+                          itemBuilder: (context, index) {
+                            final solicitud = _solicitudes[index];
+                            final status = solicitud['estado'] as String?;
+
+                            return Card(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: BorderSide(
+                                  color: colorScheme.outline.withOpacity(0.2),
+                                ),
+                              ),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () {
+                                  // Aquí puedes agregar la navegación al detalle
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Solicitud #${solicitud['id'] ?? 'N/A'}',
+                                              style: textTheme.titleMedium?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: _getStatusColor(status)
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              _getStatusText(status),
+                                              style: textTheme.bodySmall?.copyWith(
+                                                color: _getStatusColor(status),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 12),
+                                      _buildInfoRow(
+                                        context,
+                                        Icons.person_outline,
+                                        'Paciente',
+                                        solicitud['paciente_nombre'] ??
+                                            'No disponible',
+                                      ),
+                                      const SizedBox(height: 8),
+                                      _buildInfoRow(
+                                        context,
+                                        Icons.calendar_today_outlined,
+                                        'Fecha',
+                                        _formatFecha(solicitud['fecha_solicitud']),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      _buildInfoRow(
+                                        context,
+                                        Icons.location_on_outlined,
+                                        'Dirección',
+                                        solicitud['direccion'] ?? 'No disponible',
+                                      ),
+                                      if (solicitud['notas'] != null) ...[
+                                        const SizedBox(height: 8),
+                                        _buildInfoRow(
+                                          context,
+                                          Icons.note_outlined,
+                                          'Notas',
+                                          solicitud['notas'],
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+    );
+  }
+
+  Widget _buildInfoRow(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 18,
+          color: colorScheme.primary,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
+              Text(
+                value,
+                style: textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

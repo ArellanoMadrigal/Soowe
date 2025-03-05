@@ -147,6 +147,8 @@ class ApiService {
     }
   }
 
+  
+
   Future<Map<String, dynamic>> uploadProfilePicture(File imageFile) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
@@ -734,6 +736,36 @@ class ApiService {
       _logger.e('Error creando pago', error: e);
       debugPrint('Error en createPayment: ${e.response?.data}');
       throw Exception(handleError(e));
+    }
+  }
+
+Future<List<Map<String, dynamic>>> getEnfermeroAssignedRequests() async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final userId = await _getCurrentUserId();
+      if (userId == null) {
+        throw Exception("ID de usuario no disponible");
+      }
+
+      final response = await _dio.get(
+        "api/admin/enfermeros/$userId/solicitudes",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitudes del enfermero obtenidas exitosamente');
+      debugPrint('Respuesta getEnfermeroAssignedRequests: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo solicitudes asignadas', error: e);
+      debugPrint('Error en getEnfermeroAssignedRequests: ${e.response?.data}');
+      return [];
     }
   }
 }
