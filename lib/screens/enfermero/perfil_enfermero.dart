@@ -64,7 +64,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Seleccionar Imagen'),
+          title: Text('Seleccionar imagen'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -120,7 +120,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
               onPressed: () => Navigator.of(context).pop(false),
             ),
             TextButton(
-              child: Text('Sí, cerrar sesión'),
+              child: Text('Sí, Cerrar sesión'),
               onPressed: () => Navigator.of(context).pop(true),
             ),
           ],
@@ -205,7 +205,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
             ListTile(
               leading: Icon(Icons.email, color: Colors.blue),
               title: Text(
-                "Correo electrónico",
+                "Correo Electrónico",
                 style: TextStyle(fontSize: 14),
               ),
               subtitle: Text(
@@ -241,7 +241,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
               child: ElevatedButton(
                 onPressed: () => _handleLogout(context),
                 child: Text(
-                  "Cerrar sesión",
+                  "Cerrar Sesión",
                   style: TextStyle(color: Colors.blue),
                 ),
                 style: ElevatedButton.styleFrom(
