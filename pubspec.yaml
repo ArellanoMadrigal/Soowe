@@ -28,6 +28,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   location: ^8.0.0
   geocoding: ^3.0.0
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"  # Ruta del logo (512x512 recomendado)
+  adaptive_icon_background: "#FFFFFF"  # Color de fondo para íconos adaptativos (Android)
+  adaptive_icon_foreground: "assets/icon.png"  # Ícono en primer plano (Android)
