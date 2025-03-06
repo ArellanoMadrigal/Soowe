@@ -24,7 +24,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
   Future<void> _loadProfileImage() async {
     final prefs = await SharedPreferences.getInstance();
     final String? imagePath = prefs.getString(KEY_IMAGE_PATH);
-    
+
     if (imagePath != null) {
       final file = File(imagePath);
       if (await file.exists()) {
@@ -40,9 +40,10 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
     // Obtener el directorio de documentos de la aplicación
     final directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
-    
+
     // Crear un nombre único para la imagen
-    final String fileName = 'profile_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final String fileName =
+        'profile_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
     final String filePath = '$path/$fileName';
 
     // Copiar la imagen al directorio permanente
@@ -63,7 +64,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Seleccionar imagen'),
+          title: Text('Seleccionar Imagen'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -134,7 +135,7 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
       // if (_image != null && await _image!.exists()) {
       //   await _image!.delete();
       // }
-      
+
       Navigator.of(context).pushReplacementNamed('/login');
     }
   }
@@ -155,7 +156,8 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.blue,
-                        backgroundImage: _image != null ? FileImage(_image!) : null,
+                        backgroundImage:
+                            _image != null ? FileImage(_image!) : null,
                         child: _image == null
                             ? Icon(
                                 Icons.person,
@@ -173,7 +175,8 @@ class _PerfilEnfermeroState extends State<PerfilEnfermero> {
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            icon: Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                            icon: Icon(Icons.camera_alt,
+                                color: Colors.white, size: 20),
                             onPressed: _selectImage,
                           ),
                         ),
