@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 import 'auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -18,8 +20,8 @@ class ApiService {
       : _dio = Dio(
           BaseOptions(
             baseUrl: "https://soowe-apidata.onrender.com/",
-            connectTimeout: const Duration(seconds: 60),
-            receiveTimeout: const Duration(seconds: 60),
+            connectTimeout: const Duration(seconds: 90),
+            receiveTimeout: const Duration(seconds: 90),
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -146,8 +148,6 @@ class ApiService {
       };
     }
   }
-
-  
 
   Future<Map<String, dynamic>> uploadProfilePicture(File imageFile) async {
     if (_authToken == null) {
@@ -645,11 +645,11 @@ class ApiService {
         if (response.data is List) {
           return List<Map<String, dynamic>>.from(response.data);
         } else if (response.data is Map &&
-          response.data.containsKey('pacientes')) {
-            final data = response.data['pacientes'];
-            if (data is List) {
-              return List<Map<String, dynamic>>.from(data);
-            }
+            response.data.containsKey('pacientes')) {
+          final data = response.data['pacientes'];
+          if (data is List) {
+            return List<Map<String, dynamic>>.from(data);
+          }
         }
       }
       return [];
@@ -713,7 +713,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> createPayment(Map<String, dynamic> paymentData) async {
+  Future<Map<String, dynamic>> createPayment(
+      Map<String, dynamic> paymentData) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
     }
@@ -739,33 +740,43 @@ class ApiService {
     }
   }
 
-Future<List<Map<String, dynamic>>> getEnfermeroAssignedRequests() async {
-    if (_authToken == null) {
-      throw Exception("No has iniciado sesión");
+  // Método para obtener el enfermero_id usando el userId
+  Future<int?> fetchEnfermeroId(String userId) async {
+    final response = await _dio.get(
+      'api/mobile/enfermeros/$userId',
+    );
+
+    if (response.statusCode == 200) {
+      final enfermeroData = response.data;
+      return enfermeroData['enfermero_id']
+          as int?; // Asegúrate de que sea un int
     }
+    return null;
+  }
 
-    try {
-      final userId = await _getCurrentUserId();
-      if (userId == null) {
-        throw Exception("ID de usuario no disponible");
+// Método para obtener las solicitudes asignadas usando el enfermero_id
+  Future<List<Map<String, dynamic>>> getEnfermeroAssignedRequests(
+      int enfermeroId) async {
+    final response = await _dio.get(
+      "api/mobile/enfermeros/$enfermeroId/solicitudes",
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      if (response.data is List) {
+        List<Map<String, dynamic>> solicitudes =
+            List<Map<String, dynamic>>.from(response.data);
+
+        // Imprimir en consola las solicitudes asignadas
+        for (var solicitud in solicitudes) {
+          print("Solicitud asignada: ${solicitud.toString()}");
+        }
+
+        return solicitudes;
+      } else {
+        debugPrint('Formato de respuesta inesperado: ${response.data}');
+        return [];
       }
-
-      final response = await _dio.get(
-        "api/admin/enfermeros/$userId/solicitudes",
-        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
-      );
-
-      _logger.i('Solicitudes del enfermero obtenidas exitosamente');
-      debugPrint('Respuesta getEnfermeroAssignedRequests: ${response.data}');
-
-      if (response.statusCode == 200 && response.data != null) {
-        return List<Map<String, dynamic>>.from(response.data);
-      }
-      return [];
-    } on DioException catch (e) {
-      _logger.e('Error obteniendo solicitudes asignadas', error: e);
-      debugPrint('Error en getEnfermeroAssignedRequests: ${e.response?.data}');
-      return [];
     }
+    return [];
   }
 }
