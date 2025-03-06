@@ -786,4 +786,31 @@ class ApiService {
     }
     return [];
   }
+
+  // Obtener todas las solicitudes
+  Future<List<Map<String, dynamic>>> getAllUserRequest(
+    String userId,
+  ) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/usuarios/$userId/solicitudes",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Solicitudes del usuario $userId obtenidas exitosamente');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo solicitudes', error: e);
+      debugPrint('Error en getAllRequests: ${e.response?.data}');
+      return [];
+    }
+  }
 }
