@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'models.dart';
 import 'step_indicator.dart';
 import 'date_step.dart';
@@ -7,10 +6,7 @@ import 'patient_step.dart';
 import 'location_step.dart';
 import 'payment_step.dart';
 import 'home_screen.dart';
-import '../../services/api_service.dart';
 import '../../models/service.dart';
-import '../../models/solicitud.dart';
-import '../../models/payment.dart';
 import '../../services/auth_service.dart';
 import '../../services/request_service.dart';
 import '../../services/payment_service.dart';
@@ -151,14 +147,13 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
 
   void _submitRequest() async {
     final paymentState = _paymentStepKey.currentState;
-    final apiService = ApiService();
     final authService = AuthService();
     final requestService = RequestService();
     final paymentService = PaymentService();
 
     // Validar el formulario de pago si se selecciona tarjeta
     if (paymentState != null &&
-        paymentState.selectedPaymentMethod == PaymentMethod.card &&
+        paymentState.selectedPaymentMethod == PaymentMethod.tarjeta &&
         !paymentState.formKey.currentState!.validate()) {
       return;
     }
@@ -221,13 +216,13 @@ class _RequestMedicalScreenState extends State<RequestMedicalScreen> {
       // Verificamos si el ID es un número válido
       if (int.tryParse(responseId.toString()) != null) {
         // Creamos el pago con los datos correspondientes
-        final payment = await paymentService.createPayment(
+        paymentService.createPayment(
           amount: double.tryParse(widget.service?.precioEstimado ?? '0.0') ?? 0.0,
           paymentMethod: response.metodoPago.isNotEmpty
             ? response.metodoPago : 'efectivo',
           paymentDate: now,
           status: 'completado',
-          details: paymentState?.selectedPaymentMethod == PaymentMethod.card
+          details: paymentState?.selectedPaymentMethod == PaymentMethod.tarjeta
               ? 'Tarjeta: ${paymentState?.cardNumberController.text}'
               : 'Pago en efectivo',
           requestId: int.tryParse(responseId.toString()) ?? 0,

@@ -60,3 +60,4 @@ build/app/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt
 build/app/outputs/apk/debug/app-debug.apk
 build/app/outputs/flutter-apk/app-debug.apk
 build/app/outputs/flutter-apk/app-debug.apk.sha1
+build/cache.dill.track.dill

@@ -81,8 +81,8 @@ class ServiceCategory {
 }
 
 enum PaymentMethod { 
-  card, 
-  cash 
+  tarjeta, 
+  efectivo 
 }
 
 class PaymentInfo {

@@ -18,7 +18,7 @@ class PaymentStep extends StatefulWidget {
 }
 
 class PaymentStepState extends State<PaymentStep> {
-  PaymentMethod _selectedPaymentMethod = PaymentMethod.cash;
+  PaymentMethod _selectedPaymentMethod = PaymentMethod.efectivo;
   final formKey = GlobalKey<FormState>();
 
   // Controladores para el formulario de tarjeta
@@ -55,7 +55,7 @@ class PaymentStepState extends State<PaymentStep> {
           ),
           const SizedBox(height: 24),
           _buildPaymentOptions(),
-          if (_selectedPaymentMethod == PaymentMethod.card) ...[
+          if (_selectedPaymentMethod == PaymentMethod.tarjeta) ...[
             const SizedBox(height: 24),
             _buildCardForm(),
           ],
@@ -85,14 +85,14 @@ class PaymentStepState extends State<PaymentStep> {
             icon: Icons.credit_card_outlined,
             title: 'Tarjeta de Crédito/Débito',
             subtitle: 'Pago seguro con tarjeta',
-            method: PaymentMethod.card,
+            method: PaymentMethod.tarjeta,
           ),
           Divider(color: Colors.grey[200]),
           _buildPaymentOption(
             icon: Icons.payments_outlined,
             title: 'Efectivo',
             subtitle: 'Pago en efectivo al personal médico',
-            method: PaymentMethod.cash,
+            method: PaymentMethod.tarjeta,
           ),
         ],
       ),
