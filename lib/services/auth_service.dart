@@ -70,84 +70,73 @@ class AuthService {
     }
   }
 
-  Future<bool> loginUser({
-    required String correo,
-    required String contrasena,
-  }) async {
-    try {
-      await _initPrefs();
+Future<bool> loginUser({
+  required String correo,
+  required String contrasena,
+}) async {
+  try {
+    await _initPrefs();
 
-      final response = await _apiService.dio.post(
-        'loginMobile',
-        data: {
-          'correo': correo,
-          'contrasena': contrasena,
-        },
-      );
+    final response = await _apiService.dio.post(
+      'loginMobile',
+      data: {
+        'correo': correo,
+        'contrasena': contrasena,
+      },
+    );
 
-      debugPrint('Respuesta login: ${response.data}');
+    debugPrint('Respuesta login: \${response.data}');
 
-      if (response.statusCode == 200 && response.data != null) {
-        final token = response.data['token'] as String?;
-        final role = response.data['role'] as String?;
+    if (response.statusCode == 200 && response.data != null) {
+      final token = response.data['token'] as String?;
+      final role = response.data['role'] as String?;
 
-        if (token == null || role == null) {
-          throw Exception('Token o rol no recibido');
-        }
-
-        // Decodificar el token para obtener el ID
-        final parts = token.split('.');
-        if (parts.length != 3) throw Exception('Token inválido');
-
-        String payload = parts[1];
-        while (payload.length % 4 != 0) payload += '=';
-        
-        final normalized = base64Url.normalize(payload);
-        final decoded = utf8.decode(base64Url.decode(normalized));
-        final Map<String, dynamic> tokenData = json.decode(decoded);
-
-        final userId = tokenData['id'] as String?;
-        final userEmail = tokenData['correo'] as String?;
-        if (userId == null) throw Exception('ID no encontrado en el token');
-
-        // Establecer token para autorización
-        _apiService.setAuthToken(token);
-
-        // Intentar obtener datos del perfil, pero no fallar si no se puede
-        String userName = 'Usuario';
-        try {
-          final userData = await _apiService.getUserProfile(userId);
-          userName = '${userData['nombre']} ${userData['apellido']}'.trim();
-        } catch (e) {
-          debugPrint("No se pudo obtener el perfil completo: $e");
-          // Usar el correo como nombre de usuario alternativo
-          userName = userEmail ?? 'Usuario';
-        }
-
-        // Guardar todos los datos
-        _currentUserId = userId;
-        _userRole = role;
-        _userName = userName;
-
-        // Guardar en SharedPreferences
-        await Future.wait([
-          _prefs?.setString('userId', userId) ?? Future.value(),
-          _prefs?.setString('userRole', role) ?? Future.value(),
-          _prefs?.setString('userName', userName) ?? Future.value(),
-        ]);
-
-        debugPrint('Login exitoso. Usuario: $userName, Rol: $role');
-        return true;
+      if (token == null || role == null) {
+        throw Exception('Token o rol no recibido');
       }
-      return false;
-    } on DioException catch (e) {
-      debugPrint('Error DioException en login: ${e.response?.data}');
-      throw Exception(_apiService.handleError(e));
-    } catch (e) {
-      debugPrint('Error general en login: $e');
-      throw Exception('Error inesperado al iniciar sesión');
+
+      // Decodificar el token para obtener el ID
+      final parts = token.split('.');
+      if (parts.length != 3) throw Exception('Token inválido');
+
+      String payload = parts[1];
+      while (payload.length % 4 != 0) payload += '=';
+      
+      final normalized = base64Url.normalize(payload);
+      final decoded = utf8.decode(base64Url.decode(normalized));
+      final Map<String, dynamic> tokenData = json.decode(decoded);
+
+      final userId = tokenData['id'] as String?;
+      if (userId == null) throw Exception('ID no encontrado en el token');
+
+      // Establecer token para autorización
+      _apiService.setAuthToken(token);
+
+      // Guardar los datos del usuario
+      _currentUserId = userId;
+      _userRole = role;
+      _userName = tokenData['correo'] ?? 'Usuario'; // Temporal hasta obtener el perfil
+
+      // Guardar en SharedPreferences
+      await Future.wait([
+        _prefs?.setString('userId', userId) ?? Future.value(),
+        _prefs?.setString('userRole', role) ?? Future.value(),
+        _prefs?.setString('userName', _userName ?? '') ?? Future.value(),
+      ]);
+
+      return true;
     }
+    return false;
+  } catch (e) {
+    debugPrint('Error en login: \$e');
+    throw Exception('Error al iniciar sesión');
   }
+}
+
+// Agregar este método para verificar si es enfermero
+bool isEnfermero() {
+  return _userRole?.toLowerCase() == 'enfermero';
+}
 
   Future<void> loadUserProfile() async {
     try {

@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 import 'auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -19,8 +21,8 @@ class ApiService {
       : _dio = Dio(
           BaseOptions(
             baseUrl: "https://soowe-apidata.onrender.com/",
-            connectTimeout: const Duration(seconds: 60),
-            receiveTimeout: const Duration(seconds: 60),
+            connectTimeout: const Duration(seconds: 90),
+            receiveTimeout: const Duration(seconds: 90),
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -743,5 +745,45 @@ class ApiService {
       debugPrint('Error en createPayment: ${e.response?.data}');
       throw Exception(handleError(e));
     }
+  }
+
+  // Método para obtener el enfermero_id usando el userId
+  Future<int?> fetchEnfermeroId(String userId) async {
+    final response = await _dio.get(
+      'api/mobile/enfermeros/$userId',
+    );
+
+    if (response.statusCode == 200) {
+      final enfermeroData = response.data;
+      return enfermeroData['enfermero_id']
+          as int?; // Asegúrate de que sea un int
+    }
+    return null;
+  }
+
+// Método para obtener las solicitudes asignadas usando el enfermero_id
+  Future<List<Map<String, dynamic>>> getEnfermeroAssignedRequests(
+      int enfermeroId) async {
+    final response = await _dio.get(
+      "api/mobile/enfermeros/$enfermeroId/solicitudes",
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      if (response.data is List) {
+        List<Map<String, dynamic>> solicitudes =
+            List<Map<String, dynamic>>.from(response.data);
+
+        // Imprimir en consola las solicitudes asignadas
+        for (var solicitud in solicitudes) {
+          print("Solicitud asignada: ${solicitud.toString()}");
+        }
+
+        return solicitudes;
+      } else {
+        debugPrint('Formato de respuesta inesperado: ${response.data}');
+        return [];
+      }
+    }
+    return [];
   }
 }

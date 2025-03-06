@@ -85,7 +85,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -146,21 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Verificar credenciales específicas para el enfermero
-      if (_emailController.text == 'mariafernanda@gmail.com' && 
-          _passwordController.text == 'arellano20') {
-        _loginAttempts = 0;
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomeEnfermero()),
-          );
-        }
-        return;
-      }
-
-      // Si no son las credenciales del enfermero, continuar con la autenticación normal
-      final success = await AuthService().loginUser(
+      final authService = AuthService();
+      final success = await authService.loginUser(
         correo: _emailController.text,
         contrasena: _passwordController.text,
       );
@@ -168,10 +155,17 @@ class _LoginScreenState extends State<LoginScreen> {
       if (success) {
         _loginAttempts = 0;
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
+          if (authService.isEnfermero()) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeEnfermero()),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          }
         }
       } else {
         _loginAttempts++;
