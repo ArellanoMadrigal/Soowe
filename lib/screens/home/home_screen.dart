@@ -173,24 +173,24 @@ class _HomeScreenState extends State<HomeScreen> {
             IndexedStack(
               index: _selectedIndex,
               children: [
-              _categories.isEmpty
-                ? const Center(child: Text("No hay categorias disponibles"))
-                : _CategoriesView(
-                    userName: _userName,
-                    profileImageUrl: _profileImageUrl,
-                    onProfileTap: _navigateToProfile,
-                    onNotificationTap: _toggleNotifications,
-                    onCategoryTap: _navigateToCategoryServices,
-                    onRefresh: _loadData,
-                    categories: _categories,
-                  ),
-                  RequestsView(
-                    key: ValueKey(_selectedIndex),
-                    requests: requests,
-                  ),
-                  ProfileView(
-                    onLogout: _handleLogout,
-                  ),
+                _categories.isEmpty
+                    ? const Center(child: Text("No hay categorias disponibles"))
+                    : _CategoriesView(
+                        userName: _userName,
+                        profileImageUrl: _profileImageUrl,
+                        onProfileTap: _navigateToProfile,
+                        onNotificationTap: _toggleNotifications,
+                        onCategoryTap: _navigateToCategoryServices,
+                        onRefresh: _loadData,
+                        categories: _categories,
+                      ),
+                RequestsView(
+                  key: ValueKey(_selectedIndex),
+                  requests: requests,
+                ),
+                ProfileView(
+                  onLogout: _handleLogout,
+                ),
               ],
             ),
             if (_showNotifications)
@@ -339,7 +339,8 @@ class _CategoriesView extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
+            padding:
+                const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -420,7 +421,8 @@ class _CategoryCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
-              Flexible( // Usar Flexible para que el texto ocupe el espacio restante
+              Flexible(
+                // Usar Flexible para que el texto ocupe el espacio restante
                 child: Text(
                   category.descripcion,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
