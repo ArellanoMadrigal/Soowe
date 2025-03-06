@@ -92,7 +92,7 @@ class PaymentStepState extends State<PaymentStep> {
             icon: Icons.payments_outlined,
             title: 'Efectivo',
             subtitle: 'Pago en efectivo al personal médico',
-            method: PaymentMethod.tarjeta,
+            method: PaymentMethod.efectivo,
           ),
         ],
       ),
