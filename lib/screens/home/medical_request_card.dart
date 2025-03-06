@@ -165,9 +165,9 @@ class MedicalRequestCard extends StatelessWidget {
 
   IconData _getPaymentIcon(PaymentMethod method) {
     switch (method) {
-      case PaymentMethod.card:
+      case PaymentMethod.tarjeta:
         return Icons.credit_card;
-      case PaymentMethod.cash:
+      case PaymentMethod.efectivo:
         return Icons.attach_money;
     }
   }

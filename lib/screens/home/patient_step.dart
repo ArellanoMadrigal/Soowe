@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../../models/patient.dart';
 import '../../services/auth_service.dart';
 import '../../services/patient_service.dart';
-import 'request_medical.dart';
 
 class PatientStep extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -81,15 +80,6 @@ class _PatientStepState extends State<PatientStep> {
       SnackBar(
         content: Text(message),
         backgroundColor: Colors.red,
-      ),
-    );
-  }
-
-  void _navigateToPatientDetails(PatientModel patient) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PatientDetailsScreen(patient: patient),
       ),
     );
   }
