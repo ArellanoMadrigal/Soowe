@@ -17,6 +17,16 @@ class PatientService {
     }
   }
 
+  Future<PatientModel> getPatientById(String patientId) async {
+    try {
+      final Map<String, dynamic> rawPatient = await _apiService.getPatientById(patientId);
+      return PatientModel.fromJson(rawPatient);
+    } catch (e) {
+      debugPrint('Error en getPatientById: $e');
+      throw Exception('Error al obtener el paciente');
+    }
+  }
+
   Future<bool> createNewPatient(PatientModel patientData) async {
     try {
       final success = await _apiService.createPatient(patientData.toJson());
@@ -33,7 +43,8 @@ class PatientService {
 
   Future<bool> updatePatient(String patientId, PatientModel patientData) async {
     try {
-      final success = await _apiService.updatePatient(patientId, patientData.toJson());
+      final success =
+          await _apiService.updatePatient(patientId, patientData.toJson());
       if (success) {
         return true;
       } else {

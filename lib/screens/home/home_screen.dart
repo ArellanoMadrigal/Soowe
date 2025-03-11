@@ -8,6 +8,7 @@ import 'requests_view.dart';
 import 'list_service.dart';
 import '../../services/request_service.dart';
 import '../../models/category.dart';
+import '../../models/solicitud.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? initialIndex;
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showNotifications = false;
   bool _isLoading = true;
 
-  List<MedicalRequest> requests = [];
+  List<RequestModel> requests = [];
   List<Map<String, dynamic>> _notifications = [];
   List<CategoryModel> _categories = [];
 
@@ -44,6 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex ?? 0;
+    requests = widget.newRequest != null
+        ? [RequestModel.fromJson(widget.newRequest!)]
+        : [];
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadData();
@@ -186,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   RequestsView(
                     key: ValueKey(_selectedIndex),
-                    requests: requests,
+                    requests: requests.map((request) => RequestModel.fromJson(request.toJson())).toList(),
                   ),
                   ProfileView(
                     onLogout: _handleLogout,

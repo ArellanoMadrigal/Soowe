@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class RequestModel {
-  final int? solicitudId;
+  final dynamic solicitudId;
   final String usuarioId;
   final String pacienteId;
   final int? organizacionId;
@@ -14,6 +14,7 @@ class RequestModel {
   final DateTime? fechaRespuesta;
   final String comentarios;
   final String ubicacion;
+  final int pgSolicitudId;
 
   RequestModel({
     this.solicitudId,
@@ -28,35 +29,32 @@ class RequestModel {
     this.fechaRespuesta,
     String? comentarios,
     required this.ubicacion,
+    required this.pgSolicitudId,
+
   }) : comentarios = comentarios ?? '';
 
   factory RequestModel.fromJson(Map<String, dynamic> json) {
     return RequestModel(
-      solicitudId: json['solicitud_id'] ?? '',
+      solicitudId: json['_id'] ?? json['solicitud_id']?.toString(),
       usuarioId: json['usuario_id'] ?? '',
       pacienteId: json['paciente_id'] ?? '',
-      organizacionId: json['organizacion_id'],
-      enfermeroId: json['enfermero_id'],
+      organizacionId: json['organizacion_id'] ?? 0,
+      enfermeroId: json['enfermero_id'] ?? 0,
       estado: json['estado'] ?? '',
       metodoPago: json['metodo_pago'] ?? '',
-      fechaSolicitud: json['fecha_solicitud'] != null ? DateTime.parse(json['fecha_solicitud']) : null,
-      fechaServicio: json['fecha_servicio'] != null ? DateTime.parse(json['fecha_servicio']) : null,
-      fechaRespuesta: _parseFechaRespuesta(json['fecha_respuesta']),
+      fechaSolicitud: json['fecha_solicitud'] != null
+          ? DateTime.tryParse(json['fecha_solicitud'])
+          : null,
+      fechaServicio: json['fecha_servicio'] != null
+          ? DateTime.tryParse(json['fecha_servicio'])
+          : null,
+      fechaRespuesta: json['fecha_respuesta'] != null
+          ? DateTime.tryParse(json['fecha_respuesta'])
+          : null,
       comentarios: json['comentarios'] ?? '',
       ubicacion: json['ubicacion'] ?? '',
+      pgSolicitudId: json['pg_solicitud_id'] ?? 0,
     );
-  }
-
-  static DateTime? _parseFechaRespuesta(dynamic fechaServicio) {
-    if (fechaServicio == null || fechaServicio.toString().isEmpty) {
-      return null;
-    }
-    try {
-      return DateTime.parse(fechaServicio.toString());
-    } catch (e) {
-      debugPrint('Error parsing fecha_servicio: $e');
-      return null;
-    }
   }
 
   Map<String, dynamic> toJson() {
