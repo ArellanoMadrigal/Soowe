@@ -177,24 +177,24 @@ class _HomeScreenState extends State<HomeScreen> {
             IndexedStack(
               index: _selectedIndex,
               children: [
-              _categories.isEmpty
-                ? const Center(child: Text("No hay categorias disponibles"))
-                : _CategoriesView(
-                    userName: _userName,
-                    profileImageUrl: _profileImageUrl,
-                    onProfileTap: _navigateToProfile,
-                    onNotificationTap: _toggleNotifications,
-                    onCategoryTap: _navigateToCategoryServices,
-                    onRefresh: _loadData,
-                    categories: _categories,
-                  ),
-                  RequestsView(
-                    key: ValueKey(_selectedIndex),
-                    requests: requests,
-                  ),
-                  ProfileView(
-                    onLogout: _handleLogout,
-                  ),
+                _categories.isEmpty
+                    ? const Center(child: Text("No hay categorias disponibles"))
+                    : _CategoriesView(
+                        userName: _userName,
+                        profileImageUrl: _profileImageUrl,
+                        onProfileTap: _navigateToProfile,
+                        onNotificationTap: _toggleNotifications,
+                        onCategoryTap: _navigateToCategoryServices,
+                        onRefresh: _loadData,
+                        categories: _categories,
+                      ),
+                RequestsView(
+                  key: ValueKey(_selectedIndex),
+                  requests: requests.map((request) => RequestModel.fromJson(request.toJson())).toList(),
+                ),
+                ProfileView(
+                  onLogout: _handleLogout,
+                ),
               ],
             ),
             if (_showNotifications)
