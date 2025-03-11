@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   RequestsView(
                     key: ValueKey(_selectedIndex),
-                    requests: requests.map((request) => RequestModel.fromJson(request.toJson())).toList(),
+                    requests: requests,
                   ),
                   ProfileView(
                     onLogout: _handleLogout,
@@ -343,7 +343,8 @@ class _CategoriesView extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
+            padding:
+                const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -424,7 +425,8 @@ class _CategoryCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
-              Flexible( // Usar Flexible para que el texto ocupe el espacio restante
+              Flexible(
+                // Usar Flexible para que el texto ocupe el espacio restante
                 child: Text(
                   category.descripcion,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

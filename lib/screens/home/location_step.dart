@@ -37,7 +37,7 @@ class _LocationStepState extends State<LocationStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Ubicación del Servicio',
+            'Ubicación del servicio',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -82,11 +82,12 @@ class _LocationStepState extends State<LocationStep> {
 
   Future<void> updateAddressFromCoordinates(LatLng location) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          location.latitude, location.longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(location.latitude, location.longitude);
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks[0];
-        String address = '${placemark.street}, ${placemark.locality}, ${placemark.country}';
+        String address =
+            '${placemark.street}, ${placemark.locality}, ${placemark.country}';
         setState(() {
           widget.addressController.text = address;
         });
@@ -123,15 +124,16 @@ class _LocationStepState extends State<LocationStep> {
 
     var locationData = await location.getLocation();
     setState(() {
-      _initialPosition = LatLng(locationData.latitude!, locationData.longitude!);
+      _initialPosition =
+          LatLng(locationData.latitude!, locationData.longitude!);
     });
   }
-
 
   Widget _buildMapPreview() {
     return SizedBox(
       height: 300,
-      child: _initialPosition.latitude == 37.7749 && _initialPosition.longitude == -122.4194
+      child: _initialPosition.latitude == 37.7749 &&
+              _initialPosition.longitude == -122.4194
           ? Center(child: CircularProgressIndicator()) // Loading spinner
           : GoogleMap(
               initialCameraPosition: CameraPosition(
@@ -154,7 +156,8 @@ class _LocationStepState extends State<LocationStep> {
                   _selectedLocation = location;
                   widget.addressController.text =
                       'Lat: ${location.latitude}, Long: ${location.longitude}';
-                  updateAddressFromCoordinates(location); // Actualiza la dirección
+                  updateAddressFromCoordinates(
+                      location); // Actualiza la dirección
                 });
               },
             ),
@@ -178,7 +181,8 @@ class _LocationStepState extends State<LocationStep> {
                 _selectedLocation = _initialPosition;
                 widget.addressController.text =
                     'Ubicación actual: ${_initialPosition.latitude}, ${_initialPosition.longitude}';
-                updateAddressFromCoordinates(_initialPosition); // Actualiza la dirección
+                updateAddressFromCoordinates(
+                    _initialPosition); // Actualiza la dirección
               });
             },
           ),
@@ -186,29 +190,32 @@ class _LocationStepState extends State<LocationStep> {
         const SizedBox(width: 16),
         Expanded(
           child: _buildActionButton(
-            context: context,
-            icon: Icons.search_outlined,
-            label: 'Buscar dirección',
-            onPressed: () async {
-              String address = widget.addressController.text;
-              try {
-                List<Location> locations = await locationFromAddress(address);
-                if (locations.isNotEmpty) {
-                  LatLng newLocation = LatLng(locations[0].latitude, locations[0].longitude);
-                  setState(() {
-                    _selectedLocation = newLocation;
-                    _mapController.animateCamera(CameraUpdate.newLatLng(newLocation));
-                  });
-                } else {
-                  // Handle no results
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Dirección no encontrada')));
+              context: context,
+              icon: Icons.search_outlined,
+              label: 'Buscar dirección',
+              onPressed: () async {
+                String address = widget.addressController.text;
+                try {
+                  List<Location> locations = await locationFromAddress(address);
+                  if (locations.isNotEmpty) {
+                    LatLng newLocation =
+                        LatLng(locations[0].latitude, locations[0].longitude);
+                    setState(() {
+                      _selectedLocation = newLocation;
+                      _mapController
+                          .animateCamera(CameraUpdate.newLatLng(newLocation));
+                    });
+                  } else {
+                    // Handle no results
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Dirección no encontrada')));
+                  }
+                } catch (e) {
+                  // Handle error in searching for an address
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error al buscar la dirección')));
                 }
-              } catch (e) {
-                // Handle error in searching for an address
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al buscar la dirección')));
-              }
-            }
-          ),
+              }),
         ),
       ],
     );
@@ -273,7 +280,7 @@ class _LocationStepState extends State<LocationStep> {
           ),
         ),
         onChanged: (value) {
-            if (value.isNotEmpty) {
+          if (value.isNotEmpty) {
             _debounceSearch(value);
           }
         },
@@ -293,18 +300,21 @@ class _LocationStepState extends State<LocationStep> {
           // Perform location search based on address entered
           List<Location> locations = await locationFromAddress(value);
           if (locations.isNotEmpty) {
-            LatLng newLocation = LatLng(locations[0].latitude, locations[0].longitude);
+            LatLng newLocation =
+                LatLng(locations[0].latitude, locations[0].longitude);
             setState(() {
               _selectedLocation = newLocation;
               _mapController.animateCamera(CameraUpdate.newLatLng(newLocation));
             });
           } else {
             // Handle no results found
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Dirección no encontrada')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Dirección no encontrada')));
           }
         } catch (e) {
           // Handle error
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al buscar la dirección')));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error al buscar la dirección')));
         }
       }
     });
@@ -331,7 +341,7 @@ class _LocationStepState extends State<LocationStep> {
               ),
               const SizedBox(width: 12),
               Text(
-                'Información Importante',
+                'Información importante',
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 16,
