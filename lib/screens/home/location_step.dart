@@ -3,6 +3,8 @@ import 'package:location/location.dart' as loc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'dart:async';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 
 class LocationStep extends StatefulWidget {
   final TextEditingController addressController;
@@ -13,6 +15,7 @@ class LocationStep extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _LocationStepState createState() => _LocationStepState();
 }
 
@@ -109,23 +112,18 @@ class _LocationStepState extends State<LocationStep> {
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
+      if (!serviceEnabled) return;
     }
 
     permissionGranted = await location.hasPermission();
     if (permissionGranted == loc.PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
-      if (permissionGranted != loc.PermissionStatus.granted) {
-        return;
-      }
+      if (permissionGranted != loc.PermissionStatus.granted) return;
     }
 
     var locationData = await location.getLocation();
     setState(() {
-      _initialPosition =
-          LatLng(locationData.latitude!, locationData.longitude!);
+      _initialPosition = LatLng(locationData.latitude!, locationData.longitude!);
     });
   }
 
@@ -134,7 +132,7 @@ class _LocationStepState extends State<LocationStep> {
       height: 300,
       child: _initialPosition.latitude == 37.7749 &&
               _initialPosition.longitude == -122.4194
-          ? Center(child: CircularProgressIndicator()) // Loading spinner
+          ? Center(child: CircularProgressIndicator()) // Mostrar carga
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: _initialPosition,
@@ -154,15 +152,24 @@ class _LocationStepState extends State<LocationStep> {
               onTap: (LatLng location) {
                 setState(() {
                   _selectedLocation = location;
-                  widget.addressController.text =
-                      'Lat: ${location.latitude}, Long: ${location.longitude}';
-                  updateAddressFromCoordinates(
-                      location); // Actualiza la dirección
+                  updateAddressFromCoordinates(location);
                 });
               },
+              // Habilitar interacción para deslizar, hacer zoom y mover el mapa
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                Factory<OneSequenceGestureRecognizer>(
+                  () => EagerGestureRecognizer(), // Esto permite los deslizamientos
+                ),
+              },
+              mapType: MapType.normal,
+              zoomGesturesEnabled: true,
+              scrollGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              tiltGesturesEnabled: true,
             ),
     );
   }
+
 
   // Botones de ubicación
   Widget _buildLocationButtons(BuildContext context) {
