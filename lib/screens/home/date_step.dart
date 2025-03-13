@@ -9,7 +9,6 @@ class DateStep extends StatelessWidget {
   final ValueChanged<DateTime> onDateChanged;
   final ValueChanged<TimeOfDay> onTimeChanged;
 
-
   const DateStep({
     super.key,
     required this.selectedTimeOption,

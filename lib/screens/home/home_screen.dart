@@ -8,6 +8,7 @@ import 'requests_view.dart';
 import 'list_service.dart';
 import '../../services/request_service.dart';
 import '../../models/category.dart';
+import '../../models/solicitud.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? initialIndex;
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showNotifications = false;
   bool _isLoading = true;
 
-  List<MedicalRequest> requests = [];
+  List<RequestModel> requests = [];
   List<Map<String, dynamic>> _notifications = [];
   List<CategoryModel> _categories = [];
 
@@ -44,6 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex ?? 0;
+    requests = widget.newRequest != null
+        ? [RequestModel.fromJson(widget.newRequest!)]
+        : [];
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadData();
@@ -173,24 +177,24 @@ class _HomeScreenState extends State<HomeScreen> {
             IndexedStack(
               index: _selectedIndex,
               children: [
-              _categories.isEmpty
-                ? const Center(child: Text("No hay categorias disponibles"))
-                : _CategoriesView(
-                    userName: _userName,
-                    profileImageUrl: _profileImageUrl,
-                    onProfileTap: _navigateToProfile,
-                    onNotificationTap: _toggleNotifications,
-                    onCategoryTap: _navigateToCategoryServices,
-                    onRefresh: _loadData,
-                    categories: _categories,
-                  ),
-                  RequestsView(
-                    key: ValueKey(_selectedIndex),
-                    requests: requests,
-                  ),
-                  ProfileView(
-                    onLogout: _handleLogout,
-                  ),
+                _categories.isEmpty
+                    ? const Center(child: Text("No hay categorias disponibles"))
+                    : _CategoriesView(
+                        userName: _userName,
+                        profileImageUrl: _profileImageUrl,
+                        onProfileTap: _navigateToProfile,
+                        onNotificationTap: _toggleNotifications,
+                        onCategoryTap: _navigateToCategoryServices,
+                        onRefresh: _loadData,
+                        categories: _categories,
+                      ),
+                RequestsView(
+                  key: ValueKey(_selectedIndex),
+                  requests: requests.map((request) => RequestModel.fromJson(request.toJson())).toList(),
+                ),
+                ProfileView(
+                  onLogout: _handleLogout,
+                ),
               ],
             ),
             if (_showNotifications)
@@ -339,7 +343,8 @@ class _CategoriesView extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
+            padding:
+                const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -420,7 +425,8 @@ class _CategoryCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
-              Flexible( // Usar Flexible para que el texto ocupe el espacio restante
+              Flexible(
+                // Usar Flexible para que el texto ocupe el espacio restante
                 child: Text(
                   category.descripcion,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

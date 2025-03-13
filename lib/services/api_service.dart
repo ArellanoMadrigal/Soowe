@@ -448,7 +448,6 @@ class ApiService {
     }
   }
 
-// Obtener detalles de una solicitud específica
   Future<Map<String, dynamic>> getRequestDetails(String requestId) async {
     if (_authToken == null) {
       throw Exception("No has iniciado sesión");
@@ -456,7 +455,7 @@ class ApiService {
 
     try {
       final response = await _dio.get(
-        "api/mobile/solicitudes/$requestId", // Ruta corregida
+        "api/mobile/solicitudes/$requestId",
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
@@ -464,13 +463,20 @@ class ApiService {
       debugPrint('Respuesta getRequestDetails: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
-        return response.data;
+        if (response.data is Map<String, dynamic>) {
+          return response.data;
+        } else {
+          throw Exception("La respuesta no tiene el formato esperado");
+        }
       }
       throw Exception("Solicitud no encontrada");
     } on DioException catch (e) {
       _logger.e('Error obteniendo detalles de solicitud', error: e);
       debugPrint('Error en getRequestDetails: ${e.response?.data}');
       throw Exception(handleError(e));
+    } catch (e) {
+      _logger.e('Error inesperado', error: e);
+      throw Exception("Error inesperado: $e");
     }
   }
 
@@ -811,6 +817,31 @@ class ApiService {
       _logger.e('Error obteniendo solicitudes', error: e);
       debugPrint('Error en getAllRequests: ${e.response?.data}');
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> getPatientById(String patientId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/pacientes/$patientId",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Paciente obtenido exitosamente para ID: $patientId');
+      debugPrint('Respuesta getPatientById: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return Map<String, dynamic>.from(response.data);
+      }
+      throw Exception("Paciente no encontrado");
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo paciente', error: e);
+      debugPrint('Error en getPatientById: ${e.response?.data}');
+      throw Exception("Error al obtener el paciente");
     }
   }
 }

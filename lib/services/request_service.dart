@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'api_service.dart';
 import '../models/solicitud.dart';
+import '../models/full_solicitud.dart';
 
 class RequestService {
   final ApiService _apiService = ApiService();
@@ -15,6 +16,51 @@ class RequestService {
       return requestsData.map((data) => RequestModel.fromJson(data)).toList();
     } catch (e) {
       debugPrint('Error en getAllRequests: $e');
+      rethrow;
+    }
+  }
+
+  Future<RequestCompleteModel> getRequestById(int id) async {
+    try {
+      final requestData = await _apiService.getRequestDetails(id.toString());
+      return RequestCompleteModel.fromJson(requestData); // Asegura que nunca sea null
+    } catch (e) {
+      debugPrint('Error en getRequestById: $e');
+      return RequestCompleteModel(
+        solicitudId: 0,
+        organizacionId: 0,
+        organizacion: Organizacion(
+          organizacionId: 0,
+          nombre: '',
+          cuentaBancaria: '',
+          direccion: '',
+          telefono: '',
+          fechaCreacion: DateTime.now(),
+          fechaModificacion: DateTime.now(),
+        ),
+        servicio: Servicio(servicioId: 0, nombre: '', precioEstimado: '', descripcion: '', categoria: Categoria(categoriaId: 0, nombreCategoria: '', descripcion: ''),),
+        id: '',
+        usuarioId: '',
+        pacienteId: '',
+        enfermeroId: 0,
+        estado: '',
+        metodoPago: '',
+        fechaSolicitud: DateTime.now(),
+        fechaServicio: DateTime.now(),
+        pgSolicitudId: 0,
+        comentarios: '',
+        ubicacion: '',
+      );  
+    }
+  }
+
+  Future<List<RequestModel>> getAllUserRequests(String userId) async {
+    try {
+      final requestData = await _apiService.getAllUserRequest(userId);
+
+      return requestData.map((data) => RequestModel.fromJson(data)).toList();
+    } catch (e) {
+      debugPrint('Error en getAllUserRequests: $e');
       rethrow;
     }
   }
@@ -50,7 +96,8 @@ class RequestService {
       final response = await _apiService.createMedicalRequest(requestData);
 
       if (response['solicitud_id'] == null) {
-        throw Exception('Respuesta inesperada del servidor: ${response.toString()}');
+        throw Exception(
+            'Respuesta inesperada del servidor: ${response.toString()}');
       }
 
       debugPrint('Solicitud creada con ID: ${response['solicitud_id']}');
