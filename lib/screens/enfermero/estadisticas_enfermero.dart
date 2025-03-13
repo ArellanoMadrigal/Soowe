@@ -13,7 +13,7 @@ class _EstadisticasEnfermeroState extends State<EstadisticasEnfermero> {
     'Enero',
     'Febrero',
     'Marzo',
-    'Abril',
+    'Abril ',
     'Mayo', 
     'Junio',
     'Julio',
