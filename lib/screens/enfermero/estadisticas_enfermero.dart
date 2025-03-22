@@ -11,7 +11,7 @@ class _EstadisticasEnfermeroState extends State<EstadisticasEnfermero> {
   final List<String> filtrosMes = [
     'Por Mes',
     'Enero',
-    'Febrero',
+    'Febrero ',
     'Marzo',
     'Abril',
     'Mayo', 
