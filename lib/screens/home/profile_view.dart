@@ -155,28 +155,20 @@ class _ProfileViewState extends State<ProfileView> {
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Seleccionar de galería'),
                 onTap: () async {
+                  PermissionStatus status;
                   if (Platform.isAndroid) {
-                    final status = await Permission.storage.request();
-                    if (status.isGranted) {
-                      if (!context.mounted) return;
-                      Navigator.pop(context, ImageSource.gallery);
-                    } else {
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                      _showErrorSnackBar(
-                          'Se requieren permisos para acceder a las fotos');
-                    }
+                    status = await Permission.photos.request();
                   } else {
-                    final status = await Permission.photos.request();
-                    if (status.isGranted) {
-                      if (!context.mounted) return;
-                      Navigator.pop(context, ImageSource.gallery);
-                    } else {
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                      _showErrorSnackBar(
-                          'Se requieren permisos para acceder a las fotos');
-                    }
+                    status = await Permission.photos.request();
+                  }
+
+                  if (status.isGranted) {
+                    if (!context.mounted) return;
+                    Navigator.pop(context, ImageSource.gallery);
+                  } else {
+                    if (!context.mounted) return;
+                    Navigator.pop(context);
+                    _showErrorSnackBar('Se requieren permisos para acceder a las fotos');
                   }
                 },
               ),

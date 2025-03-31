@@ -2,13 +2,16 @@ import 'package:appdesarrollo/services/category_service.dart';
 import 'package:flutter/material.dart';
 import 'package:appdesarrollo/services/auth_service.dart';
 import '../../services/api_service.dart';
-import 'models.dart';
 import 'profile_view.dart';
 import 'requests_view.dart';
 import 'list_service.dart';
 import '../../services/request_service.dart';
 import '../../models/category.dart';
 import '../../models/solicitud.dart';
+import 'search_screen.dart';
+import '../../models/notification.dart';
+import '../../services/notification_service.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   final int? initialIndex;
@@ -30,16 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final ApiService _apiService = ApiService();
   final RequestService _requestService = RequestService();
   final CategoryService _categoryService = CategoryService();
+  final NotificationService _notificationService = NotificationService();
 
   bool _showNotifications = false;
   bool _isLoading = true;
 
   List<RequestModel> requests = [];
-  List<Map<String, dynamic>> _notifications = [];
+  final ValueNotifier<List<NotificationModel>> _notificationsNotifier =
+      ValueNotifier<List<NotificationModel>>([]);
   List<CategoryModel> _categories = [];
 
   String _userName = '';
   String? _profileImageUrl;
+
+  Timer? _notificationTimer;
 
   @override
   void initState() {
@@ -52,6 +59,30 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadData();
     });
+
+    _startNotificationLoop();
+  }
+
+  void _startNotificationLoop() {
+    _notificationTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      try {
+        final authService = AuthService();
+        final receptorId = authService.getCurrentUserId();
+        if (receptorId == null) return;
+
+        final notifications = await _notificationService.getNotificationsFromUser(receptorId);
+        _notificationsNotifier.value = notifications;
+      } catch (e) {
+        debugPrint("Error al actualizar notificaciones: $e");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _notificationTimer?.cancel();
+    _notificationsNotifier.dispose();
+    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -90,11 +121,12 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
 
       setState(() {
-        _notifications = (futures[1] as List<Map<String, dynamic>>)
-            .where((n) => !n['read'])
-            .toList();
         _categories = (futures[2] as List<CategoryModel>).toList();
       });
+
+      // Cargar notificaciones iniciales
+      final notifications = await _notificationService.getNotificationsFromUser(userId);
+      _notificationsNotifier.value = notifications;
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -187,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onCategoryTap: _navigateToCategoryServices,
                         onRefresh: _loadData,
                         categories: _categories,
+                        notificationsNotifier: _notificationsNotifier,
                       ),
                 RequestsView(
                   key: ValueKey(_selectedIndex),
@@ -199,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             if (_showNotifications)
               _NotificationsOverlay(
-                notifications: _notifications,
+                notifications: _notificationsNotifier.value,
                 onDismiss: _toggleNotifications,
               ),
           ],
@@ -245,6 +278,7 @@ class _CategoriesView extends StatelessWidget {
   final Function(CategoryModel) onCategoryTap;
   final Future<void> Function() onRefresh;
   final List<CategoryModel> categories;
+  final ValueNotifier<List<NotificationModel>> notificationsNotifier;
 
   const _CategoriesView({
     required this.userName,
@@ -254,120 +288,156 @@ class _CategoriesView extends StatelessWidget {
     required this.onCategoryTap,
     required this.onRefresh,
     required this.categories,
+    required this.notificationsNotifier,
   });
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return RefreshIndicator(
-      onRefresh: onRefresh,
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            elevation: 0,
-            pinned: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.white,
-            title: GestureDetector(
-              onTap: onProfileTap,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: colorScheme.primary.withOpacity(0.1),
-                    backgroundImage: profileImageUrl != null
-                        ? NetworkImage(profileImageUrl!)
-                        : null,
-                    child: profileImageUrl == null
-                        ? const Icon(Icons.person_outline)
-                        : null,
+    return ValueListenableBuilder<List<Map<String, dynamic>>>(
+      valueListenable: ValueNotifier<List<Map<String, dynamic>>>(
+        notificationsNotifier.value.map((notification) => notification.toJson()).toList(),
+      ),
+      builder: (context, notifications, child) {
+        return RefreshIndicator(
+          onRefresh: onRefresh,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                elevation: 0,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.white,
+                title: GestureDetector(
+                  onTap: onProfileTap,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: colorScheme.primary.withOpacity(0.1),
+                        backgroundImage: profileImageUrl != null
+                            ? NetworkImage(profileImageUrl!)
+                            : null,
+                        child: profileImageUrl == null
+                            ? const Icon(Icons.person_outline)
+                            : null,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        userName.isEmpty ? 'Usuario' : userName,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  Text(
-                    userName.isEmpty ? 'Usuario' : userName,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                ),
+                actions: [
+                  Stack(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary.withOpacity(0.1),
+                          shape: BoxShape.circle,
                         ),
+                        child: IconButton(
+                          onPressed: onNotificationTap,
+                          icon: const Icon(Icons.notifications_outlined),
+                          tooltip: 'Notificaciones',
+                        ),
+                      ),
+                      if (notifications.isNotEmpty)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              notifications.length.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withOpacity(0.1),
-                  shape: BoxShape.circle,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '¿Qué servicio necesitas?',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        readOnly: true,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SearchScreen()),
+                          );
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Buscar servicios',
+                          prefixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Categorías',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: IconButton(
-                  onPressed: onNotificationTap,
-                  icon: const Icon(Icons.notifications_outlined),
-                  tooltip: 'Notificaciones',
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.all(16.0),
+                sliver: SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final category = categories[index];
+                      return _CategoryCard(
+                        category: category,
+                        onTap: () {
+                          onCategoryTap(category);
+                        },
+                      );
+                    },
+                    childCount: categories.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: 0.9,
+                  ),
                 ),
               ),
             ],
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '¿Qué servicio necesitas?',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      hintText: 'Buscar servicios',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Categorías',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding:
-                const EdgeInsets.all(16.0), // Padding alrededor del SliverGrid
-            sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final category = categories[index];
-                  return _CategoryCard(
-                    category: category,
-                    onTap: () {
-                      onCategoryTap(category);
-                    },
-                  );
-                },
-                childCount: categories.length,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.9,
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -397,10 +467,10 @@ class _CategoryCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16), // Padding general de la tarjeta
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min, // Ajusta la columna al contenido
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
@@ -414,7 +484,7 @@ class _CategoryCard extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(height: 8), // Espaciado entre el ícono y el texto
+              const SizedBox(height: 8),
               Text(
                 category.nombre,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -426,14 +496,13 @@ class _CategoryCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Flexible(
-                // Usar Flexible para que el texto ocupe el espacio restante
                 child: Text(
                   category.descripcion,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: colorScheme.outline,
                         fontSize: 12,
                       ),
-                  maxLines: 3, // Limitar a 3 líneas
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -446,7 +515,7 @@ class _CategoryCard extends StatelessWidget {
 }
 
 class _NotificationsOverlay extends StatelessWidget {
-  final List<Map<String, dynamic>> notifications;
+  final List<NotificationModel> notifications;
   final VoidCallback onDismiss;
 
   const _NotificationsOverlay({
@@ -456,6 +525,9 @@ class _NotificationsOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: onDismiss,
       behavior: HitTestBehavior.opaque,
@@ -471,23 +543,30 @@ class _NotificationsOverlay extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.9,
+                    maxHeight: MediaQuery.of(context).size.height * 0.7,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Notificaciones',
-                              style: Theme.of(context).textTheme.titleLarge,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.close),
+                              icon: const Icon(Icons.close, size: 22),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
                               onPressed: onDismiss,
                             ),
                           ],
@@ -495,42 +574,80 @@ class _NotificationsOverlay extends StatelessWidget {
                       ),
                       const Divider(height: 1),
                       if (notifications.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text('No hay notificaciones nuevas'),
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Center(
+                            child: Text(
+                              'No hay notificaciones nuevas',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.hintColor,
+                              ),
+                            ),
+                          ),
                         )
                       else
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height * 0.6,
-                          ),
+                        Flexible(
                           child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
                             itemCount: notifications.length,
-                            separatorBuilder: (_, __) =>
-                                const Divider(height: 1),
+                            separatorBuilder: (_, __) => const Divider(height: 1, indent: 72),
                             itemBuilder: (context, index) {
                               final notification = notifications[index];
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.1),
-                                  child: Icon(
-                                    Icons.notifications_none,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                                title: Text(notification['title'] ?? ''),
-                                subtitle: Text(notification['message'] ?? ''),
-                                trailing: Text(
-                                  notification['time'] ??
-                                      DateTime.parse('2025-02-20 04:37:49')
-                                          .toString(),
-                                  style: Theme.of(context).textTheme.bodySmall,
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 4),
+                                      child: CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: colorScheme.primary.withOpacity(0.1),
+                                        child: Icon(
+                                          Icons.notifications_none,
+                                          size: 20,
+                                          color: colorScheme.primary,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            notification.titulo,
+                                            style: theme.textTheme.bodyLarge?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          const Divider(height: 2, thickness: 0.5),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            notification.contenido,
+                                            style: theme.textTheme.bodyMedium?.copyWith(
+                                              color: theme.textTheme.bodySmall?.color,
+                                            ),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            _formatDate(notification.fechaCreacion),
+                                            style: theme.textTheme.bodySmall?.copyWith(
+                                              color: theme.hintColor,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -545,5 +662,17 @@ class _NotificationsOverlay extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return '';
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inMinutes < 1) return 'Ahora mismo';
+    if (difference.inHours < 1) return 'Hace ${difference.inMinutes} min';
+    if (difference.inDays < 1) return 'Hace ${difference.inHours} h';
+    if (difference.inDays == 1) return 'Ayer';
+    return 'Hace ${difference.inDays} días';
   }
 }

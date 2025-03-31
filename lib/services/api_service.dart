@@ -315,12 +315,11 @@ class ApiService {
 
     try {
       final response = await _dio.get(
-        "/services",
+        "/api/admin/servicios",
         options: Options(headers: {'Authorization': "Bearer $_authToken"}),
       );
 
       _logger.i('Servicios obtenidos exitosamente');
-      debugPrint('Respuesta getServices: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         return response.data is List
@@ -460,7 +459,6 @@ class ApiService {
       );
 
       _logger.i('Detalles de solicitud obtenidos para ID: $requestId');
-      debugPrint('Respuesta getRequestDetails: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         if (response.data is Map<String, dynamic>) {
@@ -832,7 +830,6 @@ class ApiService {
       );
 
       _logger.i('Paciente obtenido exitosamente para ID: $patientId');
-      debugPrint('Respuesta getPatientById: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         return Map<String, dynamic>.from(response.data);
@@ -842,6 +839,30 @@ class ApiService {
       _logger.e('Error obteniendo paciente', error: e);
       debugPrint('Error en getPatientById: ${e.response?.data}');
       throw Exception("Error al obtener el paciente");
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getNotificationsFromUser(receptorId) async {
+    if (_authToken == null) {
+      throw Exception("No has iniciado sesión");
+    }
+
+    try {
+      final response = await _dio.get(
+        "api/mobile/receptor/$receptorId/notificaciones",
+        options: Options(headers: {'Authorization': "Bearer $_authToken"}),
+      );
+
+      _logger.i('Notificaciones obtenidas exitosamente para el receptor $receptorId');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } on DioException catch (e) {
+      _logger.e('Error obteniendo notificaciones', error: e);
+      debugPrint('Error en getNotificationsFromUser: ${e.response?.data}');
+      throw Exception("Error al obtener las notificaciones");
     }
   }
 }

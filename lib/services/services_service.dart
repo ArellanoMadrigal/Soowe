@@ -16,4 +16,16 @@ class ServicesService {
       return [];
     }
   }
+
+  Future<List<ServiceModel>> getServices() async {
+    try {
+      final List<Map<String, dynamic>> rawServices =
+          await _apiService.getServices();
+
+      return rawServices.map((data) => ServiceModel.fromJson(data)).toList();
+    } catch (e) {
+      debugPrint('Error en getServices: $e');
+      return [];
+    }
+  }
 }
